@@ -1,9 +1,3 @@
---[[
-This script is for Decaying Winter on Roblox
-Original by Aidez
-Modified by 5x9x7x2x7x9
-]]
-
 if game.PlaceId ~= 7551121821 and game.PlaceId ~= 9880062154 then
     return
 end
@@ -828,10 +822,6 @@ local EspInfo = {
         };
     };
 }
-
-local function UpdateGWPColors()
-    
-end
 
 local function KnifeKill(Model,Killaura)
     if Model.Parent ~= nil and Model.Parent.Name == "activeHostiles" or Model.Parent ~= nil and Model.Parent.Name == "NoTarget" then
