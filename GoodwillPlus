@@ -2,6 +2,12 @@ if game.PlaceId ~= 7551121821 and game.PlaceId ~= 9880062154 then
 	return
 end
 
+if _G.GoodwillPlusLoaded == true then
+    return
+end
+
+_G.GoodwillPlusLoaded = true
+
 local GoodwillSettings = {
 	MenuColor = Color3.fromRGB(0, 255, 255);
 	MenuSizeMultiplier = 1;
@@ -47,6 +53,7 @@ local LoopedFeatures = {"KillAura","GrenadeRain","SuperRun","LoopDrop","AntiVote
 local DevWeapons = {"RVolver","JBox","LSMini","GMSword","EMSword","CMMaul","PLBlade"}
 local GuiCommands = {"InfClip","InfAmmo","Godmode","SemiGodmode","OneShot","NoCooldown","InfAux","SilentAim","AutoParry","KillAura","VirusBlock","AntiDebuff","NoHunger","AntiFallDamage","AntiRecoil","SuperRun","AntiVoteKick"}
 
+local GoodwillMenuBG = nil
 
 local Toggles = {
 	Godmode = false;
@@ -73,6 +80,7 @@ local Toggles = {
 	LoopDrop = false;
 	ThrowingKnives = false;
 	AntiVoteKick = false;
+    Invisible = false;
 }
 
 
@@ -900,6 +908,16 @@ local function Kill(Model)
 	end
 end
 
+local LastPlayerCFrame = CFrame.new()
+
+local function PreRender()
+   if Toggles.Invisible then
+        if game.Players.LocalPlayer.Character then
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(LastPlayerCFrame)
+        end
+    end
+end
+
 local function RenderStepped()
 	if SuperRun.ShiftHeld == true and Toggles.SuperRun == true and game.Players.LocalPlayer.Character ~= nil and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 		if SuperRun.WHeld == true then
@@ -1000,6 +1018,12 @@ local function RenderStepped()
 			game.Workspace.ServerStuff.throwWeapon:FireServer("ImpN", 0, TargetCFrame, 0.1960853934288, Data, nil, false, _G.Code1, nil, _G.Code2)
 		end
 	end
+    if Toggles.Invisible then
+        if game.Players.LocalPlayer.Character then
+            LastPlayerCFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(Vector3.new(0, 1000, 0))
+        end
+    end
 end
 
 local function GrabMainScript()
@@ -1442,6 +1466,8 @@ local function SetupGUI()
 	local TabMenu = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu
 	local bg = TabMenu.bg
     local bg2 = bg.bg
+    
+    GoodwillMenuBG = bg
 	
 	local OriginalSize = bg.Size
 	
@@ -3818,6 +3844,18 @@ local function CommandHandler(msg, speaker)
 		end
 		GoodwillSettings.MenuSizeMultiplier = tonumber(Args[1]) /100
 	end
+    if IsInTable({"menuposition", "menuanchor", "menupoint"}, Args.Command) then
+		if GoodwillMenuBG then
+            if Args[1] == nil or Args[2] == nil then
+            return
+            end
+            if tonumber(Args[1]) == "" or tonumber(Args[2]) == "" then
+                return
+            end
+            GoodwillMenuBG.Position = UDim2.new(tonumber(Args[1])/100, 0, tonumber(Args[2])/100, 0)
+            GoodwillMenuBG.AnchorPoint = Vector2.new(tonumber(Args[1])/100, tonumber(Args[2])/100)
+        end
+	end
 end
 
 game.Players.LocalPlayer.Chatted:Connect(function(msg)
@@ -3835,6 +3873,7 @@ game.Players.PlayerAdded:Connect(function(v)
 		CommandHandler(msg, v)
 	end)
 end)
+game:GetService("RunService").PreRender:Connect(PreRender)
 
 mouse.KeyDown:Connect(function(key)
 	if key == "0" then
