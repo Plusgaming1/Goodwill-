@@ -12,7 +12,8 @@ local GoodwillSettings = {
 	MenuColor = Color3.fromRGB(0, 255, 255);
 	MenuSizeMultiplier = 1;
     RGBSpeed = 100;
-    RGBEAffect = 100
+    RGBEAffect = 100;
+    AutoParryDist = 20;
 }
 
 repeat wait() until game.Players.LocalPlayer ~= nil
@@ -53,7 +54,7 @@ local CurrentThrowable = "TKnife"
 -- local CameraShakeFunction
 local LoopedFeatures = {"KillAura","GrenadeRain","SuperRun","LoopDrop","AntiVoteKick"}
 local DevWeapons = {"RVolver","JBox","LSMini","GMSword","EMSword","CMMaul","PLBlade"}
-local GuiCommands = {"InfClip","InfAmmo","Godmode","SemiGodmode","OneShot","NoCooldown","InfAux","SilentAim","AutoParry","KillAura","VirusBlock","AntiDebuff","NoHunger","AntiFallDamage","AntiRecoil","SuperRun","AntiVoteKick"}
+local GuiCommands = {"InfClip","InfAmmo","Godmode","SemiGodmode","OneShot","NoCooldown","InfAux","SilentAim","AutoParry","KillAura","VirusBlock","AntiDebuff","NoHunger","AntiFallDamage","AntiRecoil","SuperRun","AntiVoteKick", "ThirdPerson", "InfDrift"}
 
 local GoodwillMenuBG = nil
 
@@ -828,6 +829,30 @@ local EspInfo = {
 	};
 }
 
+local function GetClosest()
+	local LowestDistance = math.huge
+	local ClosestCharacter = nil
+	local Characters = game.Workspace.activeHostiles.GetChildren(game.Workspace.activeHostiles)
+	for i,v in pairs(game.Workspace.NoTarget.GetChildren(game.Workspace.NoTarget)) do
+		table.insert(Characters, v)
+	end
+	for i,v in pairs(Characters) do
+		if v ~= nil then
+			if v.FindFirstChild(v, "Torso") then
+				local InitialDis = (v.Torso.Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
+				local Ray = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * InitialDis)
+				local Part,Position = game.Workspace.FindPartOnRay(game.Workspace, Ray, game.Workspace)
+				local FinalDifference = math.floor((Position - v.Torso.Position).magnitude)
+				if FinalDifference < LowestDistance then
+					ClosestCharacter = v
+					LowestDistance = FinalDifference
+				end
+			end
+		end
+	end
+	return ClosestCharacter, LowestDistance
+end
+
 local function KnifeKill(Model,UntilDeath)
 	if Model.Parent ~= nil and Model.Parent.Name == "activeHostiles" or Model.Parent ~= nil and Model.Parent.Name == "NoTarget" then
 		local TargetPart = Model:FindFirstChild("Torso") or Model:FindFirstChild("Head")
@@ -858,10 +883,6 @@ local function KnifeKill(Model,UntilDeath)
 			end
 		end
 	end
-end
-
-local function accuratetonumber(numbertext, e)
-    return tonumber(numbertext * e)/e
 end
 
 local function Kill(Model)
@@ -925,6 +946,14 @@ local function RenderStepped()
 		end
 		if SuperRun.AHeld == true then
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-SuperRun.RunSpeed,0,0)
+		end
+	end
+	if Toggles.AutoParry then
+		local ClosestENEMY, ClosestDISTANCE = GetClosest()
+		if ClostestDISTANCE <= GoodwillSettings.AutoParryDist then
+			game.Workspace.ServerStuff.initiateblock:FireServer(_G.Code1, true)
+		else
+			game.Workspace.ServerStuff.initiateblock:FireServer(_G.Code1, false)
 		end
 	end
 	if Toggles.KillAura then
@@ -1296,31 +1325,6 @@ local function StatusAdded(new)
 	end
 end
 
-
-local function GetClosest()
-	local LowestDistance = math.huge
-	local ClosestCharacter = nil
-	local Characters = game.Workspace.activeHostiles.GetChildren(game.Workspace.activeHostiles)
-	for i,v in pairs(game.Workspace.NoTarget.GetChildren(game.Workspace.NoTarget)) do
-		table.insert(Characters, v)
-	end
-	for i,v in pairs(Characters) do
-		if v ~= nil then
-			if v.FindFirstChild(v, "Torso") then
-				local InitialDis = (v.Torso.Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
-				local Ray = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * InitialDis)
-				local Part,Position = game.Workspace.FindPartOnRay(game.Workspace, Ray, game.Workspace)
-				local FinalDifference = math.floor((Position - v.Torso.Position).magnitude)
-				if FinalDifference < LowestDistance then
-					ClosestCharacter = v
-					LowestDistance = FinalDifference
-				end
-			end
-		end
-	end
-	return ClosestCharacter
-end
-
 local function Mark(part,table,visible,fade,fadedis)
 	local billgui = Instance.new('BillboardGui', part)
 	local imagelab = Instance.new('ImageLabel', billgui)
@@ -1591,6 +1595,24 @@ local function SetupGUI()
 	Slider3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Slider3.Text = ""
 	
+	local SliderBase4 = Instance.new("TextLabel", GWPTab)
+	SliderBase4.Position = UDim2.new(0.5, 0, 0.7, 0)
+	SliderBase4.Size = UDim2.new(1, 0, 0.075, 0)
+	SliderBase4.AnchorPoint = Vector2.new(0.5, 0.5)
+	SliderBase4.BorderSizePixel = 0
+	SliderBase4.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+	SliderBase4.TextColor3 = Color3.new(1, 1, 1)
+	SliderBase4.Text = "Auto Parry Distance"
+	SliderBase4.TextScaled = true
+	
+	local Slider4 = Instance.new("TextButton", SliderBase4)
+	Slider4.Position = UDim2.new(0.25, 0, 0.5, 0)
+	Slider4.Size = UDim2.new(0, 10, 2, 0)
+	Slider4.BorderSizePixel = 0
+	Slider4.AnchorPoint = Vector2.new(0.5, 0.5)
+	Slider4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Slider4.Text = ""
+	
 	local RainbowToggle = FeatureButton:Clone()
 	RainbowToggle.Parent = GWPTab
 	RainbowToggle.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -1646,10 +1668,21 @@ local function SetupGUI()
 		held3 = false
 	end)
 	
+	local held4 = false
+	
+	Slider4.MouseButton1Down:Connect(function()
+		lastX = mouse.X
+		held4 = true
+	end)
+	Slider4.MouseButton1Up:Connect(function()
+		held4 = false
+	end)
+	
 	mouse.Button1Up:Connect(function()
 		held = false
 		held2 = false
 		held3 = false
+		held4 = false
 	end)
 	
 	game:GetService("RunService").RenderStepped:Connect(function()
@@ -1698,6 +1731,25 @@ local function SetupGUI()
 		end
 		if (Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) > SliderBase3.AbsoluteSize.X then
 			Slider3.Position = UDim2.new(0.5, Slider3.Position.X.Offset - ((Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) - SliderBase3.AbsoluteSize.X), 0.5, 0)
+		end
+		
+		
+		
+		
+		if held4 then
+			Slider4.Position = UDim2.new(0.5, Slider4.Position.X.Offset + (mouse.X - lastX), 0.5, 0)
+			lastX = mouse.X
+			
+			local Percentage = (Slider4.AbsolutePosition.X - SliderBase4.AbsolutePosition.X) / SliderBase4.AbsoluteSize.X
+			Percentage *= 100
+			GoodwillSettings.AutoParryDist = Percentage
+			SliderBase4.Text = "Auto Parry Distance: ".. Percentage
+		end
+		if (Slider4.AbsolutePosition.X - SliderBase4.AbsolutePosition.X) < 0 then
+			Slider4.Position = UDim2.new(0.5, Slider4.Position.X.Offset - (Slider4.AbsolutePosition.X - SliderBase3.AbsolutePosition.X), 0.5, 0)
+		end
+		if (Slider4.AbsolutePosition.X - SliderBase4.AbsolutePosition.X) > SliderBase4.AbsoluteSize.X then
+			Slider4.Position = UDim2.new(0.5, Slider4.Position.X.Offset - ((Slider4.AbsolutePosition.X - SliderBase4.AbsolutePosition.X) - SliderBase4.AbsoluteSize.X), 0.5, 0)
 		end
 	end)
 	
@@ -3442,7 +3494,7 @@ local function CommandHandler(msg, speaker)
 		Toggles.AutoParry = Toggle
 		local currenttext = ""
 		if Toggle == true then
-			game.Workspace.ServerStuff.initiateblock:FireServer(_G.Code1, true)
+			--game.Workspace.ServerStuff.initiateblock:FireServer(_G.Code1, true)
 			currenttext = "AutoParry is now ON!"
 		else
 			game.Workspace.ServerStuff.initiateblock:FireServer(_G.Code1, false)
