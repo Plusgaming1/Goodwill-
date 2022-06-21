@@ -80,7 +80,8 @@ local Toggles = {
 	LoopDrop = false;
 	ThrowingKnives = false;
 	AntiVoteKick = false;
-    Invisible = false;
+	Invisible = false;
+	ThirdPerson = false;
 }
 
 
@@ -908,16 +909,6 @@ local function Kill(Model)
 	end
 end
 
-local LastPlayerCFrame = CFrame.new()
-
-local function PreRender()
-   if Toggles.Invisible then
-        if game.Players.LocalPlayer.Character then
-            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(LastPlayerCFrame)
-        end
-    end
-end
-
 local function RenderStepped()
 	if SuperRun.ShiftHeld == true and Toggles.SuperRun == true and game.Players.LocalPlayer.Character ~= nil and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 		if SuperRun.WHeld == true then
@@ -1017,14 +1008,33 @@ local function RenderStepped()
 		if _G.Code1 ~= nil and _G.Code2 ~= nil then
 			game.Workspace.ServerStuff.throwWeapon:FireServer("ImpN", 0, TargetCFrame, 0.1960853934288, Data, nil, false, _G.Code1, nil, _G.Code2)
 		end
-	end
-    if Toggles.Invisible then
-        if game.Players.LocalPlayer.Character then
-            LastPlayerCFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(Vector3.new(0, 1000, 0))
-        end
-    end
+	end 
 end
+
+local Thing = Instance.new("ScreenGui", game.CoreGui)
+Thing.Name = "MousePoint"
+local Point = Instance.new("Frame", Thing)
+Point.Name = "Dot"
+Point.Size = UDim2.new(0, 10, 0, 10)
+Point.AnchorPoint = Vector2.new(0.5, 0.5)
+Point.BorderSizePixel = 0
+Point.Visible = false
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	if Toggles.ThirdPerson then
+    	game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+    	local params = RaycastParams.new() params.FilterDescendantsInstances = {game.Players.LocalPlayer.Character} params.FilterType = Enum.RaycastFilterType.Blacklist
+    	local params = game.Workspace:Raycast(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(-25, 25, 25), params)
+    	if result then
+    		game.Workspace.CurrentCamera.CFrame = CFrame.new(result.Position, game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+    	else
+    		game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(-25, 25, 25), game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+    	end
+    	mouse.Icon = ""
+    	Point.Visible = true
+    	Point.Position = UDim2.new(0, mouse.X, 0, mouse.Y)
+    end
+end)
 
 local function GrabMainScript()
 	local Script = nil
@@ -3856,6 +3866,44 @@ local function CommandHandler(msg, speaker)
             GoodwillMenuBG.AnchorPoint = Vector2.new(tonumber(Args[1])/100, tonumber(Args[2])/100)
         end
 	end
+	if IsInTable({"thirdperson", "unthirdperson"}, Args.Command) then
+		if Args.Command == "thirdperson" then
+			Toggles.ThirdPerson = true
+		else
+			Toggles.ThirdPerson = false
+		end
+	end
+	if IsInTable({"infdrift", "uninfdrift"}, Args.Command) then
+		if Args.Command == "infdrift" then
+			Toggles.Invisible = true
+			local Players = game:GetService("Players")
+
+			local LocalPlayer = Players.LocalPlayer
+			local Mouse = LocalPlayer:GetMouse()
+			
+			local mainHandler
+			for _, v in pairs(getconnections(Mouse.Button2Down)) do
+				mainHandler = getupvalue(v.Function, 6)
+				break
+			end
+			
+			getupvalue(mainHandler, 1)[3].drift_duration = math.huge
+		elseif Toggles.Invisible == true then
+			Toggles.Invisible = false
+			local Players = game:GetService("Players")
+
+			local LocalPlayer = Players.LocalPlayer
+			local Mouse = LocalPlayer:GetMouse()
+			
+			local mainHandler
+			for _, v in pairs(getconnections(Mouse.Button2Down)) do
+				mainHandler = getupvalue(v.Function, 6)
+				break
+			end
+
+			getupvalue(mainHandler, 1)[3].drift_duration = 1
+		end
+	end
 end
 
 game.Players.LocalPlayer.Chatted:Connect(function(msg)
@@ -4275,10 +4323,17 @@ end)
 print("so what the fuck")
 repeat wait() until _G.Code1 ~= nil and _G.Code2 ~= nil
 print("so what the fuck 2")
+
 if _G.Code1 ~= nil and _G.Code2 ~= nil then
 	game.StarterGui:SetCore("SendNotification", {
 		Title = 'GOODWILL';
 		Text = "SUCCESSFULLY INJECTED, F9 FOR CMDS                    (MADE BY AIDEZ)";
+		Icon = "rbxassetid://2541869220";
+		Duration = 7;
+	})
+	game.StarterGui:SetCore("SendNotification", {
+		Title = 'GOODWILL';
+		Text = "Thanks Anxienvy#7745 for creating the invisibility";
 		Icon = "rbxassetid://2541869220";
 		Duration = 7;
 	})
