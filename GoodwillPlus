@@ -1451,6 +1451,9 @@ local function EspHandle(v)
 	end
 end
 
+local function map(value, istart, istop, ostart, ostop)
+    return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+end
 
 local function SetupGUI()
 	repeat wait() until game.Players.LocalPlayer:FindFirstChild("PlayerGui")
@@ -1508,6 +1511,195 @@ local function SetupGUI()
 	end
 	
 	bg.Size = UDim2.new(OriginalSize.X.Scale * GoodwillSettings.MenuSizeMultiplier, OriginalSize.X.Offset * GoodwillSettings.MenuSizeMultiplier, OriginalSize.Y.Scale * GoodwillSettings.MenuSizeMultiplier, OriginalSize.Y.Offset * GoodwillSettings.MenuSizeMultiplier)
+	bg.ClipsDescendants = true
+	
+	local GWPButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rations:Clone()
+	GWPButton.Name = "GOODWILL"
+	GWPButton.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+	GWPButton.Text = "GOODWILL+"
+	GWPButton.Position = UDim2.new(0.949999988, -510, 0.980000019, 0)
+	GWPButton.BackgroundColor3 = GoodwillSettings.MenuColor
+	local GWPTab = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab:Clone()
+	GWPTab:ClearAllChildren()
+	GWPTab.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+	GWPTab.Name = "GOODWILL+tab"
+	GWPTab.ClipsDescendants = true
+	
+	game:GetService("UserInputService").InputChanged:Connect(function(i)
+		if GWPTab.Visible == true and bg.Visible == true then
+			if i.UserInputType == Enum.UserInputType.MouseWheel then
+				GWPTab.Position += UDim2.new(0, 0, 0, i.Position.Z*40)	
+			end
+		end
+	end)
+	
+	local FeatureButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda.drop:Clone()
+	FeatureButton.Size = UDim2.new(0.24, 0, 0.15, 0)
+	FeatureButton.BackgroundColor3 = GoodwillSettings.MenuColor
+
+	local SliderBase = Instance.new("TextLabel", GWPTab)
+	SliderBase.Position = UDim2.new(0.5, 0, 0.075, 0)
+	SliderBase.Size = UDim2.new(1, 0, 0.075, 0)
+	SliderBase.AnchorPoint = Vector2.new(0.5, 0.5)
+	SliderBase.BorderSizePixel = 0
+	SliderBase.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+	SliderBase.TextColor3 = Color3.new(1, 1, 1)
+	SliderBase.Text = "RGB Speed"
+	SliderBase.TextScaled = true
+	
+	local Slider = Instance.new("TextButton", SliderBase)
+	Slider.Position = UDim2.new(0.25, 0, 0.5, 0)
+	Slider.Size = UDim2.new(0, 10, 2, 0)
+	Slider.BorderSizePixel = 0
+	Slider.AnchorPoint = Vector2.new(0.5, 0.5)
+	Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Slider.Text = ""
+	
+	local SliderBase2 = Instance.new("TextLabel", GWPTab)
+	SliderBase2.Position = UDim2.new(0.5, 0, 0.2, 0)
+	SliderBase2.Size = UDim2.new(1, 0, 0.075, 0)
+	SliderBase2.AnchorPoint = Vector2.new(0.5, 0.5)
+	SliderBase2.BorderSizePixel = 0
+	SliderBase2.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+	SliderBase2.TextColor3 = Color3.new(1, 1, 1)
+	SliderBase2.Text = "RGB Strength"
+	SliderBase2.TextScaled = true
+	
+	local Slider2 = Instance.new("TextButton", SliderBase2)
+	Slider2.Position = UDim2.new(0.25, 0, 0.5, 0)
+	Slider2.Size = UDim2.new(0, 10, 2, 0)
+	Slider2.BorderSizePixel = 0
+	Slider2.AnchorPoint = Vector2.new(0.5, 0.5)
+	Slider2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Slider2.Text = ""
+	
+	local SliderBase3 = Instance.new("TextLabel", GWPTab)
+	SliderBase3.Position = UDim2.new(0.5, 0, 0.325, 0)
+	SliderBase3.Size = UDim2.new(1, 0, 0.075, 0)
+	SliderBase3.AnchorPoint = Vector2.new(0.5, 0.5)
+	SliderBase3.BorderSizePixel = 0
+	SliderBase3.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+	SliderBase3.TextColor3 = Color3.new(1, 1, 1)
+	SliderBase3.Text = "Super Run Speed: 1"
+	SliderBase3.TextScaled = true
+	
+	local Slider3 = Instance.new("TextButton", SliderBase3)
+	Slider3.Position = UDim2.new(0.25, 0, 0.5, 0)
+	Slider3.Size = UDim2.new(0, 10, 2, 0)
+	Slider3.BorderSizePixel = 0
+	Slider3.AnchorPoint = Vector2.new(0.5, 0.5)
+	Slider3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Slider3.Text = ""
+	
+	local RainbowToggle = FeatureButton:Clone()
+	RainbowToggle.Parent = GWPTab
+	RainbowToggle.Position = UDim2.new(0.5, 0, 0.5, 0)
+	RainbowToggle.Text = "Rainbow GUI"
+	RainbowToggle.Name = "RainbowToggle"
+	RainbowToggle.AnchorPoint = Vector2.new(0.5, 0.5)
+	
+	RainbowToggle.MouseButton1Click:Connect(function()
+		if Toggles.RainbowGui == false then
+           	Toggles.RainbowGui = true
+           	local e = 0
+           	repeat
+               	e = e + (0.025 * (GoodwillSettings.RGBEAffect / 100))
+               	GoodwillSettings.MenuColor = Color3.fromHSV(e, 1, 1)
+               	if e > 1 then
+               	    e = e - 1
+               	end
+               	wait(0.05 * (GoodwillSettings.RGBSpeed / 100))
+            until Toggles.RainbowGui == false
+		else
+			Toggles.RainbowGui = false
+		end
+	end)
+	
+	local lastX = mouse.X
+	local held = false
+	
+	Slider.MouseButton1Down:Connect(function()
+		lastX = mouse.X
+		held = true
+	end)
+	Slider.MouseButton1Up:Connect(function()
+		held = false
+	end)
+	
+	local held2 = false
+	
+	Slider2.MouseButton1Down:Connect(function()
+		lastX = mouse.X
+		held2 = true
+	end)
+	Slider2.MouseButton1Up:Connect(function()
+		held2 = false
+	end)
+	
+	local held3 = false
+	
+	Slider3.MouseButton1Down:Connect(function()
+		lastX = mouse.X
+		held3 = true
+	end)
+	Slider3.MouseButton1Up:Connect(function()
+		held3 = false
+	end)
+	
+	mouse.Button1Up:Connect(function()
+		held = false
+		held2 = false
+		held3 = false
+	end)
+	
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if held then
+			Slider.Position = UDim2.new(0.5, Slider.Position.X.Offset + (mouse.X - lastX), 0.5, 0)
+			lastX = mouse.X
+			
+			
+			local Percentage = (Slider.AbsolutePosition.X - SliderBase.AbsolutePosition.X) / SliderBase.AbsoluteSize.X
+			Percentage *= 400
+			GoodwillSettings.RGBSpeed = Percentage
+			SliderBase.Text = "RGB Speed: ".. Percentage/100
+		end
+		if (Slider.AbsolutePosition.X - SliderBase.AbsolutePosition.X) < 0 then
+			Slider.Position = UDim2.new(0.5, Slider.Position.X.Offset - (Slider.AbsolutePosition.X - SliderBase.AbsolutePosition.X), 0.5, 0)
+		end
+		if (Slider.AbsolutePosition.X - SliderBase.AbsolutePosition.X) > SliderBase.AbsoluteSize.X then
+			Slider.Position = UDim2.new(0.5, Slider.Position.X.Offset - ((Slider.AbsolutePosition.X - SliderBase.AbsolutePosition.X) - SliderBase.AbsoluteSize.X), 0.5, 0)
+		end
+		if held2 then
+			Slider2.Position = UDim2.new(0.5, Slider2.Position.X.Offset + (mouse.X - lastX), 0.5, 0)
+			lastX = mouse.X
+			
+			local Percentage = (Slider2.AbsolutePosition.X - SliderBase2.AbsolutePosition.X) / SliderBase2.AbsoluteSize.X
+			Percentage *= 400
+			GoodwillSettings.RGBEAffect = Percentage
+			SliderBase2.Text = "RGB Strength: ".. Percentage/100
+		end
+		if (Slider2.AbsolutePosition.X - SliderBase2.AbsolutePosition.X) < 0 then
+			Slider2.Position = UDim2.new(0.5, Slider2.Position.X.Offset - (Slider2.AbsolutePosition.X - SliderBase2.AbsolutePosition.X), 0.5, 0)
+		end
+		if (Slider2.AbsolutePosition.X - SliderBase2.AbsolutePosition.X) > SliderBase2.AbsoluteSize.X then
+			Slider2.Position = UDim2.new(0.5, Slider2.Position.X.Offset - ((Slider2.AbsolutePosition.X - SliderBase2.AbsolutePosition.X) - SliderBase2.AbsoluteSize.X), 0.5, 0)
+		end
+		if held3 then
+			Slider3.Position = UDim2.new(0.5, Slider3.Position.X.Offset + (mouse.X - lastX), 0.5, 0)
+			lastX = mouse.X
+			
+			local Percentage = (Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) / SliderBase3.AbsoluteSize.X
+			Percentage *= 4
+			SuperRun.RunSpeed = Percentage
+			SliderBase3.Text = "Super Run Speed: ".. Percentage
+		end
+		if (Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) < 0 then
+			Slider3.Position = UDim2.new(0.5, Slider3.Position.X.Offset - (Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X), 0.5, 0)
+		end
+		if (Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) > SliderBase3.AbsoluteSize.X then
+			Slider3.Position = UDim2.new(0.5, Slider3.Position.X.Offset - ((Slider3.AbsolutePosition.X - SliderBase3.AbsolutePosition.X) - SliderBase3.AbsoluteSize.X), 0.5, 0)
+		end
+	end)
 	
 	--\\\\
 	
@@ -1523,10 +1715,6 @@ local function SetupGUI()
 	GoodwillTab:ClearAllChildren()
 	GoodwillTab.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
 	GoodwillTab.Name = "GOODWILLtab"
-
-	local FeatureButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda.drop:Clone()
-	FeatureButton.Size = UDim2.new(0.24, 0, 0.15, 0)
-	FeatureButton.BackgroundColor3 = GoodwillSettings.MenuColor
 
 	local SmallText = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda.desc:Clone()
 	SmallText.Size = UDim2.new(0.24, 0, 0.15, 0)
@@ -1590,6 +1778,17 @@ local function SetupGUI()
 	CreditText2.Text = "> SCRIPT BY AIDEZ \n> MODIFIED BY 5x9x7x2x7x9"
 	CreditText2.Visible = false
 
+	local ESPButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rations:Clone()
+	ESPButton.Name = "ESP"
+	ESPButton.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+	ESPButton.Text = "ESP"
+	ESPButton.Position = UDim2.new(0.949999988, -340, 0.980000019, 0)
+	ESPButton.BackgroundColor3 = GoodwillSettings.MenuColor
+	local ESPTab = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab:Clone()
+	ESPTab:ClearAllChildren()
+	ESPTab.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+	ESPTab.Name = "ESPtab"
+	
 	GoodwillButton.MouseButton1Down:Connect(function()
 		MenuEffect()
 		for i,v in pairs(game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:GetChildren()) do
@@ -1604,19 +1803,31 @@ local function SetupGUI()
 		MothLogo.Visible = false
 		CreditText.Visible = false
 		GoodwillTab.Visible = true
+		GWPTab.Visible = false
+		ESPButton.BackgroundTransparency = 0.7
+		GWPButton.BackgroundTransparency = 0.7
 		GoodwillButton.BackgroundTransparency = 0.3
 	end)
-
-	local ESPButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rations:Clone()
-	ESPButton.Name = "ESP"
-	ESPButton.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
-	ESPButton.Text = "ESP"
-	ESPButton.Position = UDim2.new(0.949999988, -340, 0.980000019, 0)
-	ESPButton.BackgroundColor3 = GoodwillSettings.MenuColor
-	local ESPTab = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab:Clone()
-	ESPTab:ClearAllChildren()
-	ESPTab.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
-	ESPTab.Name = "ESPtab"
+	
+	GWPButton.MouseButton1Down:Connect(function()
+		MenuEffect()
+		for i,v in pairs(game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:GetChildren()) do
+			if string.sub(string.lower(v.Name), #v.Name - 2, -1) == "tab" and v.Name ~= "GOODWILLtab" and v.Name ~= "objectivetab" then
+				v.Visible = false
+			elseif v.Parent:FindFirstChild(v.Name.."tab") and v.Name ~= "GOODWILL" then
+				v.BackgroundTransparency = 0.7
+			end
+		end
+		Watermark.Visible = false
+		CreditText2.Visible = false
+		MothLogo.Visible = false
+		CreditText.Visible = false
+		GoodwillTab.Visible = false
+		GWPTab.Visible = true
+		ESPButton.BackgroundTransparency = 0.7
+		GWPButton.BackgroundTransparency = 0.3
+		GoodwillButton.BackgroundTransparency = 0.7
+	end)
 
 	ESPButton.MouseButton1Down:Connect(function()
 		MenuEffect()
@@ -1633,6 +1844,7 @@ local function SetupGUI()
 		MothLogo.Visible = true
 		CreditText.Visible = true
 		ESPButton.BackgroundTransparency = 0.3
+		GWPButton.BackgroundTransparency = 0.7
 		GoodwillButton.BackgroundTransparency = 0.7
 	end)
 	local EspButtonsTemp = {}
@@ -1738,7 +1950,9 @@ local function SetupGUI()
 					v.BackgroundColor3 = GoodwillSettings.MenuColor
 				end
 			end
-            
+			
+			GWPButton.BackgroundColor3 = GoodwillSettings.MenuColor
+			RainbowToggle.BackgroundColor3 = GoodwillSettings.MenuColor
             GoodwillButton.BackgroundColor3 = GoodwillSettings.MenuColor
             ESPButton.BackgroundColor3 = GoodwillSettings.MenuColor
 
@@ -3909,16 +4123,18 @@ local function CommandHandler(msg, speaker)
 	end
     if IsInTable({"rainbowgui", "unrainbowgui"}, Args.Command) then
 		if Args.Command == "rainbowgui" then
-            Toggles.RainbowGui = true
-            local e = 0
-            repeat
-                e = e + (0.025 * (GoodwillSettings.RGBEAffect / 100))
-                GoodwillSettings.MenuColor = Color3.fromHSV(e, 1, 1)
-                if e > 1 then
-                    e = e - 1
-                end
-                wait(0.05 * (GoodwillSettings.RGBSpeed / 100))
-            until Toggles.RainbowGui == false
+            if Toggles.RainbowGui == false then
+            	Toggles.RainbowGui = true
+            	local e = 0
+            	repeat
+                	e = e + (0.025 * (GoodwillSettings.RGBEAffect / 100))
+                	GoodwillSettings.MenuColor = Color3.fromHSV(e, 1, 1)
+                	if e > 1 then
+                	    e = e - 1
+                	end
+                	wait(0.05 * (GoodwillSettings.RGBSpeed / 100))
+            	until Toggles.RainbowGui == false
+            end
         else
             Toggles.RainbowGui = false
         end
@@ -3958,7 +4174,6 @@ game.Players.PlayerAdded:Connect(function(v)
 		CommandHandler(msg, v)
 	end)
 end)
-game:GetService("RunService").PreRender:Connect(PreRender)
 
 mouse.KeyDown:Connect(function(key)
 	if key == "0" then
