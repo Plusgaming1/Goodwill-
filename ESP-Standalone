@@ -1,0 +1,603 @@
+if game.PlaceId ~= 7551121821 and game.PlaceId ~= 9880062154 then
+    return
+end
+
+repeat wait() until game.Players.LocalPlayer ~= nil
+
+game.StarterGui:SetCore("SendNotification", {
+    Title = 'LOADING';
+    Text = "Loading script. Enter a round to fully load";
+    Icon = "rbxassetid://2541869220";
+    Duration = 7;
+})
+
+local EspObjects = {
+        Enemies = {};
+        Demons = {};
+
+        Guns = {};
+        Melee = {};
+        Ammo = {};
+        Traps = {};
+        BodyArmor = {};
+        Backpacks = {};
+        Throwable = {};
+        Health = {};
+        Stims = {};
+        Blueprints = {};
+
+        Crate = {};
+        Workbench = {};
+        Scrapper = {};
+        Locker = {};
+        ["Medical Cabinet"] = {};
+}
+
+local EspInfo = {
+    Toggles = {
+        Enemies = false;
+        Demons = true;
+
+        Guns = true;
+        Melee = false;
+        Ammo = false;
+        Traps = false;
+        BodyArmor = false;
+        Backpacks = true;
+        Throwable = false;
+        Health = false;
+        Stims = false;
+        Blueprints = false;
+
+        Crate = true;
+        Workbench = true;
+        Scrapper = false;
+        Locker = false;
+        ["Medical Cabinet"] = false;
+    };
+
+    Scavs = {
+
+        ------------ MELEE SCAVS ------------
+
+        ScavMeleeA = {
+            img = 7841679252;
+            desc = "ice axe scav";
+            subtext = "MELEE";
+        };
+        ScavMeleeB = {
+            img = 7841677917;
+            desc = "combat knife scav";
+            subtext = "MELEE";
+        };
+        ScavMeleeC = {
+            img = 7841680342;
+            desc = "lead pip scav";
+            subtext = "MELEE";
+        };
+        ScavMeleeD = {
+            img = 7841678596;
+            desc = "crow bar scav";
+            subtext = "MELEE";
+        };
+        ScavMeleeE = {
+            img = 7841680966;
+            desc = "karambit scav";
+            subtext = "MELEE";
+        };
+        ScavMeleeF = {
+            img = 7841677017;
+            desc = "boar spear scav";
+            subtext = "MELEE";
+        };
+
+        ------------ PISTOL SCAVS ------------
+
+        ScavPistolA = {
+            img = 7841738039;
+            desc = "22 LR broomhandle scav";
+            subtext = "PISTOL";
+        };
+        ScavPistolB = {
+            img = 7841738562;
+            desc = "m1911 scav";
+            subtext = "PISTOL";
+        };
+        ScavPistolC = {
+            img = 7841739010;
+            desc = "ruger scav";
+            subtext = "PISTOL";
+        };
+
+        ------------ AUTOM SCAVS ------------
+
+        ScavSMGA = {
+            img = 7841760841;
+            desc = "smg scav";
+            subtext = "AUTOMATIC";
+        };
+        ScavSMGB = {
+            img = 7841760841;
+            desc = "smg scav";
+            subtext = "AUTOMATIC";
+        };
+        ScavAKA = {
+            img = 7841761784;
+            desc = "ak scav";
+            subtext = "AUTOMATIC";
+        };
+        ScavAKB = {
+            img = 7841761784;
+            desc = "ak scav";
+            subtext = "AUTOMATIC";
+        };
+
+        ----------- SHOTTY SCAVS -----------
+
+        ScavDoubleBarrel = {
+            img = 7841821770;
+            desc = "double barrel scav";
+            subtext = "SHOTGUN";
+        };
+        ScavShotgun = {
+            img = 7841833207;
+            desc = "model 870 scavenger";
+            subtext = "SHOTGUN";
+        };
+
+        ----------- RIFLE SCAVS ------------
+
+        ScavSniper = {
+            img = 7841872755;
+            desc = "remington scav";
+            subtext = "MARKSMAN";
+        };
+        ScavHenry = {
+            img = 7841873513;
+            desc = "winchester scav";
+            subtext = "MARKSMAN";
+        };
+
+        --------- BOSS WAVE SCAVS ----------
+
+        BossScav = {
+            img = 7841904249;
+            desc = "boss scav";
+            subtext = "KILL";
+        };
+        BossScavGuard = {
+            img = 7841903504;
+            desc = "boss scav guard";
+            subtext = "GUARD";
+        };
+
+        ------------ SHADOWS ------------
+
+        ShadowHidden = {
+            img = 7842766024;
+            desc = "hidden demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowSkinnerA = {
+            img = 7842771883;
+            desc = "skinner demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowSkinnerB = {
+            img = 7842767367;
+            desc = "skinner demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowSkinnerC = {
+            img = 7842771883;
+            desc = "skinner demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowSkinnerD = {
+            img = 7842767367;
+            desc = "skinner demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowSickler = {
+            img = 7842766888;
+            desc = "sickler demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+        ShadowHanger = {
+            img = 7842765069;
+            desc = "hanger demon";
+            subtext = "DEMON";
+            subtextcolor = Color3.fromRGB(0,0,0);
+        };
+    };
+
+    Interactables = {
+        Crate = {
+            img = 7841194630;
+        };
+        Workbench = {
+            img = 7841197317;
+        };
+        Scrapper = {
+            img = 7841196664;
+        };
+        Locker = {
+            img = 7841195140;
+        };
+        ["Medical Cabinet"] = {
+            img = 7841195738;
+        };
+    };
+
+    Items = {
+        Guns = {
+            img = 7843043692;
+        };
+        Melee = {
+            img = 7843044421;
+        };
+        Ammo = {
+            img = 7843046990;
+        };
+        Backpack = {
+            img = 7843047903;
+        };
+        Placeable = {
+            img = 7843048761;
+        };
+        BodyArmor = {
+            img = 7843049470;
+        };
+        Throwable = {
+            img = 7843050297;
+        };
+        Health = {
+            img = 7843627206;
+        };
+        Stims = {
+            img = 7843626657;
+        };
+        Blueprints = {
+            img = 7843630409;
+        };
+    };
+}
+
+local function Mark(part,table,visible,fade,fadedis)
+    local billgui = Instance.new('BillboardGui', part)
+    local imagelab = Instance.new('ImageLabel', billgui)
+    
+    billgui.Name = "ESPBillboard"
+    billgui.Adornee  = part
+    billgui.AlwaysOnTop = true
+    --billgui.ExtentsOffset = Vector3.new(0, 1, 0)
+    billgui.ExtentsOffsetWorldSpace = Vector3.new(0, 1, 0)
+    billgui.StudsOffset = Vector3.new(0, 3, 0)
+    billgui.Size = UDim2.new(0, 60, 0, 60)
+    if visible == nil or visible == true then
+        billgui.Enabled = true
+    else
+        billgui.Enabled = false
+    end
+    
+    imagelab.Name = "ESPLabel"
+    imagelab.Image = "rbxassetid://"..table.img
+    imagelab.BackgroundTransparency = 1
+    imagelab.BorderSizePixel = 0
+    imagelab.Position = UDim2.new(0, 0, 0, 0)
+    imagelab.Size = UDim2.new(1, 0, 1, 0)
+    imagelab.Visible = true
+    imagelab.ZIndex = 10
+
+    if table["subtext"] ~= nil then
+        local textlab = Instance.new('TextLabel', imagelab)
+        textlab.Name = "ESPLabel"
+        textlab.BackgroundColor3 = Color3.new(255, 255, 255)
+        textlab.BackgroundTransparency = 1
+        textlab.BorderSizePixel = 0
+        textlab.Position = UDim2.new(0.4, 0, 0.8, 0)
+        textlab.Size = UDim2.new(0.2, 0, 0.2, 0)
+        textlab.Visible = true
+        textlab.ZIndex = 15
+        textlab.Font = 'ArialBold'
+        textlab.FontSize = 2
+        textlab.Text = table["subtext"]
+        textlab.TextColor3 = Color3.fromRGB(255,255,255)
+        if table["subtextcolor"] ~= nil then
+            textlab.TextStrokeColor3 = table["subtextcolor"]
+        else
+            textlab.TextStrokeColor3 = Color3.fromRGB(255,0,93)
+        end
+        textlab.TextStrokeTransparency = 0.6
+        textlab.TextXAlignment = Enum.TextXAlignment.Center
+    end
+    return billgui
+end
+
+local function EspHandle(v)
+    if v.Name == "ai_type" and v:IsA("StringValue") and EspInfo.Scavs[v.Value] ~= nil then
+        repeat wait() until v.Parent == nil or v.Parent:FindFirstChild("Head")
+        if string.find(v.Value, "Shadow") then
+            local EspItem = Mark(v.Parent:FindFirstChild("Head"), EspInfo.Scavs[v.Value], EspInfo.Toggles.Demons)
+            table.insert(EspObjects.Demons,EspItem)
+        elseif v.Parent ~= nil then
+            local EspItem = Mark(v.Parent:FindFirstChild("Head"), EspInfo.Scavs[v.Value], EspInfo.Toggles.Enemies)
+            table.insert(EspObjects.Enemies,EspItem)
+        end
+        return
+    end
+    if v.Name == "Interact" then
+        local Swag = v:FindFirstAncestorOfClass("Model")
+        if Swag ~= nil and string.find(Swag.Name, "Locker") then
+            local EspItem = Mark(v, EspInfo["Interactables"]["Locker"], EspInfo.Toggles["Locker"])
+            table.insert(EspObjects["Locker"], EspItem)
+        elseif Swag ~= nil and EspInfo["Interactables"][Swag.Name] ~= nil and EspInfo["Toggles"][Swag.Name] ~= nil then
+            local EspItem = Mark(v, EspInfo["Interactables"][Swag.Name], EspInfo.Toggles[Swag.Name])
+            table.insert(EspObjects[Swag.Name], EspItem)
+        elseif string.find(Swag.Name, "Ammo") then
+            local EspItem = Mark(v, EspInfo["Items"]["Ammo"], EspInfo.Toggles.Ammo)
+            table.insert(EspObjects.Ammo, EspItem)
+        end
+    end
+    if v.Name == "JointGrip" and v:FindFirstAncestor("WeaponDrops") then
+        if WeaponStats == nil and game.Workspace:FindFirstChild("ServerStuff") and game.Workspace.ServerStuff:FindFirstChild("Statistics") and game.Workspace.ServerStuff.Statistics:FindFirstChild("W_STATISTICS") then
+            WeaponStats = require(game.Workspace.ServerStuff.Statistics["W_STATISTICS"])
+        end
+        local Item = v:FindFirstAncestorOfClass("Model")
+        if Item == nil or WeaponStats == nil then
+            return
+        end
+        local Type = nil
+        if WeaponStats[Item.Name] ~= nil and WeaponStats[Item.Name]["weapontype"] ~= nil then
+            Type = WeaponStats[Item.Name]["weapontype"]
+        else
+            return
+        end
+        if Type == "Gun" then
+            local EspItem = Mark(v, EspInfo.Items.Guns, EspInfo.Toggles.Guns)
+            table.insert(EspObjects.Guns,EspItem)
+        elseif Type ~= "Item" then
+            local EspItem = Mark(v, EspInfo.Items.Melee, EspInfo.Toggles.Melee)
+            table.insert(EspObjects.Melee,EspItem)
+        else
+            if string.sub(Item.Name, #Item.Name-2,-1) == "Aid" or Item.Name == "HStim" then
+                local EspItem = Mark(v, EspInfo.Items.Health,EspInfo.Toggles.Health)
+                table.insert(EspObjects.Health,EspItem)
+            elseif string.sub(Item.Name, #Item.Name-3,-1) == "Stim" then
+                local EspItem = Mark(v, EspInfo.Items.Stims, EspInfo.Toggles.Stims)
+                table.insert(EspObjects.Stims,EspItem)
+            elseif Item.Name == "BPack" then
+                local EspItem = Mark(v, EspInfo.Items.Backpack, EspInfo.Toggles.Backpacks)
+                table.insert(EspObjects.Backpacks,EspItem)
+            elseif string.sub(Item.Name, 1,2) == "BP" then
+                local EspItem = Mark(v, EspInfo.Items.Blueprints, EspInfo.Toggles.Blueprints)
+                table.insert(EspObjects.Blueprints,EspItem)
+            elseif Item.Name == "APack" then
+                local EspItem = Mark(v, EspInfo.Items.BodyArmor, EspInfo.Toggles.BodyArmor)
+                table.insert(EspObjects.BodyArmor,EspItem)
+            elseif WeaponStats[Item.Name]["animset"] ~= nil and WeaponStats[Item.Name]["animset"] == "THRW" then
+                local EspItem = Mark(v, EspInfo.Items.Throwable, EspInfo.Toggles.Throwable)
+                table.insert(EspObjects.Throwable,EspItem)
+            elseif table.find({"RExplosive","PMine","PTrap","SSnare"},Item.Name) then
+                local EspItem = Mark(v, EspInfo.Items.Placeable, EspInfo.Toggles.Traps)
+                table.insert(EspObjects.Traps,EspItem)
+            end
+        end
+-- BPack
+-- DEFStim
+-- SPDStim
+-- HStim
+-- MAid
+-- FAid
+-- APack
+    end
+end
+
+local function MenuEffect()
+    local Sound = game.ReplicatedStorage.soundLibrary.AGENT:FindFirstChild("menu"):Clone()
+    Sound.Parent = game.Players.LocalPlayer.PlayerGui
+    Sound.SoundGroup = game:GetService("SoundService").regular
+    Sound.Looped = false;
+    Sound.Ended:connect(function()
+        spawn(function()
+            Sound:Destroy()
+        end)
+    end)
+    Sound:Play()
+    local BlinkEffect = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.bg:Clone()
+    BlinkEffect.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+    spawn(function()
+        while true do
+            BlinkEffect.ImageTransparency = BlinkEffect.ImageTransparency + 0.05
+            wait()
+            if BlinkEffect.ImageTransparency >= 1 then
+                break
+            end	
+        end
+        BlinkEffect:Destroy()
+    end)
+end
+
+local function SetupGUI()
+    repeat wait() until game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui:FindFirstChild("mainHUD")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD:FindFirstChild("TabMenu")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu:FindFirstChild("bg")
+    if game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("GOODWILL") then
+        return
+    end
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("rations")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("ammodrop")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("weaponinfo")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("scrap")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("rationstab")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("scraptab")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:FindFirstChild("weaponinfotab")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.weaponinfotab:FindFirstChild("founditem")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.scraptab:FindFirstChild("lessbutton")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.scraptab:FindFirstChild("morebutton")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab:FindFirstChild("Soda")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda:FindFirstChild("drop")
+    repeat wait() until game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda:FindFirstChild("desc")
+
+    local FeatureButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda.drop:Clone()
+    FeatureButton.Size = UDim2.new(0.24, 0, 0.15, 0)
+
+    local SmallText = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab.Soda.desc:Clone()
+    SmallText.Size = UDim2.new(0.24, 0, 0.15, 0)
+
+    local MoreButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.scraptab:FindFirstChild("morebutton"):Clone()
+    MoreButton.Size = UDim2.new(0.05, 0, 0.084, 0)
+    local LessButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.scraptab:FindFirstChild("lessbutton"):Clone()
+    LessButton.Size = UDim2.new(0.05, 0, 0.084, 0)
+	
+    local MothLogo = Instance.new("ImageLabel", game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg)
+    MothLogo.Visible = false
+    MothLogo.BackgroundTransparency = 1
+    MothLogo.Image = "rbxassetid://7841170230"
+    MothLogo.Size = UDim2.new(0.17,0,0.371,0)
+    MothLogo.Position = UDim2.new(0,20,0.65,0)
+    local CreditText = SmallText:Clone()
+    CreditText.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+    CreditText.TextXAlignment = Enum.TextXAlignment.Left
+    CreditText.Size = UDim2.new(0.001, 0, 0.001, 0)
+    CreditText.Position = UDim2.new(0.2,0,0.8,0)
+    CreditText.Text = "> ESP ICONS MADE BY PALEMOTH"
+    CreditText.Visible = false
+
+    local ESPButton = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rations:Clone()
+    ESPButton.Name = "ESP"
+    ESPButton.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+    ESPButton.Text = "ESP"
+    ESPButton.Position = UDim2.new(0.949999988, -340, 0.980000019, 0)
+    local ESPTab = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg.rationstab:Clone()
+    ESPTab:ClearAllChildren()
+    ESPTab.Parent = game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg
+    ESPTab.Name = "ESPtab"
+
+    ESPButton.MouseButton1Down:Connect(function()
+        MenuEffect()
+        for i,v in pairs(game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:GetChildren()) do
+            if string.sub(string.lower(v.Name), #v.Name - 2, -1) == "tab" and v.Name ~= "ESPtab" and v.Name ~= "objectivetab" then
+                 v.Visible = false
+            elseif v.Parent:FindFirstChild(v.Name.."tab") and v.Name ~= "ESP" then
+                 v.BackgroundTransparency = 0.7
+            end
+		end
+        ESPTab.Visible = true
+        MothLogo.Visible = true
+        CreditText.Visible = true
+        ESPButton.BackgroundTransparency = 0.3
+    end)
+    local EspButtonsTemp = {}
+    for i,v in pairs(EspInfo.Toggles) do
+        local NewButton = FeatureButton:Clone()
+        NewButton.Name = i
+        NewButton.Text = i
+        NewButton.Parent = ESPTab
+        if v == true then
+            NewButton.BackgroundTransparency = 0.3
+        else
+            NewButton.BackgroundTransparency = 0.7
+        end
+        NewButton.MouseButton1Down:Connect(function()
+            MenuEffect()
+            EspInfo.Toggles[i] = not EspInfo.Toggles[i]
+            for x,y in pairs(EspObjects[i]) do
+                y.Enabled = EspInfo.Toggles[i]
+            end
+            if EspInfo.Toggles[i] then
+                NewButton.BackgroundTransparency = 0.3
+            else
+                NewButton.BackgroundTransparency = 0.7
+            end
+        end)
+        table.insert(EspButtonsTemp, NewButton)
+    end
+    local AllOff = FeatureButton:Clone()
+    AllOff.Name = "ALL OFF"
+    AllOff.Text = "TURN ALL OFF"
+    AllOff.Parent = ESPTab
+    AllOff.BackgroundTransparency = 0.3
+    AllOff.MouseButton1Down:Connect(function()
+        for i,v in pairs(EspInfo.Toggles) do
+            EspInfo.Toggles[i] = false
+            for x,y in pairs(EspObjects[i]) do
+                y.Enabled = EspInfo.Toggles[i]
+            end
+        end
+        for i,v in pairs(ESPTab:GetChildren()) do
+            if v:IsA("TextButton") and v.Name ~= "ALL OFF" then
+                v.BackgroundTransparency = 0.7
+            end
+        end
+    end)
+    table.insert(EspButtonsTemp, AllOff)
+    for i,v in pairs(EspButtonsTemp) do
+        local OutOfFour = (((i/4)%1)/25)*100
+        if OutOfFour == 0 then
+            OutOfFour = 4 -- fuck math
+        end
+        local Rounded = math.floor((i/4)-0.01)
+        v.Position = UDim2.new(0.24*(OutOfFour-1),OutOfFour*15,0.15*Rounded,Rounded*15)
+    end
+
+
+    for i,v in pairs(game.Players.LocalPlayer.PlayerGui.mainHUD.TabMenu.bg:GetChildren()) do
+        if v:IsA("TextButton") and v.Name ~= "GOODWILL" and v.Name ~= "ESP" then
+            v.MouseButton1Down:Connect(function()
+                ESPButton.BackgroundTransparency = 0.7
+                ESPTab.Visible = false
+                MothLogo.Visible = false
+                CreditText.Visible = false
+            end)
+        end
+    end
+end
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+    SetupGUI()
+end)
+
+for i,v in pairs(game.Workspace:GetDescendants()) do
+    --spawn(function() 
+        if v ~= nil and v.Parent ~= nil then
+            EspHandle(v)
+        end
+    --end)
+    if v.Parent ~= nil and v.Parent.Name == "activeHostiles" or v.Parent ~= nil and v.Parent.Name == "NoTarget" then
+        if v:IsA("Model") then
+            table.insert(Enemies, v)
+        end
+    end
+end
+
+game.Workspace.DescendantAdded:Connect(function(v)
+    EspHandle(v)
+end)
+
+repeat wait() until _G.Code1 ~= nil and _G.Code2 ~= nil
+
+if _G.Code1 ~= nil and _G.Code2 ~= nil then
+    game.StarterGui:SetCore("SendNotification", {
+        Title = 'GOODWILL';
+        Text = "SUCCESSFULLY INJECTED.. ?                    	(Made for juzuu so he would shut up)";
+        Icon = "rbxassetid://2541869220";
+        Duration = 7;
+    })
+else
+    game.StarterGui:SetCore("SendNotification", {
+        Title = 'FAILED';
+        Text = "SOMETHING WENT FUCKO (FAILED TO GRAB REMOTE SECURITY CODES)";
+        Icon = "rbxassetid://16201263";
+        Duration = 7;
+    })
+end
+
+SetupGUI()
