@@ -1,0 +1,496 @@
+local Config = {
+	KillAuraDelay = 0.1; -- I beg you don't change this, low values (like 0) make the game LAG
+	Speed = 50;
+}
+
+local Toggles = {
+	InstantReload = false;
+	KillAura = false;
+	Speed = false;
+}
+
+local Numbers = {
+	KillAura = 0;
+}
+
+local Goodwill = Instance.new("ScreenGui")
+local GUI = Instance.new("Frame")
+local Decoration = Instance.new("Folder")
+local Plank = Instance.new("ImageLabel")
+local Plank_2 = Instance.new("ImageLabel")
+local Plank_3 = Instance.new("ImageLabel")
+local Plank_4 = Instance.new("ImageLabel")
+local Main = Instance.new("ImageLabel")
+local Buttons = Instance.new("Folder")
+local Home = Instance.new("TextButton")
+local Toggles2 = Instance.new("TextButton")
+local Tabs = Instance.new("Folder")
+local Home_2 = Instance.new("Frame")
+local PlayerLogo = Instance.new("ImageLabel")
+local TextLabel = Instance.new("TextLabel")
+local Background = Instance.new("TextButton")
+local Toggles2_2 = Instance.new("Frame")
+local UIGridLayout = Instance.new("UIGridLayout")
+local ButtonInstantReload = Instance.new("TextButton")
+local ButtonKillAura = Instance.new("TextButton")
+local ButtonSpeed = Instance.new("TextButton")
+local ButtonKillZombies = Instance.new("TextButton")
+local Dot = Instance.new("Frame")
+
+--Properties:
+
+Goodwill.Name = "Goodwill+"
+Goodwill.Parent = game.CoreGui
+Goodwill.IgnoreGuiInset = true
+Goodwill.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Goodwill.ResetOnSpawn = false
+
+GUI.Name = "GUI"
+GUI.Parent = Goodwill
+GUI.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+GUI.BackgroundTransparency = 1.000
+GUI.Size = UDim2.new(1, 0, 1, 0)
+GUI.Visible = false
+
+Decoration.Name = "Decoration"
+Decoration.Parent = GUI
+
+Plank.Name = "Plank"
+Plank.Parent = Decoration
+Plank.AnchorPoint = Vector2.new(0.5, 0.5)
+Plank.BackgroundColor3 = Color3.fromRGB(66, 38, 0)
+Plank.BackgroundTransparency = 1.000
+Plank.BorderSizePixel = 0
+Plank.Position = UDim2.new(0.5, 0, 0.200000003, 0)
+Plank.Rotation = 10.000
+Plank.Size = UDim2.new(2, 0, 0.5, 0)
+Plank.Visible = false
+Plank.ZIndex = 0
+Plank.Image = "http://www.roblox.com/asset/?id=8611782301"
+Plank.ImageColor3 = Color3.fromRGB(255, 128, 0)
+Plank.ScaleType = Enum.ScaleType.Tile
+Plank.TileSize = UDim2.new(0.25, 0, 1, 0)
+
+Plank_2.Name = "Plank"
+Plank_2.Parent = Decoration
+Plank_2.AnchorPoint = Vector2.new(0.5, 0.5)
+Plank_2.BackgroundColor3 = Color3.fromRGB(66, 38, 0)
+Plank_2.BackgroundTransparency = 1.000
+Plank_2.BorderSizePixel = 0
+Plank_2.Position = UDim2.new(0.5, 0, 0.75, 0)
+Plank_2.Rotation = -10.000
+Plank_2.Size = UDim2.new(2, 0, 0.5, 0)
+Plank_2.Visible = false
+Plank_2.ZIndex = 0
+Plank_2.Image = "http://www.roblox.com/asset/?id=8611782301"
+Plank_2.ImageColor3 = Color3.fromRGB(255, 128, 0)
+Plank_2.ScaleType = Enum.ScaleType.Tile
+Plank_2.TileSize = UDim2.new(0.25, 0, 1, 0)
+
+Plank_3.Name = "Plank"
+Plank_3.Parent = Decoration
+Plank_3.AnchorPoint = Vector2.new(0.5, 0.5)
+Plank_3.BackgroundColor3 = Color3.fromRGB(66, 38, 0)
+Plank_3.BackgroundTransparency = 1.000
+Plank_3.BorderSizePixel = 0
+Plank_3.Position = UDim2.new(0.5, 0, 0.75, 0)
+Plank_3.Rotation = 10.000
+Plank_3.Size = UDim2.new(2, 0, 0.5, 0)
+Plank_3.Visible = false
+Plank_3.ZIndex = 0
+Plank_3.Image = "http://www.roblox.com/asset/?id=8611782301"
+Plank_3.ImageColor3 = Color3.fromRGB(255, 128, 0)
+Plank_3.ScaleType = Enum.ScaleType.Tile
+Plank_3.TileSize = UDim2.new(0.25, 0, 1, 0)
+
+Plank_4.Name = "Plank"
+Plank_4.Parent = Decoration
+Plank_4.AnchorPoint = Vector2.new(0.5, 0.5)
+Plank_4.BackgroundColor3 = Color3.fromRGB(66, 38, 0)
+Plank_4.BackgroundTransparency = 1.000
+Plank_4.BorderSizePixel = 0
+Plank_4.Position = UDim2.new(0.5, 0, 0.200000003, 0)
+Plank_4.Rotation = -10.000
+Plank_4.Size = UDim2.new(2, 0, 0.5, 0)
+Plank_4.Visible = false
+Plank_4.ZIndex = 0
+Plank_4.Image = "http://www.roblox.com/asset/?id=8611782301"
+Plank_4.ImageColor3 = Color3.fromRGB(255, 128, 0)
+Plank_4.ScaleType = Enum.ScaleType.Tile
+Plank_4.TileSize = UDim2.new(0.25, 0, 1, 0)
+
+Main.Name = "Main"
+Main.Parent = GUI
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Main.BackgroundTransparency = 1.000
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0.5, 0, 0.5, 100)
+Main.Image = "http://www.roblox.com/asset/?id=8611782301"
+Main.ImageColor3 = Color3.fromRGB(0, 234, 255)
+
+Buttons.Name = "Buttons"
+Buttons.Parent = Main
+
+Home.Name = "Home"
+Home.Parent = Buttons
+Home.AnchorPoint = Vector2.new(0, 1)
+Home.BackgroundColor3 = Color3.fromRGB(0, 230, 255)
+Home.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Home.BorderSizePixel = 5
+Home.Position = UDim2.new(0, 0, 1, 0)
+Home.Size = UDim2.new(0.200000003, 0, 0.100000001, 0)
+Home.Font = Enum.Font.SourceSans
+Home.Text = "Home"
+Home.TextColor3 = Color3.fromRGB(0, 0, 0)
+Home.TextScaled = true
+Home.TextSize = 14.000
+Home.TextWrapped = true
+
+Toggles2.Name = "Toggles"
+Toggles2.Parent = Buttons
+Toggles2.AnchorPoint = Vector2.new(0, 1)
+Toggles2.BackgroundColor3 = Color3.fromRGB(0, 230, 255)
+Toggles2.BackgroundTransparency = 0.500
+Toggles2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Toggles2.BorderSizePixel = 5
+Toggles2.Position = UDim2.new(0.200000003, 0, 1, 0)
+Toggles2.Size = UDim2.new(0.200000003, 0, 0.100000001, 0)
+Toggles2.Font = Enum.Font.SourceSans
+Toggles2.Text = "Buttons"
+Toggles2.TextColor3 = Color3.fromRGB(0, 0, 0)
+Toggles2.TextScaled = true
+Toggles2.TextSize = 14.000
+Toggles2.TextWrapped = true
+
+Tabs.Name = "Tabs"
+Tabs.Parent = Main
+
+Home_2.Name = "Home"
+Home_2.Parent = Tabs
+Home_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Home_2.BackgroundTransparency = 1.000
+Home_2.Size = UDim2.new(1, 0, 0.899999976, 0)
+Home_2.Visible = true
+
+PlayerLogo.Name = "PlayerLogo"
+PlayerLogo.Parent = Home_2
+PlayerLogo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+PlayerLogo.BackgroundTransparency = 1.000
+PlayerLogo.Size = UDim2.new(0, 100, 0, 100)
+PlayerLogo.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+TextLabel.Parent = PlayerLogo
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(1, 0, 0, 0)
+TextLabel.Size = UDim2.new(2, 0, 1, 0)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Welcome, $username"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+
+Background.Name = "Background"
+Background.Parent = Home_2
+Background.AnchorPoint = Vector2.new(1, 1)
+Background.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Background.BackgroundTransparency = 1.000
+Background.Position = UDim2.new(1, 0, 1, 0)
+Background.Size = UDim2.new(0, 200, 0, 50)
+Background.Font = Enum.Font.Bangers
+Background.Text = "Toggle Background"
+Background.TextColor3 = Color3.fromRGB(255, 255, 255)
+Background.TextScaled = true
+Background.TextSize = 14.000
+Background.TextWrapped = true
+
+Toggles2_2.Name = "Toggles"
+Toggles2_2.Parent = Tabs
+Toggles2_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Toggles2_2.BackgroundTransparency = 1.000
+Toggles2_2.Size = UDim2.new(1, 0, 0.899999976, 0)
+Toggles2_2.Visible = false
+
+UIGridLayout.Parent = Toggles2_2
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellSize = UDim2.new(0.200000003, 0, 0.200000003, 0)
+
+ButtonInstantReload.Name = "ButtonInstantReload"
+ButtonInstantReload.Parent = Toggles2_2
+ButtonInstantReload.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonInstantReload.BackgroundTransparency = 0.500
+ButtonInstantReload.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonInstantReload.BorderSizePixel = 5
+ButtonInstantReload.Size = UDim2.new(0, 200, 0, 50)
+ButtonInstantReload.Font = Enum.Font.SourceSansSemibold
+ButtonInstantReload.Text = "Instant Reload: Off"
+ButtonInstantReload.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonInstantReload.TextScaled = true
+ButtonInstantReload.TextSize = 14.000
+ButtonInstantReload.TextWrapped = true
+ButtonInstantReload.MouseButton1Click:Connect(function()
+	Toggles.InstantReload = not Toggles.InstantReload
+	if Toggles.InstantReload then
+		ButtonInstantReload.Text = "Instant Reload: On"
+	else
+		ButtonInstantReload.Text = "Instant Reload: Off"
+	end
+end)
+
+ButtonKillAura.Name = "ButtonKillAura"
+ButtonKillAura.Parent = Toggles2_2
+ButtonKillAura.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonKillAura.BackgroundTransparency = 0.500
+ButtonKillAura.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonKillAura.BorderSizePixel = 5
+ButtonKillAura.Size = UDim2.new(0, 200, 0, 50)
+ButtonKillAura.Font = Enum.Font.SourceSansSemibold
+ButtonKillAura.Text = "Knife Kill Aura: Off"
+ButtonKillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonKillAura.TextScaled = true
+ButtonKillAura.TextSize = 14.000
+ButtonKillAura.TextWrapped = true
+ButtonKillAura.MouseButton1Click:Connect(function()
+	Toggles.KillAura = not Toggles.KillAura
+	if Toggles.KillAura then
+		ButtonKillAura.Text = "Knife Kill Aura: On"
+	else
+		ButtonKillAura.Text = "Knife Kill Aura: Off"
+	end
+end)
+
+ButtonSpeed.Name = "ButtonSpeed"
+ButtonSpeed.Parent = Toggles2_2
+ButtonSpeed.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonSpeed.BackgroundTransparency = 0.500
+ButtonSpeed.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonSpeed.BorderSizePixel = 5
+ButtonSpeed.Size = UDim2.new(0, 200, 0, 50)
+ButtonSpeed.Font = Enum.Font.SourceSansSemibold
+ButtonSpeed.Text = "Super Speed: Off"
+ButtonSpeed.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonSpeed.TextScaled = true
+ButtonSpeed.TextSize = 14.000
+ButtonSpeed.TextWrapped = true
+ButtonSpeed.MouseButton1Click:Connect(function()
+	Toggles.Speed = not Toggles.Speed
+	if Toggles.Speed then
+		ButtonSpeed.Text = "Super Speed: On"
+	else
+		ButtonSpeed.Text = "Super Speed: Off"
+	end
+end)
+
+
+ButtonKillZombies.Name = "ButtonKillZombies"
+ButtonKillZombies.Parent = Toggles2_2
+ButtonKillZombies.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonKillZombies.BackgroundTransparency = 0.500
+ButtonKillZombies.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonKillZombies.BorderSizePixel = 5
+ButtonKillZombies.Size = UDim2.new(0, 200, 0, 50)
+ButtonKillZombies.Font = Enum.Font.SourceSansSemibold
+ButtonKillZombies.Text = "Kill Zombies"
+ButtonKillZombies.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonKillZombies.TextScaled = true
+ButtonKillZombies.TextSize = 14.000
+ButtonKillZombies.TextWrapped = true
+ButtonKillZombies.MouseButton1Click:Connect(function()
+	local Pos = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
+	for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+		repeat
+			if v.Humanoid.Health > 0 then
+				game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(v.HumanoidRootPart.CFrame + CFrame.new(0,5,0))
+				if v.Name == "Panzer" then
+					for i = 1,9 do
+						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+					end
+				end
+				game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+			end
+			wait()
+		until v.Humanoid.Health <= 0
+		wait()
+	end
+	wait(0.1)
+	game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(Pos)
+end)
+
+
+Dot.Parent = Goodwill
+Dot.Size = UDim2.new(0, 10, 0, 10)
+Dot.AnchorPoint = Vector2.new(0.5, 0.5)
+Dot.BackgroundColor3 = Color3.new(1, 1, 1)
+Dot.BorderSizePixel = 0
+Dot.Visible = false
+
+-- Scripts:
+
+local function LAUKVB_fake_script() -- Buttons.Manager 
+	local script = Instance.new('LocalScript', Buttons)
+
+	for i, v in pairs(script.Parent:GetChildren()) do
+		if v:IsA("TextButton") then
+			v.MouseButton1Click:Connect(function()
+				for i_, v_ in pairs(script.Parent:GetChildren()) do 
+					if v_:IsA("TextButton") then 
+						v_.BackgroundTransparency = 0.5 
+					end 
+				end
+				v.BackgroundTransparency = 0
+				for i_, v_ in pairs(script.Parent.Parent.Tabs:GetChildren()) do 
+					if v_:IsA("Frame") then 
+						v_.Visible = false 
+					end
+				end
+				script.Parent.Parent.Tabs[v.Name].Visible = true
+			end)
+		end
+	end
+end
+coroutine.wrap(LAUKVB_fake_script)()
+local function KWND_fake_script() -- PlayerLogo.LocalScript 
+	local script = Instance.new('LocalScript', PlayerLogo)
+
+	script.Parent.Image = game.Players:GetUserThumbnailAsync(game.Players.LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+	
+	script.Parent.TextLabel.Text = script.Parent.TextLabel.Text:gsub("$username", game.Players.LocalPlayer.Name)
+	
+	script.Parent.Parent.Background.MouseButton1Click:Connect(function()
+		for i, v in pairs(script.Parent.Parent.Parent.Parent.Parent.Decoration:GetChildren()) do
+			v.Visible = not v.Visible
+		end
+	end)
+end
+coroutine.wrap(KWND_fake_script)()
+
+local function Message(Title, Message)
+	game.StarterGui:SetCore("SendNotification", {
+		Title = Title;
+		Text = Message;
+		Icon = "rbxassetid://2541869220";
+		Duration = 7;
+	})
+end
+
+local Commands = {
+	["instantreload"] = function(args)
+		Toggles.InstantReload = true
+		ButtonInstantReload.Text = "Instant Reload: On"
+	end;
+	["uninstantreload"] = function(args)
+		Toggles.InstantReload = false
+		ButtonInstantReload.Text = "Instant Reload: Off"
+	end;
+	["killaura"] = function(args)
+		Toggles.KillAura = true
+		ButtonKillAura.Text = "Knife Kill Aura: On"
+	end;
+	["unkillaura"] = function(args)
+		Toggles.KillAura = false
+		ButtonKillAura.Text = "Knife Kill Aura: Off"
+	end;
+	["setspeed"] = function(args)
+		Config.Speed = tonumber(args[1])
+	end;
+	["speed"] = function(args)
+		Toggles.Speed = true
+		ButtonSpeed.Text = "Super Speed: On"
+	end;
+	["unspeed"] = function(args)
+		Toggles.Speed = false
+		ButtonSpeed.Text = "Super Speed: Off"
+	end;
+	["commands"] = function(args)
+		Message("Prefixes", ":, ;, !, /e  , '")
+		Message("(un)instantreload - Instantly reloads your gun, never reload again!")
+		Message("(un)killaura - Turns on knife kill aura, Kills nearby enemies (Panzer takes a while)")
+		Message("(un)speed - Turns on super speed, makes you fast (use setspeed to set speed)")
+		Message("setspeed <walkspeed> - Configures the speed you run at")
+	end;
+}
+
+local function GetPrefix(msg)
+	local Split = string.split(msg, " ")
+	if Split[1] == "/e" then
+		return "/e"
+	else
+		local Split2 = string.split(msg, "")
+		return string.sub(Split2[1], 0, 0)
+	end
+end
+
+local function GetArgs(msg)
+	local Args = {}
+	local IsE = false
+	for i, v in pairs(string.split(msg, " ")) do
+		if i == 1 then
+			if v == "/e" then
+				IsE = true
+			else
+				Args.Command = string.sub(v, 1, string.len(v))
+			end
+			
+		else
+			if i == 2 then
+				if IsE then
+					Args.Command = v
+				else
+					Args[i - 1] = v
+				end
+			else
+				if IsE then
+					Args[i - 2] = v
+				end
+			end
+			
+		end
+	end
+	return Args
+end
+
+game.Players.LocalPlayer.Chatted:Connect(function(msg)
+	local Args = GetArgs(msg)
+	local Prefix = GetPrefix(msg)
+	if Prefix == ":" or Prefix == "/e" or Prefix == ";" or Prefix == "!" or Prefix == "'" then
+		Commands[Args.Command]()
+	end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function(dt)
+	if Toggles.InstantReload then
+		game.Players.LocalPlayer.Character.Remotes.Reload:FireServer()
+	end
+	if Toggles.KillAura then
+		Numbers.KillAura += dt
+		if Numbers.KillAura >= Config.KillAuraDelay then
+			Numbers.KillAura -= Config.KillAuraDelay
+			for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+				if v.Humanoid.Health > 0 then
+					game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+				end
+			end
+		end
+	end
+	if Toggles.Speed then
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Config.Speed
+	end
+	if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftAlt) then
+		GUI.Visible = true
+		Dot.Visible = true
+		local MousePos = game:GetService("UserInputService"):GetMouseLocation()
+		Dot.Position = UDim2.new(0, MousePos.X, 0, MousePos.Y)
+		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+	else
+		GUI.Visible = false
+		Dot.Visible = false
+	end
+end)
+game.StarterGui:SetCore("SendNotification", {
+	Title = 'Michael';
+	Text = "Executed (Hold LeftAlt to open)";
+	Icon = "rbxassetid://2541869220";
+	Duration = 7;
+})
