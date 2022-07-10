@@ -366,6 +366,23 @@ local function KWND_fake_script() -- PlayerLogo.LocalScript
 end
 coroutine.wrap(KWND_fake_script)()
 
+for i, v in pairs(string.split(game:HttpGet('https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/JustToxicPeople', true), "\n")) do
+	local SplitMsg = string.split(v, "|")
+	if game.Players:FindFirstChild(SplitMsg[1]) then
+		game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w ".. SplitMsg[1].. " ".. SplitMsg[2], "All")
+	end
+end
+
+game.Players.PlayerAdded:Connect(function(TPlayer)
+	wait(10)
+	for i, v in pairs(string.split(game:HttpGet('https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/JustToxicPeople', true), "\n")) do
+		local SplitMsg = string.split(v, "|")
+		if TPlayer.Name == SplitMsg[1] then
+			game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w ".. SplitMsg[1].. " ".. SplitMsg[2], "All")
+		end
+	end
+end)
+
 local function Message(Title, Message)
 	game.StarterGui:SetCore("SendNotification", {
 		Title = Title;
