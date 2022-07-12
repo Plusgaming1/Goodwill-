@@ -9,8 +9,9 @@
 ## Documentation
 
 # Decaying Winter:
- --Custom Menu (Color, Size, Screen Position, all in percentage (Size -inf to inf, Position 0 to 100), apart from color (0-255, 0-255, 0-255))\n
- --Sliders for different values (Lets you configure a few values)
+-- Custom Menu (Color, Size, Screen Position, all in percentage (Size -inf to inf, Position 0 to 100), apart from color (0-255, 0-255, 0-255))
+--
+* --Sliders for different values (Lets you configure a few values)
 ## --Second Person (You look at yourself from a distance (Basically Second Person))
 ## --Infinite Drift Perk (On drifter perk, Press F, then activate for it to last forever (Thank you Anxienvy#7745) )
 ## Commands:
