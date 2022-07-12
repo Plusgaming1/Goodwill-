@@ -1,16 +1,22 @@
 local Config = {
 	KillAuraDelay = 0.1; -- I beg you don't change this, low values (like 0) make the game LAG
+	FKillAuraDelay = 0.25; -- Flame Killaura is laggier than Knife killaura, and needs you to hold the flamethrower, but has a bigger radius and deals more DMG
 	Speed = 50;
+	IRDelay = 0.1;
 }
 
 local Toggles = {
 	InstantReload = false;
 	KillAura = false;
+	FKillAura = false;
 	Speed = false;
+	InstantRepair = false;
 }
 
 local Numbers = {
 	KillAura = 0;
+	FKillAura = 0;
+	IR = 0;
 }
 
 local Goodwill = Instance.new("ScreenGui")
@@ -34,7 +40,8 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local ButtonInstantReload = Instance.new("TextButton")
 local ButtonKillAura = Instance.new("TextButton")
 local ButtonSpeed = Instance.new("TextButton")
-local ButtonKillZombies = Instance.new("TextButton")
+local ButtonFKillAura = Instance.new("TextButton")
+local ButtonIR = Instance.new("TextButton")
 local Dot = Instance.new("Frame")
 
 --Properties:
@@ -261,6 +268,50 @@ ButtonKillAura.MouseButton1Click:Connect(function()
 	end
 end)
 
+ButtonFKillAura.Name = "ButtonKillAura"
+ButtonFKillAura.Parent = Toggles2_2
+ButtonFKillAura.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonFKillAura.BackgroundTransparency = 0.500
+ButtonFKillAura.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonFKillAura.BorderSizePixel = 5
+ButtonFKillAura.Size = UDim2.new(0, 200, 0, 50)
+ButtonFKillAura.Font = Enum.Font.SourceSansSemibold
+ButtonFKillAura.Text = "Knife Kill Aura: Off"
+ButtonFKillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonFKillAura.TextScaled = true
+ButtonFKillAura.TextSize = 14.000
+ButtonFKillAura.TextWrapped = true
+ButtonFKillAura.MouseButton1Click:Connect(function()
+	Toggles.FKillAura = not Toggles.FKillAura
+	if Toggles.FKillAura then
+		ButtonFKillAura.Text = "Flame Kill Aura: On"
+	else
+		ButtonFKillAura.Text = "Flame Kill Aura: Off"
+	end
+end)
+
+ButtonIR.Name = "ButtonIR"
+ButtonIR.Parent = Toggles2_2
+ButtonIR.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonIR.BackgroundTransparency = 0.500
+ButtonIR.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonIR.BorderSizePixel = 5
+ButtonIR.Size = UDim2.new(0, 200, 0, 50)
+ButtonIR.Font = Enum.Font.SourceSansSemibold
+ButtonIR.Text = "Instant Repair: Off"
+ButtonIR.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonIR.TextScaled = true
+ButtonIR.TextSize = 14.000
+ButtonIR.TextWrapped = true
+ButtonIR.MouseButton1Click:Connect(function()
+	Toggles.InstantRepair = not Toggles.InstantRepair
+	if Toggles.InstantRepair then
+		ButtonIR.Text = "Instant Repair: On"
+	else
+		ButtonIR.Text = "Instant Repair: Off"
+	end
+end)
+
 ButtonSpeed.Name = "ButtonSpeed"
 ButtonSpeed.Parent = Toggles2_2
 ButtonSpeed.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
@@ -282,42 +333,6 @@ ButtonSpeed.MouseButton1Click:Connect(function()
 		ButtonSpeed.Text = "Super Speed: Off"
 	end
 end)
-
-
-ButtonKillZombies.Name = "ButtonKillZombies"
-ButtonKillZombies.Parent = Toggles2_2
-ButtonKillZombies.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
-ButtonKillZombies.BackgroundTransparency = 0.500
-ButtonKillZombies.BorderColor3 = Color3.fromRGB(0, 0, 0)
-ButtonKillZombies.BorderSizePixel = 5
-ButtonKillZombies.Size = UDim2.new(0, 200, 0, 50)
-ButtonKillZombies.Font = Enum.Font.SourceSansSemibold
-ButtonKillZombies.Text = "Kill Zombies"
-ButtonKillZombies.TextColor3 = Color3.fromRGB(255, 255, 255)
-ButtonKillZombies.TextScaled = true
-ButtonKillZombies.TextSize = 14.000
-ButtonKillZombies.TextWrapped = true
-ButtonKillZombies.MouseButton1Click:Connect(function()
-	local Pos = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
-	for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
-		repeat
-			if v.Humanoid.Health > 0 then
-				game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(v.HumanoidRootPart.CFrame + CFrame.new(0,5,0))
-				if v.Name == "Panzer" then
-					for i = 1,9 do
-						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
-					end
-				end
-				game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
-			end
-			wait()
-		until v.Humanoid.Health <= 0
-		wait()
-	end
-	wait(0.1)
-	game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(Pos)
-end)
-
 
 Dot.Parent = Goodwill
 Dot.Size = UDim2.new(0, 10, 0, 10)
@@ -368,7 +383,7 @@ coroutine.wrap(KWND_fake_script)()
 
 for i, v in pairs(string.split(game:HttpGet('https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/JustToxicPeople', true), "\n")) do
 	local SplitMsg = string.split(v, "|")
-	if game.Players:FindFirstChild(SplitMsg[1]) then
+	if game.Players:FindFirstChild(SplitMsg[1]) and game.Players.LocalPlayer.Name ~= SplitMsg[1] then
 		game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w ".. SplitMsg[1].. " ".. SplitMsg[2], "All")
 	end
 end
@@ -377,7 +392,7 @@ game.Players.PlayerAdded:Connect(function(TPlayer)
 	wait(10)
 	for i, v in pairs(string.split(game:HttpGet('https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/JustToxicPeople', true), "\n")) do
 		local SplitMsg = string.split(v, "|")
-		if TPlayer.Name == SplitMsg[1] then
+		if TPlayer.Name == SplitMsg[1] and game.Players.LocalPlayer.Name ~= SplitMsg[1] then
 			game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w ".. SplitMsg[1].. " ".. SplitMsg[2], "All")
 		end
 	end
@@ -409,8 +424,29 @@ local Commands = {
 		Toggles.KillAura = false
 		ButtonKillAura.Text = "Knife Kill Aura: Off"
 	end;
+	["fkillaura"] = function(args)
+		Toggles.FKillAura = true
+		ButtonFKillAura.Text = "Flame Kill Aura: On"
+	end;
+	["unfkillaura"] = function(args)
+		Toggles.FKillAura = false
+		ButtonFKillAura.Text = "Flame Kill Aura: Off"
+	end;
+	["instantrepiar"] = function(args)
+		Toggles.IR = true
+		ButtonIR.Text = "Instant Repair: On"
+	end;
+	["uninstantrepair"] = function(args)
+		Toggles.IR = false
+		ButtonIR.Text = "Instant Repair: Off"
+	end;
 	["setspeed"] = function(args)
-		Config.Speed = tonumber(args[1])
+		pcall(function()
+			Config.Speed = tonumber(args[1])
+		end)
+		pcall(function()
+			Config.Speed = tonumber(args[2])
+		end)
 	end;
 	["speed"] = function(args)
 		Toggles.Speed = true
@@ -421,11 +457,12 @@ local Commands = {
 		ButtonSpeed.Text = "Super Speed: Off"
 	end;
 	["commands"] = function(args)
-		Message("Prefixes", ":, ;, !, /e  , '")
-		Message("(un)instantreload - Instantly reloads your gun, never reload again!")
-		Message("(un)killaura - Turns on knife kill aura, Kills nearby enemies (Panzer takes a while)")
-		Message("(un)speed - Turns on super speed, makes you fast (use setspeed to set speed)")
-		Message("setspeed <walkspeed> - Configures the speed you run at")
+		Message("Prefixes", "/e ")
+		Message("Command", "(un)instantreload - Instantly reloads your gun, never reload again!")
+		Message("Command", "(un)killaura - Turns on knife kill aura, Kills nearby enemies (Panzer takes a while)")
+		Message("Command", "(un)fkillaura - Turns on flame kill aura, Same as knife killaura, but requires you to hold the flame thrower")
+		Message("Command", "(un)speed - Turns on super speed, makes you fast (use setspeed to set speed)")
+		Message("Command", "setspeed <walkspeed> - Configures the speed you run at")
 	end;
 }
 
@@ -435,7 +472,8 @@ local function GetPrefix(msg)
 		return "/e"
 	else
 		local Split2 = string.split(msg, "")
-		return string.sub(Split2[1], 0, 0)
+		local s = string.split(Split[1], "")
+		return string.sub(s[1])
 	end
 end
 
@@ -488,6 +526,26 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 				if v.Humanoid.Health > 0 then
 					game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
 				end
+			end
+		end
+	end
+	if Toggles.FKillAura then
+		Numbers.FKillAura += dt
+		if Numbers.FKillAura >= Config.FKillAuraDelay then
+			Numbers.FKillAura -= Config.FKillAuraDelay
+			for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+				if v.Humanoid.Health > 0 then
+					game:GetService("ReplicatedStorage").Framework.Remotes.FlameHitbox:FireServer(v.Humanoid, Vector3.new(0,0.5,0))
+				end
+			end
+		end
+	end
+	if Toggles.InstantRepair then
+		if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.F) then
+			Numbers.IR += dt
+			if Numbers.IR >= Config.IRDelay then
+				Numbers.IR -= Config.IRDelay
+				game.Players.LocalPlayer.Character.Remotes.UpdateInputHold:FireServer(true)
 			end
 		end
 	end
