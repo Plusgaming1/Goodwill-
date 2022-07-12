@@ -3,6 +3,7 @@ local Config = {
 	FKillAuraDelay = 0.25; -- Flame Killaura is laggier than Knife killaura, and needs you to hold the flamethrower, but has a bigger radius and deals more DMG
 	Speed = 50;
 	IRDelay = 0.1;
+	SuperKnife = 10;
 }
 
 local Toggles = {
@@ -11,6 +12,7 @@ local Toggles = {
 	FKillAura = false;
 	Speed = false;
 	InstantRepair = false;
+	SuperKnife = false;
 }
 
 local Numbers = {
@@ -42,6 +44,8 @@ local ButtonKillAura = Instance.new("TextButton")
 local ButtonSpeed = Instance.new("TextButton")
 local ButtonFKillAura = Instance.new("TextButton")
 local ButtonIR = Instance.new("TextButton")
+local ButtonKnife = Instance.new("TextButton")
+local TextKnife = Instance.new("TextBox")
 local Dot = Instance.new("Frame")
 
 --Properties:
@@ -268,7 +272,7 @@ ButtonKillAura.MouseButton1Click:Connect(function()
 	end
 end)
 
-ButtonFKillAura.Name = "ButtonKillAura"
+ButtonFKillAura.Name = "ButtonFKillAura"
 ButtonFKillAura.Parent = Toggles2_2
 ButtonFKillAura.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
 ButtonFKillAura.BackgroundTransparency = 0.500
@@ -276,7 +280,7 @@ ButtonFKillAura.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ButtonFKillAura.BorderSizePixel = 5
 ButtonFKillAura.Size = UDim2.new(0, 200, 0, 50)
 ButtonFKillAura.Font = Enum.Font.SourceSansSemibold
-ButtonFKillAura.Text = "Knife Kill Aura: Off"
+ButtonFKillAura.Text = "Flame Kill Aura: Off"
 ButtonFKillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
 ButtonFKillAura.TextScaled = true
 ButtonFKillAura.TextSize = 14.000
@@ -333,6 +337,44 @@ ButtonSpeed.MouseButton1Click:Connect(function()
 		ButtonSpeed.Text = "Super Speed: Off"
 	end
 end)
+
+ButtonKnife.Name = "ButtonSpeed"
+ButtonKnife.Parent = Toggles2_2
+ButtonKnife.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonKnife.BackgroundTransparency = 0.500
+ButtonKnife.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonKnife.BorderSizePixel = 5
+ButtonKnife.Size = UDim2.new(0, 200, 0, 50)
+ButtonKnife.Font = Enum.Font.SourceSansSemibold
+ButtonKnife.Text = "Super Knife: Off"
+ButtonKnife.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonKnife.TextScaled = true
+ButtonKnife.TextSize = 14.000
+ButtonKnife.TextWrapped = true
+ButtonKnife.MouseButton1Click:Connect(function()
+	Toggles.SuperKnife = not Toggles.SuperKnife
+	if Toggles.SuperKnife then
+		ButtonKnife.Text = "Super Knife: On"
+	else
+		ButtonKnife.Text = "Super Knife: Off"
+	end
+end)
+
+TextKnife.Name = "TextKnife"
+TextKnife.Parent = Toggles2_2
+TextKnife.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+TextKnife.BackgroundTransparency = 0.500
+TextKnife.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextKnife.BorderSizePixel = 5
+TextKnife.Size = UDim2.new(0, 200, 0, 50)
+TextKnife.Font = Enum.Font.SourceSansSemibold
+TextKnife.Text = "10"
+TextKnife.PlaceholderText = "Super Knife Power"
+TextKnife.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextKnife.TextScaled = true
+TextKnife.TextSize = 14.000
+TextKnife.ClearTextOnFocus = false
+TextKnife.TextWrapped = true
 
 Dot.Parent = Goodwill
 Dot.Size = UDim2.new(0, 10, 0, 10)
@@ -466,14 +508,32 @@ local Commands = {
 	end;
 }
 
+local HeldKeys = {
+	F = true;
+}
+
+game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
+	if i.KeyCode == Enum.KeyCode.V and Toggles.SuperKnife then
+		for i_, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+			if v.Humanoid.Health > 0 then
+				local _, OnScreen = game.Workspace.CurrentCamera:WorldToScreenPoint(v.PrimaryPart.Position)
+				if OnScreen and (v.PrimaryPart.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude < 15 then
+					for i = 1,math.round(math.max(1, tonumber(tostring(TextKnife.Text)))) do
+						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+					end
+				end
+			end
+		end
+	end
+end)
+
 local function GetPrefix(msg)
 	local Split = string.split(msg, " ")
 	if Split[1] == "/e" then
 		return "/e"
 	else
-		local Split2 = string.split(msg, "")
 		local s = string.split(Split[1], "")
-		return string.sub(s[1])
+		return string.sub(s[1], 0, 0)
 	end
 end
 
