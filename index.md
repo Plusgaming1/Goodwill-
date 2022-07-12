@@ -3,7 +3,12 @@
 [Goodwill+](https://github.com/Plusgaming1/Goodwill-) is a Roblox script, it improoves the Roblox script [Goodwill](https://raw.githubusercontent.com/Aidez/decaying_winter/main/GOODWILL_COMMAND_SCRIPT)
 
 ## Sections
-# [Games]()
+# [Goodwill+](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#goodwill)
+# [Sections](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#sections)
+# [Games](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#games)
+# [Docs](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#documentation)
+# [Decaying Winter](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#---decaying-winter)
+# [Michael's Zombies](https://github.com/Plusgaming1/Goodwill-/blob/gh-pages/index.md#michaels-zombies)
 
 ## Games
 [Decaying Winter (Patched)](https://www.roblox.com/games/7551121821)
@@ -11,8 +16,7 @@
 
 ## Documentation
 
--- Decaying Winter:
---
+# Decaying Winter:
 -- Custom Menu (Color, Size, Screen Position, all in percentage (Size -inf to inf, Position 0 to 100), apart from color (0-255, 0-255, 0-255))
 --
 -- Sliders for different values (Lets you configure a few values)
