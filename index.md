@@ -8,16 +8,16 @@
 
 ## Documentation
 
-# Decaying Winter:
--- Custom Menu (Color, Size, Screen Position, all in percentage (Size -inf to inf, Position 0 to 100), apart from color (0-255, 0-255, 0-255))
+-- Decaying Winter:
 --
-* --Sliders for different values (Lets you configure a few values)
-## --Second Person (You look at yourself from a distance (Basically Second Person))
-## --Infinite Drift Perk (On drifter perk, Press F, then activate for it to last forever (Thank you Anxienvy#7745) )
-## Commands:
-##   :menucolor Red Green Blue (Replace Red Green Blue with the rgb values of how you want it to look (50 0 56 is deep purple, etc.))
- ##  :menuposition 0-100 0-100 (This is where the menu would be, 0 0 would be top left, 100 100 bottom right, 50 0 top middle, etc.)
- ##  :menusize -inf-inf -inf-inf (Size of the screen First value is X< Second Value is Y, 100 on both is default. 200 200 would make it 2x bigger, 200 100 would make it 2x wider, etc.)
+Custom Menu (Color, Size, Screen Position, all in percentage (Size -inf to inf, Position 0 to 100), apart from color (0-255, 0-255, 0-255))
+Sliders for different values (Lets you configure a few values)
+Second Person (You look at yourself from a distance (Basically Second Person))
+Infinite Drift Perk (On drifter perk, Press F, then activate for it to last forever (Thank you Anxienvy#7745) )
+Commands:
+-- :menucolor Red Green Blue (Replace Red Green Blue with the rgb values of how you want it to look (50 0 56 is deep purple, etc.))
+-- :menuposition 0-100 0-100 (This is where the menu would be, 0 0 would be top left, 100 100 bottom right, 50 0 top middle, etc.)
+-- :menusize -inf-inf -inf-inf (Size of the screen First value is X< Second Value is Y, 100 on both is default. 200 200 would make it 2x bigger, 200 100 would make it 2x wider, etc.)
 
 # Michael's Zombies:
 ## --Commands
