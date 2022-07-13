@@ -13,6 +13,8 @@ local Toggles = {
 	Speed = false;
 	InstantRepair = false;
 	SuperKnife = false;
+	AutoCollect = false;
+	ThirdP = false;
 }
 
 local Numbers = {
@@ -46,6 +48,8 @@ local ButtonFKillAura = Instance.new("TextButton")
 local ButtonIR = Instance.new("TextButton")
 local ButtonKnife = Instance.new("TextButton")
 local TextKnife = Instance.new("TextBox")
+local ButtonCollect = Instance.new("TextButton")
+local ButtonThirdP = Instance.new("TextButton")
 local Dot = Instance.new("Frame")
 
 --Properties:
@@ -226,7 +230,7 @@ Toggles2_2.Visible = false
 
 UIGridLayout.Parent = Toggles2_2
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIGridLayout.CellSize = UDim2.new(0.200000003, 0, 0.200000003, 0)
+UIGridLayout.CellSize = UDim2.new(0.195, 0, 0.2, 0)
 
 ButtonInstantReload.Name = "ButtonInstantReload"
 ButtonInstantReload.Parent = Toggles2_2
@@ -376,6 +380,55 @@ TextKnife.TextSize = 14.000
 TextKnife.ClearTextOnFocus = false
 TextKnife.TextWrapped = true
 
+
+ButtonCollect.Name = "ButtonCollect"
+ButtonCollect.Parent = Toggles2_2
+ButtonCollect.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonCollect.BackgroundTransparency = 0.500
+ButtonCollect.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonCollect.BorderSizePixel = 5
+ButtonCollect.Size = UDim2.new(0, 200, 0, 50)
+ButtonCollect.Font = Enum.Font.SourceSansSemibold
+ButtonCollect.Text = "Auto Collect: Off"
+ButtonCollect.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonCollect.TextScaled = true
+ButtonCollect.TextSize = 14.000
+ButtonCollect.TextWrapped = true
+ButtonCollect.MouseButton1Click:Connect(function()
+	Toggles.AutoCollect = not Toggles.AutoCollect
+	if Toggles.AutoCollect then
+		ButtonCollect.Text = "Auto Collect: On"
+	else
+		ButtonCollect.Text = "Auto Collect: Off"
+	end
+end)
+
+ButtonThirdP.Name = "ButtonThirdP"
+ButtonThirdP.Parent = Toggles2_2
+ButtonThirdP.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonThirdP.BackgroundTransparency = 0.500
+ButtonThirdP.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonThirdP.BorderSizePixel = 5
+ButtonThirdP.Size = UDim2.new(0, 200, 0, 50)
+ButtonThirdP.Font = Enum.Font.SourceSansSemibold
+ButtonThirdP.Text = "Third Person: Off"
+ButtonThirdP.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonThirdP.TextScaled = true
+ButtonThirdP.TextSize = 14.000
+ButtonThirdP.TextWrapped = true
+ButtonThirdP.MouseButton1Click:Connect(function()
+	Toggles.ThirdP = not Toggles.ThirdP
+	if Toggles.ThirdP then
+		ButtonThirdP.Text = "Third Person: On"
+		game.Players.LocalPlayer.CameraMode = "Classic"
+	else
+		ButtonThirdP.Text = "Third Person: Off"
+		game.Players.LocalPlayer.CameraMinZoomDistance = 0
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 0
+		game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
+	end
+end)
+
 Dot.Parent = Goodwill
 Dot.Size = UDim2.new(0, 10, 0, 10)
 Dot.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -482,12 +535,25 @@ local Commands = {
 		Toggles.IR = false
 		ButtonIR.Text = "Instant Repair: Off"
 	end;
+	["superknife"] = function(args)
+		Toggles.SuperKnife = true
+		ButtonKnife.Text = "Super Knife: On"
+	end;
+	["unsuperknife"] = function(args)
+		Toggles.SuperKnife = false
+		ButtonKnife.Text = "Super Knife: Off"
+	end;
+	["autocollect"] = function(args)
+		Toggles.AutoCollect = true
+		ButtonCollect.Text = "AutoCollect: On"
+	end;
+	["unautocollect"] = function(args)
+		Toggles.AutoCollect = false
+		ButtonCollect.Text = "AutoCollect: Off"
+	end;
 	["setspeed"] = function(args)
 		pcall(function()
-			Config.Speed = tonumber(args[1])
-		end)
-		pcall(function()
-			Config.Speed = tonumber(args[2])
+			Config.Speed = tostring(tonumber(args[1]))
 		end)
 	end;
 	["speed"] = function(args)
@@ -501,15 +567,21 @@ local Commands = {
 	["commands"] = function(args)
 		Message("Prefixes", "/e ")
 		Message("Command", "(un)instantreload - Instantly reloads your gun, never reload again!")
+		wait(2)
 		Message("Command", "(un)killaura - Turns on knife kill aura, Kills nearby enemies (Panzer takes a while)")
+		wait(2)
 		Message("Command", "(un)fkillaura - Turns on flame kill aura, Same as knife killaura, but requires you to hold the flame thrower")
+		wait(2)
 		Message("Command", "(un)speed - Turns on super speed, makes you fast (use setspeed to set speed)")
+		wait(2)
 		Message("Command", "setspeed <walkspeed> - Configures the speed you run at")
+		wait(2)
+		Message("Command", "(un)instantrepair - Turns on Instant Repair, repairs boards instantly")
+		wait(2)
+		Message("Command", "(un)superknife - Turns on Super Knife, makes your knife stronger")
+		wait(2)
+		Message("Command", "(un)autocollect - Turns on Auto Collect, Auto collects powerups")
 	end;
-}
-
-local HeldKeys = {
-	F = true;
 }
 
 game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
@@ -524,6 +596,10 @@ game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
 				end
 			end
 		end
+	end
+	if i.KeyCode == Enum.KeyCode.LeftAlt then
+		GUI.Visible = not GUI.Visible
+		Dot.Visible = GUI.Visible
 	end
 end)
 
@@ -570,7 +646,7 @@ game.Players.LocalPlayer.Chatted:Connect(function(msg)
 	local Args = GetArgs(msg)
 	local Prefix = GetPrefix(msg)
 	if Prefix == ":" or Prefix == "/e" or Prefix == ";" or Prefix == "!" or Prefix == "'" then
-		Commands[Args.Command]()
+		Commands[Args.Command](Args)
 	end
 end)
 
@@ -612,15 +688,22 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 	if Toggles.Speed then
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Config.Speed
 	end
-	if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftAlt) then
-		GUI.Visible = true
-		Dot.Visible = true
+	if Toggles.AutoCollect then
+		for i, v in pairs(game.Workspace.Ignore._Powerups:GetChildren()) do
+			firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
+		end
+	end
+	if Toggles.ThirdP then
+		game.Workspace.CurrentCamera.CFrame *= CFrame.new(2.5, 0, 0)
+		game.Players.LocalPlayer.CameraMinZoomDistance = 5
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 50
+		game.Players.LocalPlayer.CameraMode = "Classic"
+		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.LockCenter
+	end
+	if GUI.Visible then
 		local MousePos = game:GetService("UserInputService"):GetMouseLocation()
 		Dot.Position = UDim2.new(0, MousePos.X, 0, MousePos.Y)
-		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
-	else
-		GUI.Visible = false
-		Dot.Visible = false
+		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default	else
 	end
 end)
 game.StarterGui:SetCore("SendNotification", {
