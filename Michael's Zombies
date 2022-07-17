@@ -15,12 +15,18 @@ local Toggles = {
 	SuperKnife = false;
 	AutoCollect = false;
 	ThirdP = false;
+    ZEsp = false;
 }
 
 local Numbers = {
 	KillAura = 0;
 	FKillAura = 0;
 	IR = 0;
+}
+
+local ZombieESP = {
+    Zombies = {};
+    Highlight = {};
 }
 
 local Goodwill = Instance.new("ScreenGui")
@@ -50,6 +56,7 @@ local ButtonKnife = Instance.new("TextButton")
 local TextKnife = Instance.new("TextBox")
 local ButtonCollect = Instance.new("TextButton")
 local ButtonThirdP = Instance.new("TextButton")
+local ButtonZESP = Instance.new("TextButton")
 local Dot = Instance.new("Frame")
 
 --Properties:
@@ -429,6 +436,32 @@ ButtonThirdP.MouseButton1Click:Connect(function()
 	end
 end)
 
+ButtonZESP.Name = "ButtonZESP"
+ButtonZESP.Parent = Toggles2_2
+ButtonZESP.BackgroundColor3 = Color3.fromRGB(0, 255, 238)
+ButtonZESP.BackgroundTransparency = 0.500
+ButtonZESP.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ButtonZESP.BorderSizePixel = 5
+ButtonZESP.Size = UDim2.new(0, 200, 0, 50)
+ButtonZESP.Font = Enum.Font.SourceSansSemibold
+ButtonZESP.Text = "Zombie Esp: Off"
+ButtonZESP.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonZESP.TextScaled = true
+ButtonZESP.TextSize = 14.000
+ButtonZESP.TextWrapped = true
+ButtonZESP.MouseButton1Click:Connect(function()
+	Toggles.ZEsp = not Toggles.ZEsp
+	if Toggles.ZEsp then
+		ButtonZESP.Text = "Zombie Esp: On"
+	else
+		ButtonZESP.Text = "Zombie Esp: Off"
+        for i, v in pairs(ZombieESP.Highlight) do
+            v:Destroy()
+        end
+        table.clear(ZombieESP.Zombies)
+	end
+end)
+
 Dot.Parent = Goodwill
 Dot.Size = UDim2.new(0, 10, 0, 10)
 Dot.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -564,6 +597,18 @@ local Commands = {
 		Toggles.Speed = false
 		ButtonSpeed.Text = "Super Speed: Off"
 	end;
+    ["zesp"] = function(args)
+		Toggles.ZEsp = true
+		ButtonZESP.Text = "Zombie Esp: On"
+	end;
+	["unzesp"] = function(args)
+		Toggles.ZEsp = false
+		ButtonZESP.Text = "Zombie Esp: Off"
+        for i, v in pairs(ZombieESP.Highlight) do
+            v:Destroy()
+        end
+        table.clear(ZombieESP.Zombies)
+	end;
 	["commands"] = function(args)
 		Message("Prefixes", "/e ")
 		Message("Command", "(un)instantreload - Instantly reloads your gun, never reload again!")
@@ -581,6 +626,8 @@ local Commands = {
 		Message("Command", "(un)superknife - Turns on Super Knife, makes your knife stronger")
 		wait(2)
 		Message("Command", "(un)autocollect - Turns on Auto Collect, Auto collects powerups")
+        wait(2)
+		Message("Command", "(un)zesp - Turns on Zombie Esp, ESP For zombies")
 	end;
 }
 
@@ -700,6 +747,21 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 		game.Players.LocalPlayer.CameraMode = "Classic"
 		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.LockCenter
 	end
+    if Toggles.ZEsp then
+        for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+            if not table.find(ZombieESP.Zombies, v) then
+                local HL = Instance.new("Highlight", v)
+                HL.Enabled = true
+                HL.Adornee = v
+                HL.FillTransparency = 1
+                HL.OutlineColor = Color3.fromRGB(0, 255, 0)
+                HL.OutlineTransparency = 0
+                HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                table.insert(ZombieESP.Highlight, HL)
+                table.insert(ZombieESP.Zombies, v)
+            end
+        end
+    end
 	if GUI.Visible then
 		local MousePos = game:GetService("UserInputService"):GetMouseLocation()
 		Dot.Position = UDim2.new(0, MousePos.X, 0, MousePos.Y)
