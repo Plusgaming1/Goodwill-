@@ -1,3 +1,5 @@
+local m = game.Players.LocalPlayer:GetMouse()
+
 local Config = {
 	KillAuraDelay = 0.1;
 	FKillAuraDelay = 0.25;
@@ -539,6 +541,11 @@ local function Message(Title, Message)
 	})
 end
 
+local binds = {
+    binds = {};
+    toggle = {};
+}
+
 local Commands = {
 	["instantreload"] = function(args)
 		Toggles.InstantReload = true
@@ -613,6 +620,17 @@ local Commands = {
         end
         table.clear(ZombieESP.Zombies)
 	end;
+    ["bind"] = function(args)
+		if args[1] and args[2] then
+            binds.binds[args[1]] = args[2]
+            binds.toggle[args[1]] = false
+        end
+	end;
+    ["unbind"] = function(args)
+		if args[1] then
+            binds.binds[args[1]] = ""
+        end
+	end;
 	["commands"] = function(args)
 		Message("Prefixes", "/e ")
 		Message("Command", "(un)instantreload - Instantly reloads your gun, never reload again!")
@@ -632,8 +650,24 @@ local Commands = {
 		Message("Command", "(un)autocollect - Turns on Auto Collect, Auto collects powerups")
         wait(2)
 		Message("Command", "(un)zesp - Turns on Zombie Esp, ESP For zombies")
+        wait(2)
+		Message("Command", "bind <key> <command> - Binds a key to the command (Only the command, no args)")
+        wait(2)
+		Message("Command", "unbind <key> - Unbinds a key")
 	end;
 }
+
+m.KeyDown:Connect(function(key)
+    if binds.binds[key] then
+        if binds.toggle[key] then
+            game.Players:Chat("/e un".. binds.binds[key])
+            binds.toggle[key] = false
+        else
+            game.Players:Chat("/e ".. binds.binds[key])
+            binds.toggle[key] = true
+        end
+    end
+end)
 
 game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
 	if i.KeyCode == Enum.KeyCode.V and Toggles.SuperKnife then
