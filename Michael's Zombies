@@ -30,6 +30,7 @@ local ZombieESP = {
 }
 
 local Goodwill = Instance.new("ScreenGui")
+local Dots = Instance.new("Folder")
 local GUI = Instance.new("Frame")
 local Decoration = Instance.new("Folder")
 local Plank = Instance.new("ImageLabel")
@@ -66,6 +67,9 @@ Goodwill.Parent = game.CoreGui
 Goodwill.IgnoreGuiInset = true
 Goodwill.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Goodwill.ResetOnSpawn = false
+
+Dots.Parent = Goodwill
+Dots.Name = "Dots"
 
 GUI.Name = "GUI"
 GUI.Parent = Goodwill
@@ -697,6 +701,8 @@ game.Players.LocalPlayer.Chatted:Connect(function(msg)
 	end
 end)
 
+local cam = game.Workspace.CurrentCamera
+
 game:GetService("RunService").RenderStepped:Connect(function(dt)
 	if Toggles.InstantReload then
 		game.Players.LocalPlayer.Character.Remotes.Reload:FireServer()
@@ -759,6 +765,11 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
                 HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
                 table.insert(ZombieESP.Highlight, HL)
                 table.insert(ZombieESP.Zombies, v)
+            else
+                local HL = v:FindFirstChildOfClass("Highlight")
+                if HL then
+                    HL.OutlineColor = Color3.new(1, 0, 0):Lerp(Color3.new(0, 1, 0), v.Humanoid.Health/v.Humanoid.MaxHealth)
+                end
             end
         end
     end
