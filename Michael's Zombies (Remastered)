@@ -1,3 +1,14 @@
+--[[
+
+Made by 5x9 ( https://github.com/Plusgaming1 )
+
+Inspired by Aidez's "Goodwill" ( https://discord.gg/BfyQT46SAa )
+
+Remastered by 5x9 ( https://github.com/Plusgaming1 )
+
+]]
+
+
 local Config = {
 	KillAuraDelay = 0.1;
 	FKillAuraDelay = 0.25;
