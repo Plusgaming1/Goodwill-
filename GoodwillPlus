@@ -1,5 +1,5 @@
 if game.GameId == 8054462345 or game.GameId == 3104101863 then
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Michael's%20Zombies", true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Michael's%20Zombies%20(Remastered)", true))()
 else
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Decaying%20Winter', true))()
 end
