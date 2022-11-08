@@ -1,0 +1,875 @@
+local Config = {
+	KillAuraDelay = 0.1;
+	FKillAuraDelay = 0.25;
+	Speed = 50;
+	IRDelay = 0.1;
+	SuperKnife = 10;
+}
+
+local Numbers = {
+	KillAura = 0;
+	FKillAura = 0;
+	IR = 0;
+}
+
+local ZombieESP = {
+	Zombies = {};
+	Highlight = {};
+}
+
+local Gui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local DownBar = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local TopBar = Instance.new("Frame")
+local Exit = Instance.new("ImageButton")
+local Title = Instance.new("TextLabel")
+local SideBar = Instance.new("Frame")
+local Combat = Instance.new("TextButton")
+local Highlight = Instance.new("Frame")
+local Weapon = Instance.new("TextButton")
+local Visual = Instance.new("TextButton")
+local Enviroment = Instance.new("TextButton")
+local Misc = Instance.new("TextButton")
+local Pages = Instance.new("Frame")
+local Combat_2 = Instance.new("Frame")
+local KKA = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local Toggle = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local Point = Instance.new("TextButton")
+local UICorner_3 = Instance.new("UICorner")
+local UIGridLayout = Instance.new("UIGridLayout")
+local FKA = Instance.new("Frame")
+local TextLabel_2 = Instance.new("TextLabel")
+local Toggle_2 = Instance.new("Frame")
+local UICorner_4 = Instance.new("UICorner")
+local Point_2 = Instance.new("TextButton")
+local UICorner_5 = Instance.new("UICorner")
+local Enviroment_2 = Instance.new("Frame")
+local UIGridLayout_2 = Instance.new("UIGridLayout")
+local IRB = Instance.new("Frame")
+local TextLabel_3 = Instance.new("TextLabel")
+local Toggle_3 = Instance.new("Frame")
+local UICorner_6 = Instance.new("UICorner")
+local Point_3 = Instance.new("TextButton")
+local UICorner_7 = Instance.new("UICorner")
+local ACP = Instance.new("Frame")
+local TextLabel_4 = Instance.new("TextLabel")
+local Toggle_4 = Instance.new("Frame")
+local UICorner_8 = Instance.new("UICorner")
+local Point_4 = Instance.new("TextButton")
+local UICorner_9 = Instance.new("UICorner")
+local Misc_2 = Instance.new("Frame")
+local UIGridLayout_3 = Instance.new("UIGridLayout")
+local SS = Instance.new("Frame")
+local TextLabel_5 = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local TP = Instance.new("Frame")
+local TextLabel_6 = Instance.new("TextLabel")
+local Toggle_5 = Instance.new("Frame")
+local UICorner_10 = Instance.new("UICorner")
+local Point_5 = Instance.new("TextButton")
+local UICorner_11 = Instance.new("UICorner")
+local Weapon_2 = Instance.new("Frame")
+local ARG = Instance.new("Frame")
+local TextLabel_7 = Instance.new("TextLabel")
+local Toggle_6 = Instance.new("Frame")
+local UICorner_12 = Instance.new("UICorner")
+local Point_6 = Instance.new("TextButton")
+local UICorner_13 = Instance.new("UICorner")
+local SK = Instance.new("Frame")
+local TextLabel_8 = Instance.new("TextLabel")
+local TextBox_2 = Instance.new("TextBox")
+local UIGridLayout_4 = Instance.new("UIGridLayout")
+local Visual_2 = Instance.new("Frame")
+local UIGridLayout_5 = Instance.new("UIGridLayout")
+local ZE = Instance.new("Frame")
+local TextLabel_9 = Instance.new("TextLabel")
+local Toggle_7 = Instance.new("Frame")
+local UICorner_14 = Instance.new("UICorner")
+local Point_7 = Instance.new("TextButton")
+local UICorner_15 = Instance.new("UICorner")
+local Ignore = Instance.new("Frame")
+local Open = Instance.new("TextButton")
+local UICorner_16 = Instance.new("UICorner")
+
+--Properties:
+
+Gui.Name = "Gui"
+Gui.Parent = game.CoreGui
+Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Gui.DisplayOrder = 1000
+
+Main.Name = "Main"
+Main.Parent = Gui
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.BackgroundColor3 = Color3.fromRGB(0, 0, 30)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0.300000012, 0, 0.474999994, 0)
+
+DownBar.Name = "DownBar"
+DownBar.Parent = Main
+DownBar.AnchorPoint = Vector2.new(0, 0.5)
+DownBar.BackgroundColor3 = Color3.fromRGB(0, 0, 30)
+DownBar.Position = UDim2.new(0, 0, 1, 0)
+DownBar.Size = UDim2.new(1, 0, 0, 20)
+DownBar.ZIndex = 0
+
+UICorner.CornerRadius = UDim.new(1, 0)
+UICorner.Parent = DownBar
+
+TopBar.Name = "TopBar"
+TopBar.Parent = Main
+TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BackgroundTransparency = 1.000
+TopBar.Size = UDim2.new(1, 0, 0, 35)
+
+Exit.Name = "Exit"
+Exit.Parent = TopBar
+Exit.AnchorPoint = Vector2.new(1, 0)
+Exit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Exit.BackgroundTransparency = 1.000
+Exit.Position = UDim2.new(1, 0, 0, 0)
+Exit.Size = UDim2.new(0, 35, 0, 35)
+Exit.Image = "rbxassetid://3944676352"
+Exit.ScaleType = Enum.ScaleType.Fit
+
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.BorderSizePixel = 0
+Title.Position = UDim2.new(0.0250000004, 0, 0, 0)
+Title.Size = UDim2.new(0.725000024, 0, 1, 0)
+Title.Font = Enum.Font.Unknown
+Title.Text = "Goodwill - Michael's Zombies"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.TextSize = 14.000
+Title.TextWrapped = true
+
+SideBar.Name = "SideBar"
+SideBar.Parent = Main
+SideBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SideBar.BackgroundTransparency = 1.000
+SideBar.Position = UDim2.new(0, 0, 0, 36)
+SideBar.Size = UDim2.new(0, 75, 1, -35)
+
+Combat.Name = "Combat"
+Combat.Parent = SideBar
+Combat.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Combat.BackgroundTransparency = 1.000
+Combat.Size = UDim2.new(1, 0, 0.200000003, 0)
+Combat.Font = Enum.Font.SourceSansBold
+Combat.Text = "Combat"
+Combat.TextColor3 = Color3.fromRGB(255, 255, 255)
+Combat.TextScaled = true
+Combat.TextSize = 14.000
+Combat.TextWrapped = true
+
+Highlight.Name = "Highlight"
+Highlight.Parent = SideBar
+Highlight.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+Highlight.BackgroundTransparency = 0.800
+Highlight.BorderSizePixel = 0
+Highlight.Size = UDim2.new(1, 0, 0.200000003, 0)
+
+Weapon.Name = "Weapon"
+Weapon.Parent = SideBar
+Weapon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Weapon.BackgroundTransparency = 1.000
+Weapon.Position = UDim2.new(0, 0, 0.200000003, 0)
+Weapon.Size = UDim2.new(1, 0, 0.200000003, 0)
+Weapon.Font = Enum.Font.SourceSansBold
+Weapon.Text = "Weapon"
+Weapon.TextColor3 = Color3.fromRGB(255, 255, 255)
+Weapon.TextScaled = true
+Weapon.TextSize = 14.000
+Weapon.TextWrapped = true
+
+Visual.Name = "Visual"
+Visual.Parent = SideBar
+Visual.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Visual.BackgroundTransparency = 1.000
+Visual.Position = UDim2.new(0, 0, 0.400000006, 0)
+Visual.Size = UDim2.new(1, 0, 0.200000003, 0)
+Visual.Font = Enum.Font.SourceSansBold
+Visual.Text = "Visual"
+Visual.TextColor3 = Color3.fromRGB(255, 255, 255)
+Visual.TextScaled = true
+Visual.TextSize = 14.000
+Visual.TextWrapped = true
+
+Enviroment.Name = "Enviroment"
+Enviroment.Parent = SideBar
+Enviroment.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Enviroment.BackgroundTransparency = 1.000
+Enviroment.Position = UDim2.new(0, 0, 0.600000024, 0)
+Enviroment.Size = UDim2.new(1, 0, 0.200000003, 0)
+Enviroment.Font = Enum.Font.SourceSansBold
+Enviroment.Text = "Enviroment"
+Enviroment.TextColor3 = Color3.fromRGB(255, 255, 255)
+Enviroment.TextScaled = true
+Enviroment.TextSize = 14.000
+Enviroment.TextWrapped = true
+
+Misc.Name = "Misc"
+Misc.Parent = SideBar
+Misc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Misc.BackgroundTransparency = 1.000
+Misc.Position = UDim2.new(0, 0, 0.800000012, 0)
+Misc.Size = UDim2.new(1, 0, 0.200000003, 0)
+Misc.Font = Enum.Font.SourceSansBold
+Misc.Text = "Misc"
+Misc.TextColor3 = Color3.fromRGB(255, 255, 255)
+Misc.TextScaled = true
+Misc.TextSize = 14.000
+Misc.TextWrapped = true
+
+Pages.Name = "Pages"
+Pages.Parent = Main
+Pages.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Pages.BackgroundTransparency = 1.000
+Pages.Position = UDim2.new(0, 75, 0, 35)
+Pages.Size = UDim2.new(1, -75, 1, -35)
+
+Combat_2.Name = "Combat"
+Combat_2.Parent = Pages
+Combat_2.AnchorPoint = Vector2.new(0.5, 0.5)
+Combat_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Combat_2.BackgroundTransparency = 1.000
+Combat_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+Combat_2.Size = UDim2.new(0.899999976, 0, 1, 0)
+
+KKA.Name = "KKA"
+KKA.Parent = Combat_2
+KKA.AnchorPoint = Vector2.new(0.5, 0)
+KKA.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+KKA.BorderSizePixel = 0
+KKA.Position = UDim2.new(0.5, 0, 0, 0)
+KKA.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel.Parent = KKA
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.Text = "Knife Kill Aura"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle.Name = "Toggle"
+Toggle.Parent = KKA
+Toggle.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_2.CornerRadius = UDim.new(1, 0)
+UICorner_2.Parent = Toggle
+
+Point.Name = "Point"
+Point.Parent = Toggle
+Point.Active = false
+Point.AnchorPoint = Vector2.new(0.5, 0.5)
+Point.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point.Position = UDim2.new(0, 0, 0.5, 0)
+Point.Selectable = false
+Point.Size = UDim2.new(0, 20, 0, 20)
+Point.Text = ""
+
+UICorner_3.CornerRadius = UDim.new(1, 0)
+UICorner_3.Parent = Point
+
+UIGridLayout.Parent = Combat_2
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellPadding = UDim2.new(0, 0, 0, 5)
+UIGridLayout.CellSize = UDim2.new(1, 0, 0, 40)
+
+FKA.Name = "FKA"
+FKA.Parent = Combat_2
+FKA.AnchorPoint = Vector2.new(0.5, 0)
+FKA.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+FKA.BorderSizePixel = 0
+FKA.Position = UDim2.new(0.5, 0, 0, 0)
+FKA.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_2.Parent = FKA
+TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.BackgroundTransparency = 1.000
+TextLabel_2.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_2.Font = Enum.Font.SourceSansBold
+TextLabel_2.Text = "Flame Kill Aura"
+TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.TextScaled = true
+TextLabel_2.TextSize = 14.000
+TextLabel_2.TextWrapped = true
+TextLabel_2.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_2.Name = "Toggle"
+Toggle_2.Parent = FKA
+Toggle_2.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_2.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_2.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_2.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_4.CornerRadius = UDim.new(1, 0)
+UICorner_4.Parent = Toggle_2
+
+Point_2.Name = "Point"
+Point_2.Parent = Toggle_2
+Point_2.Active = false
+Point_2.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_2.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_2.Position = UDim2.new(0, 0, 0.5, 0)
+Point_2.Selectable = false
+Point_2.Size = UDim2.new(0, 20, 0, 20)
+Point_2.Text = ""
+
+UICorner_5.CornerRadius = UDim.new(1, 0)
+UICorner_5.Parent = Point_2
+
+Enviroment_2.Name = "Enviroment"
+Enviroment_2.Parent = Pages
+Enviroment_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Enviroment_2.BackgroundTransparency = 1.000
+Enviroment_2.Size = UDim2.new(1, 0, 1, 0)
+Enviroment_2.Visible = false
+
+UIGridLayout_2.Parent = Enviroment_2
+UIGridLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout_2.CellPadding = UDim2.new(0, 0, 0, 5)
+UIGridLayout_2.CellSize = UDim2.new(1, 0, 0, 40)
+
+IRB.Name = "IRB"
+IRB.Parent = Enviroment_2
+IRB.AnchorPoint = Vector2.new(0.5, 0)
+IRB.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+IRB.BorderSizePixel = 0
+IRB.Position = UDim2.new(0.5, 0, 0, 0)
+IRB.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_3.Parent = IRB
+TextLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_3.BackgroundTransparency = 1.000
+TextLabel_3.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_3.Font = Enum.Font.SourceSansBold
+TextLabel_3.Text = "Instant Repair Boards"
+TextLabel_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_3.TextScaled = true
+TextLabel_3.TextSize = 14.000
+TextLabel_3.TextWrapped = true
+TextLabel_3.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_3.Name = "Toggle"
+Toggle_3.Parent = IRB
+Toggle_3.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_3.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_3.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_3.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_6.CornerRadius = UDim.new(1, 0)
+UICorner_6.Parent = Toggle_3
+
+Point_3.Name = "Point"
+Point_3.Parent = Toggle_3
+Point_3.Active = false
+Point_3.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_3.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_3.Position = UDim2.new(0, 0, 0.5, 0)
+Point_3.Selectable = false
+Point_3.Size = UDim2.new(0, 20, 0, 20)
+Point_3.Text = ""
+
+UICorner_7.CornerRadius = UDim.new(1, 0)
+UICorner_7.Parent = Point_3
+
+ACP.Name = "ACP"
+ACP.Parent = Enviroment_2
+ACP.AnchorPoint = Vector2.new(0.5, 0)
+ACP.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+ACP.BorderSizePixel = 0
+ACP.Position = UDim2.new(0.5, 0, 0, 0)
+ACP.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_4.Parent = ACP
+TextLabel_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_4.BackgroundTransparency = 1.000
+TextLabel_4.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_4.Font = Enum.Font.SourceSansBold
+TextLabel_4.Text = "Auto Collect Powerups"
+TextLabel_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_4.TextScaled = true
+TextLabel_4.TextSize = 14.000
+TextLabel_4.TextWrapped = true
+TextLabel_4.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_4.Name = "Toggle"
+Toggle_4.Parent = ACP
+Toggle_4.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_4.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_4.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_4.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_8.CornerRadius = UDim.new(1, 0)
+UICorner_8.Parent = Toggle_4
+
+Point_4.Name = "Point"
+Point_4.Parent = Toggle_4
+Point_4.Active = false
+Point_4.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_4.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_4.Position = UDim2.new(0, 0, 0.5, 0)
+Point_4.Selectable = false
+Point_4.Size = UDim2.new(0, 20, 0, 20)
+Point_4.Text = ""
+
+UICorner_9.CornerRadius = UDim.new(1, 0)
+UICorner_9.Parent = Point_4
+
+Misc_2.Name = "Misc"
+Misc_2.Parent = Pages
+Misc_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Misc_2.BackgroundTransparency = 1.000
+Misc_2.Size = UDim2.new(1, 0, 1, 0)
+Misc_2.Visible = false
+
+UIGridLayout_3.Parent = Misc_2
+UIGridLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout_3.CellPadding = UDim2.new(0, 0, 0, 5)
+UIGridLayout_3.CellSize = UDim2.new(1, 0, 0, 40)
+
+SS.Name = "SS"
+SS.Parent = Misc_2
+SS.AnchorPoint = Vector2.new(0.5, 0)
+SS.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+SS.BorderSizePixel = 0
+SS.Position = UDim2.new(0.5, 0, 0, 0)
+SS.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_5.Parent = SS
+TextLabel_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_5.BackgroundTransparency = 1.000
+TextLabel_5.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_5.Font = Enum.Font.SourceSansBold
+TextLabel_5.Text = "Super Speed"
+TextLabel_5.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_5.TextScaled = true
+TextLabel_5.TextSize = 14.000
+TextLabel_5.TextWrapped = true
+TextLabel_5.TextXAlignment = Enum.TextXAlignment.Left
+
+TextBox.Parent = SS
+TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.BackgroundTransparency = 1.000
+TextBox.Position = UDim2.new(0.5, 0, 0, 0)
+TextBox.Size = UDim2.new(0.5, 0, 1, 0)
+TextBox.Font = Enum.Font.SourceSansBold
+TextBox.PlaceholderText = "Strength"
+TextBox.Text = "0"
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextScaled = true
+TextBox.TextSize = 14.000
+TextBox.TextWrapped = true
+
+TP.Name = "TP"
+TP.Parent = Misc_2
+TP.AnchorPoint = Vector2.new(0.5, 0)
+TP.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+TP.BorderSizePixel = 0
+TP.Position = UDim2.new(0.5, 0, 0, 0)
+TP.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_6.Parent = TP
+TextLabel_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_6.BackgroundTransparency = 1.000
+TextLabel_6.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_6.Font = Enum.Font.SourceSansBold
+TextLabel_6.Text = "Third Person"
+TextLabel_6.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_6.TextScaled = true
+TextLabel_6.TextSize = 14.000
+TextLabel_6.TextWrapped = true
+TextLabel_6.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_5.Name = "Toggle"
+Toggle_5.Parent = TP
+Toggle_5.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_5.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_5.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_5.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_10.CornerRadius = UDim.new(1, 0)
+UICorner_10.Parent = Toggle_5
+
+Point_5.Name = "Point"
+Point_5.Parent = Toggle_5
+Point_5.Active = false
+Point_5.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_5.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_5.Position = UDim2.new(0, 0, 0.5, 0)
+Point_5.Selectable = false
+Point_5.Size = UDim2.new(0, 20, 0, 20)
+Point_5.Text = ""
+
+UICorner_11.CornerRadius = UDim.new(1, 0)
+UICorner_11.Parent = Point_5
+
+Weapon_2.Name = "Weapon"
+Weapon_2.Parent = Pages
+Weapon_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Weapon_2.BackgroundTransparency = 1.000
+Weapon_2.Size = UDim2.new(1, 0, 1, 0)
+Weapon_2.Visible = false
+
+ARG.Name = "ARG"
+ARG.Parent = Weapon_2
+ARG.AnchorPoint = Vector2.new(0.5, 0)
+ARG.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+ARG.BorderSizePixel = 0
+ARG.Position = UDim2.new(0.5, 0, 0, 0)
+ARG.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_7.Parent = ARG
+TextLabel_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_7.BackgroundTransparency = 1.000
+TextLabel_7.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_7.Font = Enum.Font.SourceSansBold
+TextLabel_7.Text = "Auto Reload Gun"
+TextLabel_7.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_7.TextScaled = true
+TextLabel_7.TextSize = 14.000
+TextLabel_7.TextWrapped = true
+TextLabel_7.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_6.Name = "Toggle"
+Toggle_6.Parent = ARG
+Toggle_6.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_6.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_6.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_6.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_12.CornerRadius = UDim.new(1, 0)
+UICorner_12.Parent = Toggle_6
+
+Point_6.Name = "Point"
+Point_6.Parent = Toggle_6
+Point_6.Active = false
+Point_6.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_6.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_6.Position = UDim2.new(0, 0, 0.5, 0)
+Point_6.Selectable = false
+Point_6.Size = UDim2.new(0, 20, 0, 20)
+Point_6.Text = ""
+
+UICorner_13.CornerRadius = UDim.new(1, 0)
+UICorner_13.Parent = Point_6
+
+SK.Name = "SK"
+SK.Parent = Weapon_2
+SK.AnchorPoint = Vector2.new(0.5, 0)
+SK.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+SK.BorderSizePixel = 0
+SK.Position = UDim2.new(0.5, 0, 0, 0)
+SK.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_8.Parent = SK
+TextLabel_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_8.BackgroundTransparency = 1.000
+TextLabel_8.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_8.Font = Enum.Font.SourceSansBold
+TextLabel_8.Text = "Super Knife"
+TextLabel_8.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_8.TextScaled = true
+TextLabel_8.TextSize = 14.000
+TextLabel_8.TextWrapped = true
+TextLabel_8.TextXAlignment = Enum.TextXAlignment.Left
+
+TextBox_2.Parent = SK
+TextBox_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox_2.BackgroundTransparency = 1.000
+TextBox_2.Position = UDim2.new(0.5, 0, 0, 0)
+TextBox_2.Size = UDim2.new(0.5, 0, 1, 0)
+TextBox_2.Font = Enum.Font.SourceSansBold
+TextBox_2.PlaceholderText = "Strength"
+TextBox_2.Text = "0"
+TextBox_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox_2.TextScaled = true
+TextBox_2.TextSize = 14.000
+TextBox_2.TextWrapped = true
+
+UIGridLayout_4.Parent = Weapon_2
+UIGridLayout_4.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout_4.CellPadding = UDim2.new(0, 0, 0, 5)
+UIGridLayout_4.CellSize = UDim2.new(1, 0, 0, 40)
+
+Visual_2.Name = "Visual"
+Visual_2.Parent = Pages
+Visual_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Visual_2.BackgroundTransparency = 1.000
+Visual_2.Size = UDim2.new(1, 0, 1, 0)
+Visual_2.Visible = false
+
+UIGridLayout_5.Parent = Visual_2
+UIGridLayout_5.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout_5.CellPadding = UDim2.new(0, 0, 0, 5)
+UIGridLayout_5.CellSize = UDim2.new(1, 0, 0, 40)
+
+ZE.Name = "ZE"
+ZE.Parent = Visual_2
+ZE.AnchorPoint = Vector2.new(0.5, 0)
+ZE.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+ZE.BorderSizePixel = 0
+ZE.Position = UDim2.new(0.5, 0, 0, 0)
+ZE.Size = UDim2.new(1, 0, 0, 40)
+
+TextLabel_9.Parent = ZE
+TextLabel_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_9.BackgroundTransparency = 1.000
+TextLabel_9.Size = UDim2.new(0.5, 0, 1, 0)
+TextLabel_9.Font = Enum.Font.SourceSansBold
+TextLabel_9.Text = "Zombie Esp"
+TextLabel_9.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_9.TextScaled = true
+TextLabel_9.TextSize = 14.000
+TextLabel_9.TextWrapped = true
+TextLabel_9.TextXAlignment = Enum.TextXAlignment.Left
+
+Toggle_7.Name = "Toggle"
+Toggle_7.Parent = ZE
+Toggle_7.AnchorPoint = Vector2.new(0.5, 0.5)
+Toggle_7.BackgroundColor3 = Color3.fromRGB(64, 0, 255)
+Toggle_7.Position = UDim2.new(0.75, 0, 0.5, 0)
+Toggle_7.Size = UDim2.new(0.349999994, 0, 0.25, 0)
+
+UICorner_14.CornerRadius = UDim.new(1, 0)
+UICorner_14.Parent = Toggle_7
+
+Point_7.Name = "Point"
+Point_7.Parent = Toggle_7
+Point_7.Active = false
+Point_7.AnchorPoint = Vector2.new(0.5, 0.5)
+Point_7.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+Point_7.Position = UDim2.new(0, 0, 0.5, 0)
+Point_7.Selectable = false
+Point_7.Size = UDim2.new(0, 20, 0, 20)
+Point_7.Text = ""
+
+UICorner_15.CornerRadius = UDim.new(1, 0)
+UICorner_15.Parent = Point_7
+
+Ignore.Name = "Ignore"
+Ignore.Parent = Visual_2
+Ignore.BackgroundColor3 = Color3.fromRGB(0, 0, 50)
+Ignore.BorderSizePixel = 0
+Ignore.Position = UDim2.new(0.5, 0, 0, 0)
+Ignore.Size = UDim2.new(1, 0, 0, 40)
+Ignore.Visible = false
+
+Open.Name = "Open"
+Open.Parent = Gui
+Open.AnchorPoint = Vector2.new(1, 1)
+Open.BackgroundColor3 = Color3.fromRGB(0, 0, 30)
+Open.Position = UDim2.new(1, 0, 1, 0)
+Open.Size = UDim2.new(0, 75, 0, 75)
+Open.Font = Enum.Font.SourceSans
+Open.Text = "Open"
+Open.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open.TextScaled = true
+Open.TextSize = 14.000
+Open.TextWrapped = true
+Open.Visible = false
+
+UICorner_16.CornerRadius = UDim.new(1, 0)
+UICorner_16.Parent = Open
+
+game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
+	if i.KeyCode == Enum.KeyCode.V and _G.SK > 0 then
+		for i_, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+			if v.Humanoid.Health > 0 then
+				local _, OnScreen = game.Workspace.CurrentCamera:WorldToScreenPoint(v.PrimaryPart.Position)
+				if OnScreen and (v.PrimaryPart.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude < 15 then
+					for i = 1,math.round(math.max(1, _G.SK)) do
+						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+					end
+				end
+			end
+		end
+	end
+end)
+
+local function SUIXJT_fake_script() -- Main.Manager 
+	local script = Instance.new('LocalScript', Main)
+	
+	local function SetThing(Value, E)
+		_G[Value] = E
+	end
+	
+	SetThing("KKA", false)
+	SetThing("FKA", false)
+	SetThing("ARG", false)
+	SetThing("SK", 0)
+	SetThing("ZE", false)
+	SetThing("IRB", false)
+	SetThing("ACP", false)
+	SetThing("SS", 0)
+	SetThing("TP", false)
+	
+	local Main = script.Parent
+	
+	local SideBar = Main.SideBar
+	local TopBar = Main.TopBar
+	
+	local Highlight = SideBar.Highlight
+	
+	local Pages = Main.Pages
+	
+	local HighLightPos = 0
+	
+	local function GetValue(ValueName)
+		return _G[ValueName]
+	end
+	
+	local function SetValue(ValueName, Value)
+		_G[ValueName] = Value
+	end
+	
+	TopBar.Exit.MouseButton1Click:Connect(function()
+		Main.Visible = false
+		Main.Parent.Open.Visible = true
+	end)
+	
+	Main.Parent.Open.MouseButton1Click:Connect(function()
+		Main.Visible = true
+		Main.Parent.Open.Visible = false
+	end)
+	
+	for i, v in pairs(SideBar:GetChildren()) do
+		if v:IsA("TextButton") then
+			v.MouseButton1Click:Connect(function()
+				for i_, v_ in pairs(Pages:GetChildren()) do
+					v_.Visible = false
+				end
+				Pages[v.Name].Visible = true
+				HighLightPos = v.Position.Y.Scale
+			end)
+		end
+	end
+	
+	for i_, v_ in pairs(Pages:GetChildren()) do
+		for i__, v__ in pairs(v_:GetChildren()) do
+			for i, v in pairs(v_:GetChildren()) do
+				if v:FindFirstChild("Toggle") then
+					v.Toggle.Point.MouseButton1Click:Connect(function()
+						if _G[v.Name] == true then
+							v.Toggle.Point.Position = UDim2.new(0, 0, 0.5, 0)
+							_G[v.Name] = false
+						else
+							v.Toggle.Point.Position = UDim2.new(1, 0, 0.5, 0)
+							_G[v.Name] = true
+							
+							if v.Name == "TP" then
+								game.Players.LocalPlayer.CameraMinZoomDistance = 0
+								game.Players.LocalPlayer.CameraMaxZoomDistance = 0
+								game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
+							end
+							
+							if v.Name == "ZE" then
+								for i, v in pairs(ZombieESP.Highlight) do
+									v:Destroy()
+								end
+								ZombieESP.Highlight = {}
+								table.clear(ZombieESP.Zombies)
+							end
+						end
+					end)
+				end
+				if v:FindFirstChild("TextBox") then
+					v.TextBox.Changed:Connect(function()
+						_G[v.Name] = tonumber(v.TextBox.Text)
+					end)
+				end
+			end
+		end
+	end
+	
+	game:GetService("RunService").RenderStepped:Connect(function(dt)
+		Highlight.Position = Highlight.Position:Lerp(UDim2.new(0, 0, HighLightPos, 0), 0.2)
+		
+		if _G.ARG then
+			game.Players.LocalPlayer.Character.Remotes.Reload:FireServer()
+		end
+		if _G.KA then
+			Numbers.KillAura += dt
+			if Numbers.KillAura >= Config.KillAuraDelay then
+				Numbers.KillAura -= Config.KillAuraDelay
+				for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+					if v.Humanoid.Health > 0 then
+						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+					end
+				end
+			end
+		end
+		if _G.FKA then
+			Numbers.FKillAura += dt
+			if Numbers.FKillAura >= Config.FKillAuraDelay then
+				Numbers.FKillAura -= Config.FKillAuraDelay
+				for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+					if v.Humanoid.Health > 0 then
+						game:GetService("ReplicatedStorage").Framework.Remotes.FlameHitbox:FireServer(v.Humanoid, Vector3.new(0,0.5,0))
+					end
+				end
+			end
+		end
+		if _G.IRB then
+			if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.F) then
+				Numbers.IR += dt
+				if Numbers.IR >= Config.IRDelay then
+					Numbers.IR -= Config.IRDelay
+					game.Players.LocalPlayer.Character.Remotes.UpdateInputHold:FireServer(true)
+				end
+			end
+		end
+		if _G.SS > 0 then
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SS
+		end
+		if _G.ACP then
+			for i, v in pairs(game.Workspace.Ignore._Powerups:GetChildren()) do
+				firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
+			end
+		end
+		if _G.TP then
+			game.Workspace.CurrentCamera.CFrame *= CFrame.new(2.5, 0, 0)
+			game.Players.LocalPlayer.CameraMinZoomDistance = 5
+			game.Players.LocalPlayer.CameraMaxZoomDistance = 50
+			game.Players.LocalPlayer.CameraMode = "Classic"
+			game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.LockCenter
+		end
+		if _G.ZE then
+			for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+				if not table.find(ZombieESP.Zombies, v) then
+					local HL = Instance.new("Highlight", v)
+					HL.Enabled = true
+					HL.Adornee = v
+					HL.FillTransparency = 1
+					HL.OutlineColor = Color3.fromRGB(0, 255, 0)
+					HL.OutlineTransparency = 0
+					HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					table.insert(ZombieESP.Highlight, HL)
+					table.insert(ZombieESP.Zombies, v)
+				else
+					local HL = v:FindFirstChildOfClass("Highlight")
+					if HL then
+						HL.OutlineColor = Color3.new(1, 0, 0):Lerp(Color3.new(0, 1, 0), v.Humanoid.Health/v.Humanoid.MaxHealth)
+					end
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(SUIXJT_fake_script)()
