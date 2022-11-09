@@ -1,0 +1,154 @@
+local Lib = require(game.ReplicatedStorage.GoodwillLib)
+
+local Config = {
+	KillAuraDelay = 0.1;
+	FKillAuraDelay = 0.25;
+	Speed = 50;
+	IRDelay = 0.1;
+	SuperKnife = 10;
+}
+
+local Numbers = {
+	KillAura = 0;
+	FKillAura = 0;
+	IR = 0;
+}
+
+local ZombieESP = {
+	Zombies = {};
+	Highlight = {};
+}
+
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.ResetOnSpawn = false
+ScreenGui.DisplayOrder = 1000
+ScreenGui.Name = "Goodwill"
+
+local MainGui = Lib:CreateWindow("Goodwill - Michael's Zombies", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt)
+
+local Pages = {
+	Combat = MainGui:CreatePage("Combat");
+	Weapon = MainGui:CreatePage("Weapon");
+	Visual = MainGui:CreatePage("Visual");
+	Enviroment = MainGui:CreatePage("Enviroment");
+	Misc = MainGui:CreatePage("Misc");
+}
+
+local Buttons = {
+	KnifeKillAura = Pages.Combat:CreateToggle("KKA", "Knife Kill Aura", false);
+	FlameKillAura = Pages.Combat:CreateToggle("FKA", "Flame Kill Aura", false);
+	AutoReloadGun = Pages.Combat:CreateToggle("ARG", "Auto Reload Gun", false);
+	SuperKnife = Pages.Combat:CreateSlider("SK", "Super Knife Strength", 0, 500, 0);
+	ZombieEsp = Pages.Combat:CreateToggle("ZE", "Zombie Esp", false);
+	InstantRepairBoards = Pages.Combat:CreateToggle("IRB", "Instant Repair Boards", false);
+	AutoCollectPowerups = Pages.Combat:CreateToggle("ACP", "Auto Collect Powerups", false);
+	SuperSpeed = Pages.Combat:CreateSlider("SS", "Super Speed", 0, 100, 0);
+	ThirdPerson = Pages.Combat:CreateToggle("TP", "Third Person", false);
+}
+
+MainGui.Parent = ScreenGui
+
+Buttons.ThirdPerson.Toggled:Connect(function(tgl)
+	if tgl == false then
+		game.Players.LocalPlayer.CameraMinZoomDistance = 0
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 0
+		game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
+	end
+end)
+
+Buttons.ZombieEsp.Toggled:Connect(function(tgl)
+	if tgl == false then
+		for i, v in pairs(ZombieESP.Highlight) do
+			v:Destroy()
+		end
+		ZombieESP.Highlight = {}
+		table.clear(ZombieESP.Zombies)
+	end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
+	if i.KeyCode == Enum.KeyCode.V and Buttons.SuperKnife.Value > 0 then
+		for i_, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+			if v.Humanoid.Health > 0 then
+				local _, OnScreen = game.Workspace.CurrentCamera:WorldToScreenPoint(v.PrimaryPart.Position)
+				if OnScreen and (v.PrimaryPart.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude < 15 then
+					for i = 1,math.round(math.max(1, Buttons.SuperKnife.Value)) do
+						game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+					end
+				end
+			end
+		end
+	end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function(dt)
+	if Buttons.AutoReloadGun.Value then
+		game.Players.LocalPlayer.Character.Remotes.Reload:FireServer()
+	end
+	if Buttons.KnifeKillAura.Value then
+		Numbers.KillAura += dt
+		if Numbers.KillAura >= Config.KillAuraDelay then
+			Numbers.KillAura -= Config.KillAuraDelay
+			for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+				if v.Humanoid.Health > 0 then
+					game:GetService("ReplicatedStorage").Framework.Remotes.KnifeHitbox:FireServer(v.Humanoid)
+				end
+			end
+		end
+	end
+	if Buttons.FlameKillAura.Value then
+		Numbers.FKillAura += dt
+		if Numbers.FKillAura >= Config.FKillAuraDelay then
+			Numbers.FKillAura -= Config.FKillAuraDelay
+			for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+				if v.Humanoid.Health > 0 then
+					game:GetService("ReplicatedStorage").Framework.Remotes.FlameHitbox:FireServer(v.Humanoid, Vector3.new(0,0.5,0))
+				end
+			end
+		end
+	end
+	if Buttons.InstantRepairBoards.Value then
+		if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.F) then
+			Numbers.IR += dt
+			if Numbers.IR >= Config.IRDelay then
+				Numbers.IR -= Config.IRDelay
+				game.Players.LocalPlayer.Character.Remotes.UpdateInputHold:FireServer(true)
+			end
+		end
+	end
+	if tonumber(Buttons.SuperSpeed.Value) > 0 then
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SS
+	end
+	if Buttons.AutoCollectPowerups.Value then
+		for i, v in pairs(game.Workspace.Ignore._Powerups:GetChildren()) do
+			firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
+		end
+	end
+	if Buttons.ThirdPerson.Value then
+		game.Workspace.CurrentCamera.CFrame *= CFrame.new(2.5, 0, 0)
+		game.Players.LocalPlayer.CameraMinZoomDistance = 5
+		game.Players.LocalPlayer.CameraMaxZoomDistance = 50
+		game.Players.LocalPlayer.CameraMode = "Classic"
+		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.LockCenter
+	end
+	if Buttons.ZombieEsp.Value then
+		for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
+			if not table.find(ZombieESP.Zombies, v) then
+				local HL = Instance.new("Highlight", v)
+				HL.Enabled = true
+				HL.Adornee = v
+				HL.FillTransparency = 1
+				HL.OutlineColor = Color3.fromRGB(0, 255, 0)
+				HL.OutlineTransparency = 0
+				HL.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+				table.insert(ZombieESP.Highlight, HL)
+				table.insert(ZombieESP.Zombies, v)
+			else
+				local HL = v:FindFirstChildOfClass("Highlight")
+				if HL then
+					HL.OutlineColor = Color3.new(1, 0, 0):Lerp(Color3.new(0, 1, 0), v.Humanoid.Health/v.Humanoid.MaxHealth)
+				end
+			end
+		end
+	end
+end)
