@@ -27,10 +27,13 @@ local TextBox_2 = Instance.new("TextBox")
 local Page = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
 
+local ThingEr = Instance.new("Folder", game)
+ThingEr.Name = "GoodwillLib"
+
 --Properties:
 
 Window.Name = "Window"
-Window.Parent = game.ReplicatedStorage.GoodwillLib
+Window.Parent = ThingEr
 Window.AnchorPoint = Vector2.new(0.5, 0.5)
 Window.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 Window.BorderSizePixel = 0
@@ -77,7 +80,7 @@ Pages.Position = UDim2.new(0, 100, 0, 35)
 Pages.Size = UDim2.new(1, -100, 1, -35)
 
 Label.Name = "Label"
-Label.Parent = game.ReplicatedStorage.GoodwillLib
+Label.Parent = ThingEr
 Label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Label.BorderSizePixel = 0
 Label.Size = UDim2.new(0, 100, 0, 100)
@@ -95,7 +98,7 @@ Title_2.TextSize = 14.000
 Title_2.TextWrapped = true
 
 Toggle.Name = "Toggle"
-Toggle.Parent = game.ReplicatedStorage.GoodwillLib
+Toggle.Parent = ThingEr
 Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
 Toggle.Size = UDim2.new(0, 100, 0, 100)
@@ -141,7 +144,7 @@ UICorner.CornerRadius = UDim.new(1, 0)
 UICorner.Parent = Point
 
 Slider.Name = "Slider"
-Slider.Parent = game.ReplicatedStorage.GoodwillLib
+Slider.Parent = ThingEr
 Slider.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Slider.BorderSizePixel = 0
 Slider.Size = UDim2.new(0, 100, 0, 100)
@@ -191,7 +194,7 @@ UICorner_2.CornerRadius = UDim.new(1, 0)
 UICorner_2.Parent = Point_2
 
 Button.Name = "Button"
-Button.Parent = game.ReplicatedStorage.GoodwillLib
+Button.Parent = ThingEr
 Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Button.BorderSizePixel = 0
 Button.Size = UDim2.new(0, 100, 0, 100)
@@ -222,7 +225,7 @@ TextButton.TextSize = 14.000
 TextButton.TextWrapped = true
 
 TextBox.Name = "TextBox"
-TextBox.Parent = game.ReplicatedStorage.GoodwillLib
+TextBox.Parent = ThingEr
 TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 TextBox.BorderSizePixel = 0
 TextBox.Size = UDim2.new(0, 100, 0, 100)
@@ -256,7 +259,7 @@ TextBox_2.TextSize = 14.000
 TextBox_2.TextWrapped = true
 
 Page.Name = "Page"
-Page.Parent = game.ReplicatedStorage.GoodwillLib
+Page.Parent = ThingEr
 Page.AnchorPoint = Vector2.new(0.5, 0.5)
 Page.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Page.BackgroundTransparency = 1.000
@@ -278,330 +281,374 @@ UIGridLayout.CellSize = UDim2.new(1, 0, 0, 40)
 local fake_module_scripts = {}
 
 local function Module()
-		local module = {}
+	local module = {}
 
-		local Buttons = 0
+	local Buttons = 0
 
-		local EventFolder = nil
+	local EventFolder = nil
 
-		local Mouse = game.Players.LocalPlayer:GetMouse()
+	local Mouse = game.Players.LocalPlayer:GetMouse()
 
-		local function map(value, istart, istop, ostart, ostop)
-			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
-		end
+	local function map(value, istart, istop, ostart, ostop)
+		return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+	end
 
-		local function lerp(x, y, z)
-			return x + (y - x) * z
-		end
+	local function lerp(x, y, z)
+		return x + (y - x) * z
+	end
 
-		local function EnableDrag(GuiObject, GuiObject2)
-			local plr = game.Players.LocalPlayer
-			local m = plr:GetMouse()
-			if GuiObject:IsA("GuiButton") then
-				local LastX = m.X
-				local LastY = m.Y
-				local Clicked = false
-				GuiObject.MouseButton1Down:Connect(function()
-					Clicked = true
-					LastX = m.X
-					LastY = m.Y
-				end)
-				m.Move:Connect(function()
-					if Clicked then
-						if (m.X ~= LastX) or (m.Y ~= LastY) then
-							GuiObject.Position = UDim2.new(GuiObject.Position.X.Scale,GuiObject.Position.X.Offset - (LastX - m.X),GuiObject.Position.Y.Scale,GuiObject.Position.Y.Offset - (LastY - m.Y))
-							LastX = m.X
-							LastY = m.Y
-						end
-					end
-				end)
-				GuiObject.MouseButton1Up:Connect(function()
-					Clicked = false
-				end)
-			elseif GuiObject:IsA("GuiBase") then
-				local LastX = m.X
-				local LastY = m.Y
-				local Clicked = false
-				m.Button1Down:Connect(function()
-					local MinPos = GuiObject.AbsolutePosition
-					local MaxPos = Vector2.new(GuiObject.AbsolutePosition.X + (GuiObject.AbsoluteSize.X), GuiObject.AbsolutePosition.Y + (GuiObject.AbsoluteSize.Y))
-					if (m.X >= MinPos.X) and (m.Y >= MinPos.Y) and (m.X <= MaxPos.X) and (m.Y <= MaxPos.Y) then
-						Clicked = true
+	local function EnableDrag(GuiObject2, GuiObject)
+		local plr = game.Players.LocalPlayer
+		local m = plr:GetMouse()
+		if GuiObject:IsA("GuiButton") then
+			local LastX = m.X
+			local LastY = m.Y
+			local Clicked = false
+			GuiObject.MouseButton1Down:Connect(function()
+				Clicked = true
+				LastX = m.X
+				LastY = m.Y
+			end)
+			m.Move:Connect(function()
+				if Clicked then
+					if (m.X ~= LastX) or (m.Y ~= LastY) then
+						GuiObject.Position = UDim2.new(GuiObject.Position.X.Scale,GuiObject.Position.X.Offset - (LastX - m.X),GuiObject.Position.Y.Scale,GuiObject.Position.Y.Offset - (LastY - m.Y))
 						LastX = m.X
 						LastY = m.Y
 					end
-				end)
-				m.Move:Connect(function()
-					if Clicked then
-						if (m.X ~= LastX) or (m.Y ~= LastY) then
-							GuiObject2.Position = UDim2.new(GuiObject2.Position.X.Scale,GuiObject2.Position.X.Offset - (LastX - m.X),GuiObject2.Position.Y.Scale,GuiObject2.Position.Y.Offset - (LastY - m.Y))
-							LastX = m.X
-							LastY = m.Y
-						end
-					end
-				end)
-				m.Button1Up:Connect(function()
-					Clicked = false
-				end)
-			end
-		end
-
-		local function AddEvent(Name)
-			if not EventFolder then
-				EventFolder = Instance.new("Folder", game)
-				EventFolder.Name = "CustomEvents"
-			end
-			local Event = Instance.new("BindableEvent", EventFolder)
-			Event.Name = Name
-			return Event
-		end
-
-		function module:CreateWindow(Name, CloseBind, OpenBind)
-			local a = {}
-
-			local GlobalEvent = AddEvent("Global")
-			a.GlobalEvent = GlobalEvent.Event
-
-			local HighlightPos = 0
-
-			local b = script.Window:Clone()
-			b.TopBar.Title.Text = Name
-
-			a.Frame = b
-
-			EnableDrag(b, b.TopBar)
-
-			local UnlockMouse = false
-
-			game:GetService("RunService").RenderStepped:Connect(function(dt)
-				b.SideBar.Select.Position = b.SideBar.Select.Position:Lerp(UDim2.new(0, 0, HighlightPos, 0), 0.2)
-
-				if UnlockMouse then
-					game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
 				end
 			end)
-
-			game:GetService("UserInputService").InputBegan:Connect(function(i, gpe)
-				if not b.Visible then
-					if i.KeyCode == OpenBind then
-						b.Visible = true
-						UnlockMouse = true
-					end
-				else
-					if i.KeyCode == CloseBind then
-						b.Visible = false
-						UnlockMouse = false
+			GuiObject.MouseButton1Up:Connect(function()
+				Clicked = false
+			end)
+		elseif GuiObject:IsA("GuiBase") then
+			local LastX = m.X
+			local LastY = m.Y
+			local Clicked = false
+			m.Button1Down:Connect(function()
+				local MinPos = GuiObject.AbsolutePosition
+				local MaxPos = Vector2.new(GuiObject.AbsolutePosition.X + (GuiObject.AbsoluteSize.X), GuiObject.AbsolutePosition.Y + (GuiObject.AbsoluteSize.Y))
+				if (m.X >= MinPos.X) and (m.Y >= MinPos.Y) and (m.X <= MaxPos.X) and (m.Y <= MaxPos.Y) then
+					Clicked = true
+					LastX = m.X
+					LastY = m.Y
+				end
+			end)
+			m.Move:Connect(function()
+				if Clicked then
+					if (m.X ~= LastX) or (m.Y ~= LastY) then
+						GuiObject2.Position = UDim2.new(GuiObject2.Position.X.Scale,GuiObject2.Position.X.Offset - (LastX - m.X),GuiObject2.Position.Y.Scale,GuiObject2.Position.Y.Offset - (LastY - m.Y))
+						LastX = m.X
+						LastY = m.Y
 					end
 				end
 			end)
+			m.Button1Up:Connect(function()
+				Clicked = false
+			end)
+		end
+	end
 
-			function a:CreatePage(Name)
-				local c = {}
+	local function AddEvent(Name)
+		if not EventFolder then
+			EventFolder = Instance.new("Folder", game)
+			EventFolder.Name = "CustomEvents"
+		end
+		local Event = Instance.new("BindableEvent", EventFolder)
+		Event.Name = Name
+		return Event
+	end
 
-				local Button = Instance.new("TextButton", b.SideBar)
-				Button.Name = Name
-				Button.BackgroundTransparency = 1
-				Button.Font = Enum.Font.SourceSansBold
-				Button.Text = Name
-				Button.TextColor3 = Color3.new(255, 255, 255)
-				Button.TextScaled = true
-				Buttons += 1
+	function module:CreateWindow(Name, CloseBind, OpenBind)
+		local a = {}
 
-				for i, v in pairs(b.SideBar:GetChildren()) do
-					if v:IsA("TextButton") then
-						v.Size = UDim2.new(1, 0, 1/Buttons, 0)
-						v.Position = UDim2.new(0, 0, (i-2) * (1/Buttons), 0)
+		local GlobalEvent = AddEvent("Global")
+		a.GlobalEvent = GlobalEvent.Event
+
+		local HighlightPos = 0
+
+		local b = script.Window:Clone()
+		b.TopBar.Title.Text = Name
+
+		a.Frame = b
+
+		EnableDrag(b, b.TopBar)
+
+		local UnlockMouse = false
+
+		game:GetService("RunService").RenderStepped:Connect(function(dt)
+			b.SideBar.Select.Position = b.SideBar.Select.Position:Lerp(UDim2.new(0, 0, HighlightPos, 0), 0.2)
+
+			if UnlockMouse then
+				game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+			end
+		end)
+
+		game:GetService("UserInputService").InputBegan:Connect(function(i, gpe)
+			if not b.Visible then
+				if i.KeyCode == OpenBind then
+					b.Visible = true
+					UnlockMouse = true
+				end
+			else
+				if i.KeyCode == CloseBind then
+					b.Visible = false
+					UnlockMouse = false
+				end
+			end
+		end)
+
+		function a:CreatePage(Name)
+			local c = {}
+
+			local Button = Instance.new("TextButton", b.SideBar)
+			Button.Name = Name
+			Button.BackgroundTransparency = 1
+			Button.Font = Enum.Font.SourceSansBold
+			Button.Text = Name
+			Button.TextColor3 = Color3.new(255, 255, 255)
+			Button.TextScaled = true
+			Buttons += 1
+
+			for i, v in pairs(b.SideBar:GetChildren()) do
+				if v:IsA("TextButton") then
+					v.Size = UDim2.new(1, 0, 1/Buttons, 0)
+					v.Position = UDim2.new(0, 0, (i-2) * (1/Buttons), 0)
+				end
+			end
+			b.SideBar.Select.Size = UDim2.new(1, 0, 1/Buttons, 0)
+
+			local Page = script.Page:Clone()
+			Page.Parent = b.Pages
+			Page.Name = Name
+			Page.Visible = false
+			if Buttons == 1 then
+				Page.Visible = true
+			end
+
+			Button.MouseButton1Click:Connect(function()
+				GlobalEvent:Fire("Page Changed", {Page.Name})
+				for i, v in pairs(b.Pages:GetChildren()) do
+					if v:IsA("GuiBase") then
+						v.Visible = false
 					end
 				end
-				b.SideBar.Select.Size = UDim2.new(1, 0, 1/Buttons, 0)
+				Page.Visible = true
+				HighlightPos = Button.Position.Y.Scale
+			end)
 
-				local Page = script.Page:Clone()
-				Page.Parent = b.Pages
-				Page.Name = Name
-				Page.Visible = false
-				if Buttons == 1 then
-					Page.Visible = true
-				end
+			function c:CreateToggle(Name, Title, Value)
+				local d = {}
 
-				Button.MouseButton1Click:Connect(function()
-					GlobalEvent:Fire("Page Changed", {Page.Name})
-					for i, v in pairs(b.Pages:GetChildren()) do
-						if v:IsA("GuiBase") then
-							v.Visible = false
+				d["Value"] = Value
+
+				local Toggle = script.Toggle:Clone()
+				Toggle.Parent = Page
+				Toggle.Name = Name
+				Toggle.Title.Text = Title
+
+				d.Element = Toggle
+
+				local Point = Toggle.Toggle.Line.Point
+
+				local EventToggle = AddEvent("Toggled ".. Name)
+				d.Toggled = EventToggle.Event
+
+				local function ToggleButton(...)
+					local e = {...}
+					spawn(function()
+						if #e == 1 then
+							Value = e[1]
+							d["Value"] = Value
+						else
+							Value = not Value
+							d["Value"] = Value
 						end
-					end
-					Page.Visible = true
-					HighlightPos = Button.Position.Y.Scale
-				end)
-
-				function c:CreateToggle(Name, Title, Value)
-					local d = {}
-
-					local Toggle = script.Toggle:Clone()
-					Toggle.Parent = Page
-					Toggle.Name = Name
-					Toggle.Title.Text = Title
-
-					d.Element = Toggle
-
-					local Point = Toggle.Toggle.Line.Point
-
-					local EventToggle = AddEvent("Toggled ".. Name)
-					d.Toggled = EventToggle.Event
-
-					local function ToggleButton(...)
-						local e = {...}
-						spawn(function()
-							if #e == 1 then
-								Value = e[1]
+						local i = 0
+						repeat
+							local inc = wait()/0.75
+							i += inc
+							i = math.min(1, i)
+							if Value == true then
+								Point.Position = Point.Position:Lerp(UDim2.new(1, 0, 0.5, 0), i)
 							else
-								Value = not Value
+								Point.Position = Point.Position:Lerp(UDim2.new(0, 0, 0.5, 0), i)
 							end
-							local i = 0
-							repeat
-								local inc = wait()/0.75
-								i += inc
-								i = math.min(1, i)
-								if Value == true then
-									Point.Position = Point.Position:Lerp(UDim2.new(1, 0, 0.5, 0), i)
-								else
-									Point.Position = Point.Position:Lerp(UDim2.new(0, 0, 0.5, 0), i)
-								end
-							until i >= 1
-						end)
-					end
-
-					if Value == true then
-						ToggleButton(true)
-					end
-
-					Point.MouseButton1Click:Connect(function()
-						ToggleButton()
-						EventToggle:Fire(not Value)
+						until i >= 1
 					end)
-
-					Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-					return d
 				end
 
-				function c:CreateLabel(Name, Title)
-					local d = {}
+				d["Change"] = ToggleButton
 
-					local Label = script.Label:Clone()
-					Label.Parent = Page
-					Label.Name = Name
-					Label.Title.Text = Title
-
-					d.Element = Label
-
-					Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-					return d
+				if Value == true then
+					ToggleButton(true)
 				end
 
-				function c:CreateSlider(Name, Title, Min, Max, Value)
-					local d = {}
+				Point.MouseButton1Click:Connect(function()
+					ToggleButton()
+					EventToggle:Fire(not Value)
+				end)
 
-					local Slider = script.Slider:Clone()
-					Slider.Parent = Page
-					Slider.Name = Name
-					Slider.Title.Text = Title
+				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
 
-					d.Element = Slider
-
-					local Point = Slider.Slider.Line.Point
-					Point.Text = Value
-
-					local EventMoved = AddEvent("Moved ".. Name)
-					d.Moved = EventMoved.Event
-
-					Point.Position = UDim2.new(Value/Max, 0, 0.5, 0)
-
-					local MouseDown = false
-
-					Point.MouseButton1Down:Connect(function()
-						MouseDown = true
-					end)
-					Point.MouseButton1Up:Connect(function()
-						MouseDown = false
-					end)
-					Mouse.Button1Up:Connect(function()
-						MouseDown = false
-					end)
-
-					Mouse.Move:Connect(function()
-						if MouseDown then
-							Point.Position = UDim2.new(math.clamp((Mouse.X - Slider.Slider.Line.AbsolutePosition.X)/Slider.Slider.Line.AbsoluteSize.X, 0, 1), 0, 0.5, 0)
-							Value = math.round(map(math.round(Point.Position.X.Scale * Max), 0, Max, Min, Max))
-							Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
-
-							Point.Text = Value
-
-							EventMoved:Fire(Value, Min, Max)
-							GlobalEvent:Fire("Slider Moved", {Slider.Name, Value, Min, Max})
-						end
-					end)
-
-					Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-					return d
-				end
-
-				function c:CreateTextBox(Name, Title, StartValue)
-					local d = {}
-
-					local TextEvent = AddEvent("Changed ".. Name)
-					d.Changed = TextEvent.Event
-
-					local TextBox = script.TextBox:Clone()
-					TextBox.Parent = Page
-					TextBox.Name = Name
-					TextBox.Title.Text = Title
-					TextBox.TextBox.PlaceholderText = Name
-					TextBox.TextBox.Text = StartValue
-
-					TextBox.TextBox.FocusLost:Connect(function()
-						TextEvent:Fire(TextBox.TextBox.Text)
-					end)
-
-					d.Element = TextBox
-
-					Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-					return d
-				end
-
-				function c:CreateButton(Name, Title, ButtonText)
-					local d = {}
-
-					local ClickEvent = AddEvent("Changed ".. Name)
-					d.Clicked = ClickEvent.Event
-
-					local Button = script.Button:Clone()
-					Button.Parent = Page
-					Button.Name = Name
-					Button.Title.Text = Title
-					Button.TextButton.Text = ButtonText
-
-					Button.TextButton.MouseButton1Click:Connect(function()
-						ClickEvent:Fire()
-					end)
-
-					d.Element = Button
-
-					Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-					return d
-				end
-
-				return c
+				return d
 			end
 
-			return a
+			function c:CreateLabel(Name, Title)
+				local d = {}
+
+				d["Value"] = Title
+
+				local Label = script.Label:Clone()
+				Label.Parent = Page
+				Label.Name = Name
+				Label.Title.Text = Title
+
+				d["Change"] = function(Value)
+					Label.Title.Text = Value
+				end
+
+				d.Element = Label
+
+				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+				return d
+			end
+
+			function c:CreateSlider(Name, Title, Min, Max, Value)
+				local d = {}
+
+				d["Value"] = Value
+
+				local Slider = script.Slider:Clone()
+				Slider.Parent = Page
+				Slider.Name = Name
+				Slider.Title.Text = Title
+
+				d.Element = Slider
+
+				local Point = Slider.Slider.Line.Point
+				Point.Text = Value
+
+				local EventMoved = AddEvent("Moved ".. Name)
+				d.Moved = EventMoved.Event
+
+				Point.Position = UDim2.new(Value/Max, 0, 0.5, 0)
+
+				local MouseDown = false
+
+				Point.MouseButton1Down:Connect(function()
+					MouseDown = true
+				end)
+				Point.MouseButton1Up:Connect(function()
+					MouseDown = false
+				end)
+				Mouse.Button1Up:Connect(function()
+					MouseDown = false
+				end)
+
+				d["Change"] = function(Value, ...)
+					local E = {...}
+					if #E >= 1 then
+						Min = E[1]
+					end
+					if #E == 2 then
+						Max = E[2]
+					end
+
+					Value = Value
+					Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
+				end
+
+				Mouse.Move:Connect(function()
+					if MouseDown then
+						Point.Position = UDim2.new(math.clamp((Mouse.X - Slider.Slider.Line.AbsolutePosition.X)/Slider.Slider.Line.AbsoluteSize.X, 0, 1), 0, 0.5, 0)
+						Value = math.round(map(math.round(Point.Position.X.Scale * Max), 0, Max, Min, Max))
+						Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
+
+						Point.Text = Value
+
+						d["Value"] = Value
+
+						EventMoved:Fire(Value, Min, Max)
+						GlobalEvent:Fire("Slider Moved", {Slider.Name, Value, Min, Max})
+					end
+				end)
+
+				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+				return d
+			end
+
+			function c:CreateTextBox(Name, Title, StartValue)
+				local d = {}
+
+				d["Value"] = StartValue
+
+				local TextEvent = AddEvent("Changed ".. Name)
+				d.Changed = TextEvent.Event
+
+				local TextBox = script.TextBox:Clone()
+				TextBox.Parent = Page
+				TextBox.Name = Name
+				TextBox.Title.Text = Title
+				TextBox.TextBox.PlaceholderText = Name
+				TextBox.TextBox.Text = StartValue
+
+				d["Change"] = function(Value)
+					TextBox.TextBox.Text = Value
+				end
+
+				TextBox.TextBox.FocusLost:Connect(function()
+					TextEvent:Fire(TextBox.TextBox.Text)
+
+					d["Value"] = TextBox.TextBox.Text
+				end)
+
+				d.Element = TextBox
+
+				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+				return d
+			end
+
+			function c:CreateButton(Name, Title, ButtonText)
+				local d = {}
+
+				d["Value"] = ButtonText
+
+				local ClickEvent = AddEvent("Changed ".. Name)
+				d.Clicked = ClickEvent.Event
+
+				local Button = script.Button:Clone()
+				Button.Parent = Page
+				Button.Name = Name
+				Button.Title.Text = Title
+				Button.TextButton.Text = ButtonText
+
+				d["Change"] = function(Value)
+					Button.TextButton.Text = Value
+				end
+
+				Button.TextButton.MouseButton1Click:Connect(function()
+					ClickEvent:Fire()
+				end)
+
+				d.Element = Button
+
+				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+				return d
+			end
+
+			return c
 		end
 
-		return module
+		return a
+	end
+
+	return module
+
 end
 
 return Module()
