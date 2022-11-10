@@ -1,4 +1,4 @@
-local Lib = require(game.ReplicatedStorage.GoodwillLib)
+local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
 
 local Config = {
 	KillAuraDelay = 0.1;
