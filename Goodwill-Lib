@@ -31,8 +31,6 @@ local Folder = Instance.new("Folder")
 Folder.Parent = game.ReplicatedStorage
 Folder.Name = "Goodwill-Lib"
 
-local script = Folder
-
 --Properties:
 
 Window.Name = "Window"
@@ -367,7 +365,7 @@ local module = {}
 
 		local HighlightPos = 0
 
-		local b = script.Window:Clone()
+		local b = Folder.Window:Clone()
 		b.TopBar.Title.Text = Name
 
 		a.Frame = b
@@ -418,7 +416,7 @@ local module = {}
 			end
 			b.SideBar.Select.Size = UDim2.new(1, 0, 1/Buttons, 0)
 
-			local Page = script.Page:Clone()
+			local Page = Folder.Page:Clone()
 			Page.Parent = b.Pages
 			Page.Name = Name
 			Page.Visible = false
@@ -442,7 +440,7 @@ local module = {}
 
 				d["Value"] = Value
 
-				local Toggle = script.Toggle:Clone()
+				local Toggle = Folder.Toggle:Clone()
 				Toggle.Parent = Page
 				Toggle.Name = Name
 				Toggle.Title.Text = Title
@@ -499,7 +497,7 @@ local module = {}
 
 				d["Value"] = Title
 
-				local Label = script.Label:Clone()
+				local Label = Folder.Label:Clone()
 				Label.Parent = Page
 				Label.Name = Name
 				Label.Title.Text = Title
@@ -520,7 +518,7 @@ local module = {}
 
 				d["Value"] = Value
 
-				local Slider = script.Slider:Clone()
+				local Slider = Folder.Slider:Clone()
 				Slider.Parent = Page
 				Slider.Name = Name
 				Slider.Title.Text = Title
@@ -588,7 +586,7 @@ local module = {}
 				local TextEvent = AddEvent("Changed ".. Name)
 				d.Changed = TextEvent.Event
 
-				local TextBox = script.TextBox:Clone()
+				local TextBox = Folder.TextBox:Clone()
 				TextBox.Parent = Page
 				TextBox.Name = Name
 				TextBox.Title.Text = Title
@@ -620,7 +618,7 @@ local module = {}
 				local ClickEvent = AddEvent("Changed ".. Name)
 				d.Clicked = ClickEvent.Event
 
-				local Button = script.Button:Clone()
+				local Button = Folder.Button:Clone()
 				Button.Parent = Page
 				Button.Name = Name
 				Button.Title.Text = Title
