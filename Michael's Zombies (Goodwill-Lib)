@@ -1,5 +1,5 @@
 local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
-
+--print(Lib)
 local Config = {
 	KillAuraDelay = 0.1;
 	FKillAuraDelay = 0.25;
@@ -26,6 +26,8 @@ ScreenGui.Name = "Goodwill"
 
 local MainGui = Lib:CreateWindow("Goodwill - Michael's Zombies", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt)
 
+MainGui.Frame.Parent = ScreenGui
+
 local Pages = {
 	Combat = MainGui:CreatePage("Combat");
 	Weapon = MainGui:CreatePage("Weapon");
@@ -37,16 +39,14 @@ local Pages = {
 local Buttons = {
 	KnifeKillAura = Pages.Combat:CreateToggle("KKA", "Knife Kill Aura", false);
 	FlameKillAura = Pages.Combat:CreateToggle("FKA", "Flame Kill Aura", false);
-	AutoReloadGun = Pages.Combat:CreateToggle("ARG", "Auto Reload Gun", false);
-	SuperKnife = Pages.Combat:CreateSlider("SK", "Super Knife Strength", 0, 500, 0);
-	ZombieEsp = Pages.Combat:CreateToggle("ZE", "Zombie Esp", false);
-	InstantRepairBoards = Pages.Combat:CreateToggle("IRB", "Instant Repair Boards", false);
-	AutoCollectPowerups = Pages.Combat:CreateToggle("ACP", "Auto Collect Powerups", false);
-	SuperSpeed = Pages.Combat:CreateSlider("SS", "Super Speed", 0, 100, 0);
-	ThirdPerson = Pages.Combat:CreateToggle("TP", "Third Person", false);
+	AutoReloadGun = Pages.Weapon:CreateToggle("ARG", "Auto Reload Gun", false);
+	SuperKnife = Pages.Weapon:CreateSlider("SK", "Super Knife Strength", 0, 500, 0);
+	ZombieEsp = Pages.Visual:CreateToggle("ZE", "Zombie Esp", false);
+	InstantRepairBoards = Pages.Enviroment:CreateToggle("IRB", "Instant Repair Boards", false);
+	AutoCollectPowerups = Pages.Enviroment:CreateToggle("ACP", "Auto Collect Powerups", false);
+	SuperSpeed = Pages.Misc:CreateSlider("SS", "Super Speed", 0, 100, 0);
+	ThirdPerson = Pages.Misc:CreateToggle("TP", "Third Person", false);
 }
-
-MainGui.Parent = ScreenGui
 
 Buttons.ThirdPerson.Toggled:Connect(function(tgl)
 	if tgl == false then
@@ -117,7 +117,7 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 		end
 	end
 	if tonumber(Buttons.SuperSpeed.Value) > 0 then
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SS
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Buttons.SuperSpeed.Value
 	end
 	if Buttons.AutoCollectPowerups.Value then
 		for i, v in pairs(game.Workspace.Ignore._Powerups:GetChildren()) do
@@ -130,6 +130,7 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 		game.Players.LocalPlayer.CameraMaxZoomDistance = 50
 		game.Players.LocalPlayer.CameraMode = "Classic"
 		game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.LockCenter
+		game.Players.LocalPlayer.FirstPersonLock = false
 	end
 	if Buttons.ZombieEsp.Value then
 		for i, v in pairs(game.Workspace.Ignore.Zombies:GetChildren()) do
