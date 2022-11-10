@@ -373,12 +373,15 @@ local module = {}
 		EnableDrag(b, b.TopBar)
 
 		local UnlockMouse = false
+		
+		local MouseIcon = Mouse.Icon
 
 		game:GetService("RunService").RenderStepped:Connect(function(dt)
 			b.SideBar.Select.Position = b.SideBar.Select.Position:Lerp(UDim2.new(0, 0, HighlightPos, 0), 0.2)
 
 			if UnlockMouse then
 				game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
+				Mouse.Icon = ""
 			end
 		end)
 
@@ -387,6 +390,7 @@ local module = {}
 				if i.KeyCode == OpenBind then
 					b.Visible = true
 					UnlockMouse = true
+					MouseIcon = Mouse.Icon
 				end
 			else
 				if i.KeyCode == CloseBind then
