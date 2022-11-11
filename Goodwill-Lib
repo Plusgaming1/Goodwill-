@@ -381,7 +381,7 @@ local module = {}
 
 			if UnlockMouse then
 				game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
-				Mouse.Icon = ""
+				Mouse.Icon = "rbxasset://SystemCursors/Cross"
 			end
 		end)
 
@@ -396,6 +396,7 @@ local module = {}
 				if i.KeyCode == CloseBind then
 					b.Visible = false
 					UnlockMouse = false
+					Mouse.Icon = MouseIcon
 				end
 			end
 		end)
