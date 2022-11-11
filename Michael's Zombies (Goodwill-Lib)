@@ -1,5 +1,5 @@
 local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
---print(Lib)
+
 local Config = {
 	KillAuraDelay = 0.1;
 	FKillAuraDelay = 0.25;
@@ -45,7 +45,7 @@ local Buttons = {
 	InstantRepairBoards = Pages.Enviroment:CreateToggle("IRB", "Instant Repair Boards", false);
 	AutoCollectPowerups = Pages.Enviroment:CreateToggle("ACP", "Auto Collect Powerups", false);
 	SuperSpeed = Pages.Misc:CreateSlider("SS", "Super Speed", 0, 100, 0);
-	ThirdPerson = Pages.Misc:CreateToggle("TP", "Third Person", false);
+	ThirdPerson = Pages.Misc:CreateToggle("TP", "Third Person (Broken)", false);
 }
 
 Buttons.ThirdPerson.Toggled:Connect(function(tgl)
@@ -121,7 +121,7 @@ game:GetService("RunService").RenderStepped:Connect(function(dt)
 	end
 	if Buttons.AutoCollectPowerups.Value then
 		for i, v in pairs(game.Workspace.Ignore._Powerups:GetChildren()) do
-			firetouchinterest(v, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
+			v.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 		end
 	end
 	if Buttons.ThirdPerson.Value then
