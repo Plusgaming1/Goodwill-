@@ -1,3 +1,24 @@
+--[[
+Goodwill-Lib Version 2
+
+Added An option for Custom Themes
+
+New Window Creation Format: (*Optional)
+Module:CreateWindow(DisplayName<String>, CloseKey<Enum.KeyCode>, OpenKey<Enum.KeyCode>, ThemeSetting<Table: {
+	*WindowScale<Vector2> (Window Scale Multiplier) = Vector2.new(SizeXMultiplier*100, SizeYMultiplier*100). Default: Vector2.new(100, 100),
+	*ScrollSpeed<Number> (How fast it takes to swithc between windows) = ScrollSpeed. Default: 1,
+	*MainColor<Color3> (Background Color) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(20, 20, 20),
+	*SelectionColor<Color3> (Color of the SideBar Selection Frame) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(0, 0, 255),
+	*Rounding<UDim> (Rounding of the Main Frame) = UDim.new(Scale, Offset). Default: UDim.new(0, 0),
+	*PrimaryColor<Color3> (Color of the page Modules (Aka Buttons)) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(0, 0, 0),
+	*SecondaryColor<Color3> (Secondary 1 Color of the page Modules) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(80, 0, 80),
+	*Secondary2Color<Color3> (Secondary 2 Color of the page Modules) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(150, 0, 150),
+	*TextColor<Color3> (Color of all the text) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(255, 255, 255),
+}>)
+
+Theme Settings might be pretty complicated, but are COMPLETELY optional
+]]
+
 local Window = Instance.new("Frame")
 local TopBar = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -30,8 +51,6 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local Folder = Instance.new("Folder")
 Folder.Parent = game.ReplicatedStorage
 Folder.Name = "Goodwill-Lib"
-
---Properties:
 
 Window.Name = "Window"
 Window.Parent = Folder
@@ -77,6 +96,7 @@ Pages.Name = "Pages"
 Pages.Parent = Window
 Pages.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Pages.BackgroundTransparency = 1.000
+Pages.ClipsDescendants = true
 Pages.Position = UDim2.new(0, 100, 0, 35)
 Pages.Size = UDim2.new(1, -100, 1, -35)
 
@@ -264,6 +284,7 @@ Page.Parent = Folder
 Page.AnchorPoint = Vector2.new(0.5, 0.5)
 Page.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Page.BackgroundTransparency = 1.000
+Page.BorderSizePixel = 0
 Page.Position = UDim2.new(0.5, 0, 0.5, 0)
 Page.Selectable = false
 Page.Size = UDim2.new(0.899999976, 0, 1, 0)
@@ -277,377 +298,569 @@ UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 0, 0, 5)
 UIGridLayout.CellSize = UDim2.new(1, 0, 0, 40)
 
--- Module Scripts:
-
 local module = {}
 
-	local Buttons = 0
+local Buttons = 0
 
-	local EventFolder = nil
+local EventFolder = nil
 
-	local Mouse = game.Players.LocalPlayer:GetMouse()
+local Mouse = game.Players.LocalPlayer:GetMouse()
 
-	local function map(value, istart, istop, ostart, ostop)
-		return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+local function map(value, istart, istop, ostart, ostop)
+	return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+end
+
+local function lerp(x, y, z)
+	return x + (y - x) * z
+end
+
+local function EnableDrag(GuiObject2, GuiObject)
+	local plr = game.Players.LocalPlayer
+	local m = plr:GetMouse()
+	if GuiObject:IsA("GuiBase") then
+		local Last = Vector2.new(0, 0)
+		local Held = false
+		m.Button1Down:Connect(function()
+			if (m.X > GuiObject.AbsolutePosition.X and m.X < GuiObject.AbsolutePosition.X + GuiObject.AbsoluteSize.X) and (m.Y > GuiObject.AbsolutePosition.Y and m.Y < GuiObject.AbsolutePosition.Y + GuiObject.AbsoluteSize.Y) then
+				Held = true
+				Last = Vector2.new(m.X, m.Y)
+			end
+		end)
+
+		m.Move:Connect(function()
+			if Held then
+				GuiObject2.Position += UDim2.new(0, m.X - Last.X, 0, m.Y - Last.Y)
+				Last = Vector2.new(m.X, m.Y)
+			end
+		end)
+
+		m.Button1Up:Connect(function()
+			Held = false
+		end)
 	end
+end
 
-	local function lerp(x, y, z)
-		return x + (y - x) * z
+local function AddEvent(Name)
+	if not EventFolder then
+		EventFolder = Instance.new("Folder", game)
+		EventFolder.Name = "CustomEvents"
 	end
+	local Event = Instance.new("BindableEvent", EventFolder)
+	Event.Name = Name
+	return Event
+end
 
-	local function EnableDrag(GuiObject2, GuiObject)
-		local plr = game.Players.LocalPlayer
-		local m = plr:GetMouse()
-		if GuiObject:IsA("GuiButton") then
-			local LastX = m.X
-			local LastY = m.Y
-			local Clicked = false
-			GuiObject.MouseButton1Down:Connect(function()
-				Clicked = true
-				LastX = m.X
-				LastY = m.Y
-			end)
-			m.Move:Connect(function()
-				if Clicked then
-					if (m.X ~= LastX) or (m.Y ~= LastY) then
-						GuiObject.Position = UDim2.new(GuiObject.Position.X.Scale,GuiObject.Position.X.Offset - (LastX - m.X),GuiObject.Position.Y.Scale,GuiObject.Position.Y.Offset - (LastY - m.Y))
-						LastX = m.X
-						LastY = m.Y
-					end
-				end
-			end)
-			GuiObject.MouseButton1Up:Connect(function()
-				Clicked = false
-			end)
-		elseif GuiObject:IsA("GuiBase") then
-			local LastX = m.X
-			local LastY = m.Y
-			local Clicked = false
-			m.Button1Down:Connect(function()
-				local MinPos = GuiObject.AbsolutePosition
-				local MaxPos = Vector2.new(GuiObject.AbsolutePosition.X + (GuiObject.AbsoluteSize.X), GuiObject.AbsolutePosition.Y + (GuiObject.AbsoluteSize.Y))
-				if (m.X >= MinPos.X) and (m.Y >= MinPos.Y) and (m.X <= MaxPos.X) and (m.Y <= MaxPos.Y) then
-					Clicked = true
-					LastX = m.X
-					LastY = m.Y
-				end
-			end)
-			m.Move:Connect(function()
-				if Clicked then
-					if (m.X ~= LastX) or (m.Y ~= LastY) then
-						GuiObject2.Position = UDim2.new(GuiObject2.Position.X.Scale,GuiObject2.Position.X.Offset - (LastX - m.X),GuiObject2.Position.Y.Scale,GuiObject2.Position.Y.Offset - (LastY - m.Y))
-						LastX = m.X
-						LastY = m.Y
-					end
-				end
-			end)
-			m.Button1Up:Connect(function()
-				Clicked = false
-			end)
+local function sign(i)
+	if i > 0 then
+		return 1
+	end
+	if i < 0 then
+		return -1
+	end
+	return i
+end
+
+function module:CreateWindow(Name, CloseBind, OpenBind, ExtraSettings)
+	local a = {}
+
+	local GlobalEvent = AddEvent("Global")
+	a.GlobalEvent = GlobalEvent.Event
+
+	local HighlightPos = 0
+
+	local b = Folder.Window:Clone()
+	b.TopBar.Title.Text = Name
+
+	local ScrollSpeed = 1
+
+	local Enabled = true
+
+	local ModuleColor = Color3.fromRGB(0, 0, 0)
+	local SecondColor = Color3.fromRGB(80, 0, 80)
+	local Second2Color = Color3.fromRGB(150, 0, 150)
+
+	local TextColor = Color3.new(1, 1, 1)
+
+	if ExtraSettings then
+		if ExtraSettings.WindowScale then
+			b.Size = UDim2.new(b.Size.X.Scale * ExtraSettings.WindowScale.X/100, 0, b.Size.Y.Scale * ExtraSettings.WindowScale.Y/100, 0)
+		end
+		if ExtraSettings.ScrollSpeed then
+			ScrollSpeed = ExtraSettings.ScrollSpeed
+		end
+
+		if ExtraSettings.MainColor then
+			b.BackgroundColor3 = ExtraSettings.MainColor
+		end
+
+		if ExtraSettings.SelectionColor then
+			b.SideBar.Select.BackgroundColor3 = ExtraSettings.SelectionColor
+		end
+
+		if ExtraSettings.Rounding then
+			local Round = Instance.new("UICorner", b)
+			Round.CornerRadius = ExtraSettings.Rounding
+			Round.Name = "CornerRounding"
+		end
+
+		if ExtraSettings.PrimaryColor then
+			ModuleColor = ExtraSettings.PrimaryColor
+		end
+
+		if ExtraSettings.SecondaryColor then
+			SecondColor = ExtraSettings.SecondaryColor
+		end
+
+		if ExtraSettings.Secondary2Color then
+			Second2Color = ExtraSettings.Secondary2Color
+		end
+
+		if ExtraSettings.TextColor then
+			TextColor = ExtraSettings.TextColor
 		end
 	end
 
-	local function AddEvent(Name)
-		if not EventFolder then
-			EventFolder = Instance.new("Folder", game)
-			EventFolder.Name = "CustomEvents"
+	function a:ChangeTheme(ExtraSettings)
+		if ExtraSettings then
+			if ExtraSettings.WindowScale then
+				b.Size = UDim2.new(b.Size.X.Scale * ExtraSettings.WindowScale.X/100, 0, b.Size.Y.Scale * ExtraSettings.WindowScale.Y/100, 0)
+			end
+			if ExtraSettings.ScrollSpeed then
+				ScrollSpeed = ExtraSettings.ScrollSpeed
+			end
+
+			if ExtraSettings.MainColor then
+				b.BackgroundColor3 = ExtraSettings.MainColor
+			end
+
+			if ExtraSettings.SelectionColor then
+				b.SideBar.Select.BackgroundColor3 = ExtraSettings.SelectionColor
+			end
+
+			if ExtraSettings.Rounding then
+				if b:FindFirstChild("CornerRounding") then
+					b:FindFirstChild("CornerRounding").CornerRadius = ExtraSettings.Rounding
+				else
+					local Round = Instance.new("UICorner", b)
+					Round.CornerRadius = ExtraSettings.Rounding
+					Round.Name = "CornerRounding"
+				end
+			end
+
+			if ExtraSettings.PrimaryColor then
+				ModuleColor = ExtraSettings.PrimaryColor
+				for i_, v_ in pairs(b.Pages:GetChildren()) do
+					for i, v in pairs(v_:GetChildren()) do
+						if v:IsA("GuiBase") then
+							v.BackgroundColor3 = ModuleColor
+						end
+					end
+				end
+			end
+
+			if ExtraSettings.SecondaryColor then
+				SecondColor = ExtraSettings.SecondaryColor
+				for i_, v_ in pairs(b.Pages:GetChildren()) do
+					for i, v in pairs(v_:GetChildren()) do
+						if v:IsA("GuiBase") then
+							if v:FindFirstChild("Toggle") then
+								v.Toggle.Line.BackgroundColor3 = SecondColor
+							end
+							if v:FindFirstChild("Slider") then
+								v.Toggle.Line.BackgroundColor3 = SecondColor
+							end
+							if v:FindFirstChild("TextButton") then
+								v.TextButton.BackgroundColor3 = SecondColor
+							end
+							if v:FindFirstChild("TextBox") then
+								v.TextBox.BackgroundColor3 = SecondColor
+							end
+						end
+					end
+				end
+			end
+
+			if ExtraSettings.Secondary2Color then
+				Second2Color = ExtraSettings.Secondary2Color
+				for i_, v_ in pairs(b.Pages:GetChildren()) do
+					for i, v in pairs(v_:GetChildren()) do
+						if v:IsA("GuiBase") then
+							if v:FindFirstChild("Toggle") then
+								v.Toggle.Line.Point.BackgroundColor3 = Second2Color
+							end
+							if v:FindFirstChild("Slider") then
+								v.Toggle.Line.Point.BackgroundColor3 = Second2Color
+							end
+						end
+					end
+				end
+			end
+
+			if ExtraSettings.TextColor then
+				TextColor = ExtraSettings.TextColor
+				for i_, v_ in pairs(b.Pages:GetChildren()) do
+					for i, v in pairs(v_:GetChildren()) do
+						if v:IsA("GuiBase") then
+							if v:FindFirstChild("Toggle") then
+								v.Title.TextColor3 = TextColor
+							end
+							if v:FindFirstChild("Slider") then
+								v.Title.TextColor3 = TextColor
+								v.Slider.Line.Point.TextColor3 = TextColor
+							end
+							if v:FindFirstChild("TextButton") then
+								v.TextButton.TextColor3 = TextColor
+								v.Title.TextColor3 = TextColor
+							end
+							if v:FindFirstChild("TextBox") then
+								v.TextBox.TextColor3 = TextColor
+								v.Title.TextColor3 = TextColor
+							end
+						end
+					end
+				end
+				b.TopBar.Title.TextColor3 = TextColor
+				for i, v in pairs(b.SideBar:GetChildren()) do
+					if v:IsA("TextButton") and v.Name ~= "Select" then
+						v.TextColor3 = TextColor
+					end
+				end
+			end
 		end
-		local Event = Instance.new("BindableEvent", EventFolder)
-		Event.Name = Name
-		return Event
 	end
 
-	function module:CreateWindow(Name, CloseBind, OpenBind)
-		local a = {}
+	b.TopBar.Title.TextColor3 = TextColor
 
-		local GlobalEvent = AddEvent("Global")
-		a.GlobalEvent = GlobalEvent.Event
+	a.Frame = b
 
-		local HighlightPos = 0
+	EnableDrag(b, b.TopBar)
 
-		local b = Folder.Window:Clone()
-		b.TopBar.Title.Text = Name
+	local Scrolling = false
 
-		a.Frame = b
+	local UnlockMouse = true
 
-		EnableDrag(b, b.TopBar)
-
-		local UnlockMouse = false
-		
-		local MouseIcon = Mouse.Icon
-
-		game:GetService("RunService").RenderStepped:Connect(function(dt)
+	game:GetService("RunService").RenderStepped:Connect(function(dt)
+		if Enabled then
 			b.SideBar.Select.Position = b.SideBar.Select.Position:Lerp(UDim2.new(0, 0, HighlightPos, 0), 0.2)
 
 			if UnlockMouse then
 				game:GetService("UserInputService").MouseBehavior = Enum.MouseBehavior.Default
-				Mouse.Icon = "rbxasset://SystemCursors/Cross"
 			end
-		end)
+		end
+	end)
 
-		game:GetService("UserInputService").InputBegan:Connect(function(i, gpe)
+	game:GetService("UserInputService").InputBegan:Connect(function(i, gpe)
+		if Enabled then
 			if not b.Visible then
 				if i.KeyCode == OpenBind then
 					b.Visible = true
 					UnlockMouse = true
-					MouseIcon = Mouse.Icon
 				end
 			else
 				if i.KeyCode == CloseBind then
 					b.Visible = false
 					UnlockMouse = false
-					Mouse.Icon = MouseIcon
 				end
 			end
-		end)
-
-		function a:CreatePage(Name)
-			local c = {}
-
-			local Button = Instance.new("TextButton", b.SideBar)
-			Button.Name = Name
-			Button.BackgroundTransparency = 1
-			Button.Font = Enum.Font.SourceSansBold
-			Button.Text = Name
-			Button.TextColor3 = Color3.new(255, 255, 255)
-			Button.TextScaled = true
-			Buttons += 1
-
-			for i, v in pairs(b.SideBar:GetChildren()) do
-				if v:IsA("TextButton") then
-					v.Size = UDim2.new(1, 0, 1/Buttons, 0)
-					v.Position = UDim2.new(0, 0, (i-2) * (1/Buttons), 0)
-				end
-			end
-			b.SideBar.Select.Size = UDim2.new(1, 0, 1/Buttons, 0)
-
-			local Page = Folder.Page:Clone()
-			Page.Parent = b.Pages
-			Page.Name = Name
-			Page.Visible = false
-			if Buttons == 1 then
-				Page.Visible = true
-			end
-
-			Button.MouseButton1Click:Connect(function()
-				GlobalEvent:Fire("Page Changed", {Page.Name})
-				for i, v in pairs(b.Pages:GetChildren()) do
-					if v:IsA("GuiBase") then
-						v.Visible = false
-					end
-				end
-				Page.Visible = true
-				HighlightPos = Button.Position.Y.Scale
-			end)
-
-			function c:CreateToggle(Name, Title, Value)
-				local d = {}
-
-				d["Value"] = Value
-
-				local Toggle = Folder.Toggle:Clone()
-				Toggle.Parent = Page
-				Toggle.Name = Name
-				Toggle.Title.Text = Title
-
-				d.Element = Toggle
-
-				local Point = Toggle.Toggle.Line.Point
-
-				local EventToggle = AddEvent("Toggled ".. Name)
-				d.Toggled = EventToggle.Event
-
-				local function ToggleButton(...)
-					local e = {...}
-					spawn(function()
-						if #e == 1 then
-							Value = e[1]
-							d["Value"] = Value
-						else
-							Value = not Value
-							d["Value"] = Value
-						end
-						local i = 0
-						repeat
-							local inc = wait()/0.75
-							i += inc
-							i = math.min(1, i)
-							if Value == true then
-								Point.Position = Point.Position:Lerp(UDim2.new(1, 0, 0.5, 0), i)
-							else
-								Point.Position = Point.Position:Lerp(UDim2.new(0, 0, 0.5, 0), i)
-							end
-						until i >= 1
-					end)
-				end
-
-				d["Change"] = ToggleButton
-
-				if Value == true then
-					ToggleButton(true)
-				end
-
-				Point.MouseButton1Click:Connect(function()
-					ToggleButton()
-					EventToggle:Fire(not Value)
-				end)
-
-				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-				return d
-			end
-
-			function c:CreateLabel(Name, Title)
-				local d = {}
-
-				d["Value"] = Title
-
-				local Label = Folder.Label:Clone()
-				Label.Parent = Page
-				Label.Name = Name
-				Label.Title.Text = Title
-
-				d["Change"] = function(Value)
-					Label.Title.Text = Value
-				end
-
-				d.Element = Label
-
-				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-				return d
-			end
-
-			function c:CreateSlider(Name, Title, Min, Max, Value)
-				local d = {}
-
-				d["Value"] = Value
-
-				local Slider = Folder.Slider:Clone()
-				Slider.Parent = Page
-				Slider.Name = Name
-				Slider.Title.Text = Title
-
-				d.Element = Slider
-
-				local Point = Slider.Slider.Line.Point
-				Point.Text = Value
-
-				local EventMoved = AddEvent("Moved ".. Name)
-				d.Moved = EventMoved.Event
-
-				Point.Position = UDim2.new(Value/Max, 0, 0.5, 0)
-
-				local MouseDown = false
-
-				Point.MouseButton1Down:Connect(function()
-					MouseDown = true
-				end)
-				Point.MouseButton1Up:Connect(function()
-					MouseDown = false
-				end)
-				Mouse.Button1Up:Connect(function()
-					MouseDown = false
-				end)
-
-				d["Change"] = function(Value, ...)
-					local E = {...}
-					if #E >= 1 then
-						Min = E[1]
-					end
-					if #E == 2 then
-						Max = E[2]
-					end
-
-					Value = Value
-					Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
-				end
-
-				Mouse.Move:Connect(function()
-					if MouseDown then
-						Point.Position = UDim2.new(math.clamp((Mouse.X - Slider.Slider.Line.AbsolutePosition.X)/Slider.Slider.Line.AbsoluteSize.X, 0, 1), 0, 0.5, 0)
-						Value = math.round(map(math.round(Point.Position.X.Scale * Max), 0, Max, Min, Max))
-						Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
-
-						Point.Text = Value
-
-						d["Value"] = Value
-
-						EventMoved:Fire(Value, Min, Max)
-						GlobalEvent:Fire("Slider Moved", {Slider.Name, Value, Min, Max})
-					end
-				end)
-
-				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-				return d
-			end
-
-			function c:CreateTextBox(Name, Title, StartValue)
-				local d = {}
-
-				d["Value"] = StartValue
-
-				local TextEvent = AddEvent("Changed ".. Name)
-				d.Changed = TextEvent.Event
-
-				local TextBox = Folder.TextBox:Clone()
-				TextBox.Parent = Page
-				TextBox.Name = Name
-				TextBox.Title.Text = Title
-				TextBox.TextBox.PlaceholderText = Name
-				TextBox.TextBox.Text = StartValue
-
-				d["Change"] = function(Value)
-					TextBox.TextBox.Text = Value
-				end
-
-				TextBox.TextBox.FocusLost:Connect(function()
-					TextEvent:Fire(TextBox.TextBox.Text)
-
-					d["Value"] = TextBox.TextBox.Text
-				end)
-
-				d.Element = TextBox
-
-				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-				return d
-			end
-
-			function c:CreateButton(Name, Title, ButtonText)
-				local d = {}
-
-				d["Value"] = ButtonText
-
-				local ClickEvent = AddEvent("Changed ".. Name)
-				d.Clicked = ClickEvent.Event
-
-				local Button = Folder.Button:Clone()
-				Button.Parent = Page
-				Button.Name = Name
-				Button.Title.Text = Title
-				Button.TextButton.Text = ButtonText
-
-				d["Change"] = function(Value)
-					Button.TextButton.Text = Value
-				end
-
-				Button.TextButton.MouseButton1Click:Connect(function()
-					ClickEvent:Fire()
-				end)
-
-				d.Element = Button
-
-				Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
-
-				return d
-			end
-
-			return c
 		end
+	end)
 
-		return a
+	local CurPage = nil
+
+	function a:Disable(f)
+		Enabled = f
+		if not Enabled then
+			b.Visible = false
+		else
+			b.Visible = true
+		end
 	end
 
-	return module
+	function a:CreatePage(Name)
+		local c = {}
+
+		local Button = Instance.new("TextButton", b.SideBar)
+		Button.Name = Name
+		Button.BackgroundTransparency = 1
+		Button.Font = Enum.Font.SourceSansBold
+		Button.Text = Name
+		Button.TextColor3 = TextColor
+		Button.TextScaled = true
+		Buttons += 1
+
+		for i, v in pairs(b.SideBar:GetChildren()) do
+			if v:IsA("TextButton") then
+				v.Size = UDim2.new(1, 0, 1/Buttons, 0)
+				v.Position = UDim2.new(0, 0, (i-2) * (1/Buttons), 0)
+			end
+		end
+		b.SideBar.Select.Size = UDim2.new(1, 0, 1/Buttons, 0)
+
+		local Page = Folder.Page:Clone()
+		Page.Parent = b.Pages
+		Page.Name = Name
+		Page.Visible = false
+		if Buttons == 1 then
+			Page.Visible = true
+			CurPage = Page
+		end
+
+		Button.MouseButton1Click:Connect(function()
+			if not Scrolling and CurPage ~= Page then
+				Scrolling = true
+				HighlightPos = Button.Position.Y.Scale
+				GlobalEvent:Fire("Page Changed", {Page.Name})
+				Page.Visible = true
+				Page.AnchorPoint = Vector2.new(0, 1)
+				Page.Position = UDim2.new(0, 0, 0, 0)
+				CurPage.AnchorPoint = Vector2.new(0, 1)
+				CurPage.Position = UDim2.new(0, 0, 1, 0)
+				local I = 0
+				repeat
+					local inc = wait() * (ScrollSpeed*2)
+					I += inc
+					I = math.min(I, 1)
+					Page.AnchorPoint = Page.AnchorPoint:Lerp(Vector2.new(0, 0), I)
+					CurPage.AnchorPoint = CurPage.AnchorPoint:Lerp(Vector2.new(0, 0), I)
+				until I >= 1
+				CurPage.Visible = false
+				CurPage = Page
+				Scrolling = false
+			end
+
+		end)
+
+		function c:CreateToggle(Name, Title, Value)
+			local d = {}
+
+			d["Value"] = Value
+
+			local Toggle = Folder.Toggle:Clone()
+			Toggle.Parent = Page
+			Toggle.Name = Name
+			Toggle.Title.Text = Title
+			Toggle.Title.TextColor3 = TextColor
+
+			Toggle.BackgroundColor3 = ModuleColor
+			Toggle.Toggle.Line.BackgroundColor3 = SecondColor
+			Toggle.Toggle.Line.Point.BackgroundColor3 = Second2Color
+
+			d.Element = Toggle
+
+			local Point = Toggle.Toggle.Line.Point
+
+			local EventToggle = AddEvent("Toggled ".. Name)
+			d.Toggled = EventToggle.Event
+
+			local function ToggleButton(...)
+				local e = {...}
+				spawn(function()
+					if #e == 1 then
+						Value = e[1]
+						d["Value"] = Value
+					else
+						Value = not Value
+						d["Value"] = Value
+					end
+					local i = 0
+					repeat
+						local inc = wait()/0.75
+						i += inc
+						i = math.min(1, i)
+						if Value == true then
+							Point.Position = Point.Position:Lerp(UDim2.new(1, 0, 0.5, 0), i)
+						else
+							Point.Position = Point.Position:Lerp(UDim2.new(0, 0, 0.5, 0), i)
+						end
+					until i >= 1
+				end)
+			end
+
+			d["Change"] = ToggleButton
+
+			if Value == true then
+				ToggleButton(true)
+			end
+
+			Point.MouseButton1Click:Connect(function()
+				ToggleButton()
+				EventToggle:Fire(not Value)
+			end)
+
+			Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+			return d
+		end
+
+		function c:CreateLabel(Name, Title)
+			local d = {}
+
+			d["Value"] = Title
+
+			local Label = Folder.Label:Clone()
+			Label.Parent = Page
+			Label.Name = Name
+			Label.Title.Text = Title
+			Label.Title.TextColor3 = TextColor
+			Label.BackgroundColor3 = ModuleColor
+
+			d["Change"] = function(Value)
+				Label.Title.Text = Value
+			end
+
+			d.Element = Label
+
+			Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+			return d
+		end
+
+		function c:CreateSlider(Name, Title, Min, Max, Value)
+			local d = {}
+
+			d["Value"] = Value
+
+			local Slider = Folder.Slider:Clone()
+			Slider.Parent = Page
+			Slider.Name = Name
+			Slider.Title.Text = Title
+			Slider.Title.TextColor3 = TextColor
+
+			Slider.BackgroundColor3 = ModuleColor
+			Slider.Slider.Line.BackgroundColor3 = SecondColor
+			Slider.Slider.Line.Point.BackgroundColor3 = Second2Color
+			Slider.Slider.Line.Point.TextColor3 = TextColor
+
+			d.Element = Slider
+
+			local Point = Slider.Slider.Line.Point
+			Point.Text = Value
+
+			local EventMoved = AddEvent("Moved ".. Name)
+			d.Moved = EventMoved.Event
+
+			Point.Position = UDim2.new(Value/Max, 0, 0.5, 0)
+
+			local MouseDown = false
+
+			Point.MouseButton1Down:Connect(function()
+				MouseDown = true
+			end)
+			Point.MouseButton1Up:Connect(function()
+				MouseDown = false
+			end)
+			Mouse.Button1Up:Connect(function()
+				MouseDown = false
+			end)
+
+			d["Change"] = function(Value, ...)
+				local E = {...}
+				if #E >= 1 then
+					Min = E[1]
+				end
+				if #E == 2 then
+					Max = E[2]
+				end
+
+				Value = Value
+				Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
+			end
+
+			Mouse.Move:Connect(function()
+				if MouseDown then
+					Point.Position = UDim2.new(math.clamp((Mouse.X - Slider.Slider.Line.AbsolutePosition.X)/Slider.Slider.Line.AbsoluteSize.X, 0, 1), 0, 0.5, 0)
+					Value = math.round(map(math.round(Point.Position.X.Scale * Max), 0, Max, Min, Max))
+					Point.Position = UDim2.new(Value / (Max-Min), 0, 0.5, 0)
+
+					Point.Text = Value
+
+					d["Value"] = Value
+
+					EventMoved:Fire(Value, Min, Max)
+					GlobalEvent:Fire("Slider Moved", {Slider.Name, Value, Min, Max})
+				end
+			end)
+
+			Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+			return d
+		end
+
+		function c:CreateTextBox(Name, Title, StartValue)
+			local d = {}
+
+			d["Value"] = StartValue
+
+			local TextEvent = AddEvent("Changed ".. Name)
+			d.Changed = TextEvent.Event
+
+			local TextBox = Folder.TextBox:Clone()
+			TextBox.Parent = Page
+			TextBox.Name = Name
+			TextBox.Title.Text = Title
+			TextBox.TextBox.PlaceholderText = Name
+			TextBox.TextBox.Text = StartValue
+			TextBox.Title.TextColor3 = TextColor
+			TextBox.TextBox.TextColor3 = TextColor
+
+			TextBox.BackgroundColor3 = ModuleColor
+			TextBox.TextBox.BackgroundColor3 = SecondColor
+
+			d["Change"] = function(Value)
+				TextBox.TextBox.Text = Value
+			end
+
+			TextBox.TextBox.FocusLost:Connect(function()
+				TextEvent:Fire(TextBox.TextBox.Text)
+
+				d["Value"] = TextBox.TextBox.Text
+			end)
+
+			d.Element = TextBox
+
+			Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+			return d
+		end
+
+		function c:CreateButton(Name, Title, ButtonText)
+			local d = {}
+
+			d["Value"] = ButtonText
+
+			local ClickEvent = AddEvent("Changed ".. Name)
+			d.Clicked = ClickEvent.Event
+
+			local Button = Folder.Button:Clone()
+			Button.Parent = Page
+			Button.Name = Name
+			Button.Title.Text = Title
+			Button.TextButton.Text = ButtonText
+			Button.Title.TextColor3 = TextColor
+			Button.TextButton.TextColor3 = TextColor
+
+			Button.BackgroundColor3 = ModuleColor
+			Button.TextButton.BackgroundColor3 = SecondColor
+
+			d["Change"] = function(Value)
+				Button.TextButton.Text = Value
+			end
+
+			Button.TextButton.MouseButton1Click:Connect(function()
+				ClickEvent:Fire()
+			end)
+
+			d.Element = Button
+
+			Page.CanvasSize += UDim2.new(0, 0, 0, Page.UIGridLayout.CellPadding.Y.Offset + Page.UIGridLayout.CellSize.Y.Offset)
+
+			return d
+		end
+
+		return c
+	end
+
+	return a
+end
+
+return module
