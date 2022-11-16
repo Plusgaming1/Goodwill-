@@ -1,0 +1,33 @@
+local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
+
+local MainGui = Lib:CreateWindow("Goodwill - Hub", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt, {
+  Rounding = UDim.new(0, 1);
+})
+
+local Pages = {
+  Scripts = MainGui:CreatePage("Scripts");
+  Credits = MainGui:CreatePage("Credits");
+}
+
+local Scripts = {
+  MichaelsZombies = Pages.Scripts:CreateButton("Michael's Zombies", "Michael's Zombies", "Execute Script")
+}
+
+local Credits = {
+  Credits1 = Pages.Credits:CreateLabel("Cred1", "Scripting - 5x9x7x2x7x9#9723")
+  Credits2 = Pages.Credits:CreateLabel("Cred2", "UI Creation - 5x9x7x2x7x9#9723")
+  Credits3 = Pages.Credits:CreateLabel("Cred3", "Original Goodwill - Aidez#9632")
+  Credits4 = Pages.Credits:CreateLabel("Discord Servers")
+  Credits4 = Pages.Credits:CreateLabel("Goodwill+ Official Discord - https://discord.gg/UK2d66nuch")
+  Credits4 = Pages.Credits:CreateLabel("Aidez Official Discord - https://discord.gg/BfyQT46SAa")
+}
+
+Scripts.MichaelsZombies.Pressed:Connect(function()
+  MainGui:Disable(true)
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/docs/Michael's%20Zombies%20(Goodwill-Lib)"))()
+end)
+
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "Goodwill-Hub"
+ScreenGui.DisplayOrder = 1000
+ScreenGui.ResetOnSpawn = false
