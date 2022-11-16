@@ -134,4 +134,19 @@ SettingsToggle2.Toggled:Connect(function(Value)
 end
 ```
 
-More is coming soon to the script, and the Docs
+# Extra Functions
+
+Functions Added to Version 2
+
+## Change Theme:
+```lua
+Window:ChangeTheme(ThemeSettings --[[Check line 36-46]])
+```
+
+Changes the Theme Settings
+
+## Disable:
+
+```lua
+Window:Disable(Boolean --[[true Disables the Menu, false Enables the Menu]])
+```
