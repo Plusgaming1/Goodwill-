@@ -1,5 +1,5 @@
 local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
---print(Lib)
+
 local Config = {
 	KillAuraDelay = 0.1;
 	FKillAuraDelay = 0.25;
@@ -24,7 +24,9 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.DisplayOrder = 1000
 ScreenGui.Name = "Goodwill"
 
-local MainGui = Lib:CreateWindow("Goodwill - Michael's Zombies", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt)
+local MainGui = Lib:CreateWindow("Goodwill - Michael's Zombies", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt, {
+	Rounding = UDim.new(0, 10);
+})
 
 MainGui.Frame.Parent = ScreenGui
 
@@ -34,6 +36,7 @@ local Pages = {
 	Visual = MainGui:CreatePage("Visual");
 	Enviroment = MainGui:CreatePage("Enviroment");
 	Misc = MainGui:CreatePage("Misc");
+	Settings = MainGui:CreatePage("Settings");
 }
 
 local Buttons = {
@@ -46,7 +49,25 @@ local Buttons = {
 	AutoCollectPowerups = Pages.Enviroment:CreateToggle("ACP", "Auto Collect Powerups", false);
 	SuperSpeed = Pages.Misc:CreateSlider("SS", "Super Speed", 0, 100, 0);
 	ThirdPerson = Pages.Misc:CreateToggle("TP", "Third Person", false);
+	
+	LightMode = Pages.Settings:CreateToggle("LightMode", "Light Mode", false);
 }
+
+Buttons.LightMode.Toggled:Connect(function(tgl)
+	if tgl then
+		MainGui:ChangeTheme({
+			MainColor = Color3.fromRGB(255, 255, 255);
+			PrimaryColor = Color3.fromRGB(235, 235, 235);
+			TextColor = Color3.fromRGB(0, 0, 0);
+		})
+	else
+		MainGui:ChangeTheme({
+			MainColor = Color3.fromRGB(20, 20, 20);
+			PrimaryColor = Color3.fromRGB(0, 0, 0);
+			TextColor = Color3.fromRGB(255, 255, 255);
+		})
+	end
+end)
 
 Buttons.ThirdPerson.Toggled:Connect(function(tgl)
 	if tgl == false then
