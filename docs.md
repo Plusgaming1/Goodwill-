@@ -77,7 +77,7 @@ After creation of a page, you can add 5 types of buttons:
 local MyToggle = MyPage:CreateToggle("ToggleName", "Display Toggle Text", false --[[Start Value]])
 local MySlider = MyPage:CreateSlider("SliderName", "Display Slider Text", 5 --[[Minimum]], 20 --[[Maximum]], 5 --[[Start Value]])
 local MyLabel = MyPage:CreateLabel("Label name", "Label Display Text")
-local MyTextBox = MyPage:CreateTextBox("TextboxName" --[[Place Holder Text]], "Text Box Display Text" -- [[Display Text]], "Test" -- [[Start Value]])
+local MyTextBox = MyPage:CreateTextBox("TextboxName" --[[Place Holder Text]], "Text Box Display Text" --[[Display Text]], "Test" --[[Start Value]])
 local MyButton = MyPage:CreateButton("ButtonName", "Button Display Text", "Click me" --[[Button Text]])
 ```
 
