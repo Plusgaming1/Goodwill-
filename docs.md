@@ -4,6 +4,10 @@ Goodwill-Lib is a library that simplifies the creation of UI for scripts
 
 Lets just get to the point this just explains how the script works
 
+# Activity
+
+November 16th: Updated Docs for Version 2
+
 
 # Gui Creation
 
@@ -21,8 +25,25 @@ After that, you need to create the window.
 local Window = Lib:CreateWindow(
   "Goodwill - Lib", --The name of the window
   Enum.KeyCode.LeftAlt, --The button that closes the window
-  Enum.KeyCode.LeftAlt  --The button that opens the window
+  Enum.KeyCode.LeftAlt,  --The button that opens the window
+  ThemeSettings --The theme settings (This is optional, If you dont wanna mess with this horrible thing, dont (This will help you add stuff like a light mode toggle (you monster)))
 )
+```
+
+ThemeSettings consists of:
+```lua
+--(Note, if theres a * before the start, its optional)
+Module:CreateWindow(DisplayName<String>, CloseKey<Enum.KeyCode>, OpenKey<Enum.KeyCode>, ThemeSetting<Table: {
+	*WindowScale<Vector2> (Window Scale Multiplier) = Vector2.new(SizeXMultiplier*100, SizeYMultiplier*100). Default: Vector2.new(100, 100),
+	*ScrollSpeed<Number> (How fast it takes to swithc between windows) = ScrollSpeed. Default: 1,
+	*MainColor<Color3> (Background Color) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(20, 20, 20),
+	*SelectionColor<Color3> (Color of the SideBar Selection Frame) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(0, 0, 255),
+	*Rounding<UDim> (Rounding of the Main Frame) = UDim.new(Scale, Offset). Default: UDim.new(0, 0),
+	*PrimaryColor<Color3> (Color of the page Modules (Aka Buttons)) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(0, 0, 0),
+	*SecondaryColor<Color3> (Secondary 1 Color of the page Modules) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(80, 0, 80),
+	*Secondary2Color<Color3> (Secondary 2 Color of the page Modules) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(150, 0, 150),
+	*TextColor<Color3> (Color of all the text) = Color3.fromRGB(R, G, B). Default: Color3.fromRGB(255, 255, 255),
+}>)
 ```
 
 But after creating the window, you need to create a ScreenGui to place it inside of
