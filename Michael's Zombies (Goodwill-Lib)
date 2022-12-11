@@ -89,11 +89,11 @@ end)
 Buttons.LightMode.Toggled:Connect(function(tgl)
 	if tgl == false then
 		MainGui:ChangeTheme({
+			TextColor = Color3.fromRGB(255, 255, 255);
 			MainColor = Color3.fromRGB(20, 20, 20);
 			PrimaryColor = Color3.fromRGB(0, 0, 0);
 			SecondaryColor = Color3.fromRGB(80, 0, 80);
-			Secondary2Color = Color3.fromRGB(Color3.fromRGB(150, 0, 150));
-			TextColor = Color3.fromRGB(255, 255, 255);
+			Secondary2Color = Color3.fromRGB(150, 0, 150);
 		})
 	end
     if tgl == true then
