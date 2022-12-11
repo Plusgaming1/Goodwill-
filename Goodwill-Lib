@@ -501,21 +501,16 @@ function module:CreateWindow(Name, CloseBind, OpenBind, ExtraSettings)
 				for i_, v_ in pairs(b.Pages:GetChildren()) do
 					for i, v in pairs(v_:GetChildren()) do
 						if v:IsA("GuiBase") then
-							if v:FindFirstChild("Toggle") then
-								v.Title.TextColor3 = TextColor
-							end
 							if v:FindFirstChild("Slider") then
-								v.Title.TextColor3 = TextColor
 								v.Slider.Line.Point.TextColor3 = TextColor
 							end
 							if v:FindFirstChild("TextButton") then
 								v.TextButton.TextColor3 = TextColor
-								v.Title.TextColor3 = TextColor
 							end
 							if v:FindFirstChild("TextBox") then
 								v.TextBox.TextColor3 = TextColor
-								v.Title.TextColor3 = TextColor
 							end
+							v.Title.TextColor3 = TextColor
 						end
 					end
 				end
