@@ -467,7 +467,7 @@ function module:CreateWindow(Name, CloseBind, OpenBind, ExtraSettings)
 								v.Toggle.Line.BackgroundColor3 = SecondColor
 							end
 							if v:FindFirstChild("Slider") then
-								v.Toggle.Line.BackgroundColor3 = SecondColor
+								v.Slider.Line.BackgroundColor3 = SecondColor
 							end
 							if v:FindFirstChild("TextButton") then
 								v.TextButton.BackgroundColor3 = SecondColor
@@ -489,7 +489,7 @@ function module:CreateWindow(Name, CloseBind, OpenBind, ExtraSettings)
 								v.Toggle.Line.Point.BackgroundColor3 = Second2Color
 							end
 							if v:FindFirstChild("Slider") then
-								v.Toggle.Line.Point.BackgroundColor3 = Second2Color
+								v.Slider.Line.Point.BackgroundColor3 = Second2Color
 							end
 						end
 					end
