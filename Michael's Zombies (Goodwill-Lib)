@@ -1,5 +1,11 @@
 --[[
 
+Note: Execute this when you're in a lobby
+
+Also Left Alt to toggle menu
+
+Should work on most exploits, as long as they support firing remotes (What exploit doesnt support that? DM me please I wanna see that funny bullcrap)
+
 Created using Goodwill-Lib (https://github.com/Plusgaming1/Goodwill-/blob/docs/docs.md)
 
 Made by 5x9x7x2x7x9#9723
@@ -60,6 +66,8 @@ local Buttons = {
 	LightMode = Pages.Misc:CreateToggle("Light Mode", "Light Mode (WHY)", false);
 }
 
+Pages.Combat:CreateLabel("Notifier", "Left Alt to toggle menu")
+
 Buttons.ThirdPerson.Toggled:Connect(function(tgl)
 	if tgl == false then
 		game.Players.LocalPlayer.CameraMinZoomDistance = 0
@@ -87,16 +95,17 @@ Buttons.LightMode.Toggled:Connect(function(tgl)
 			Secondary2Color = Color3.fromRGB(Color3.fromRGB(150, 0, 150));
 			TextColor = Color3.fromRGB(255, 255, 255);
 		})
-	else
+	end
+    if tgl == true then
 		MainGui:ChangeTheme({
+            TextColor = Color3.fromRGB(0, 0, 0);
 			MainColor = Color3.fromRGB(255, 255, 255);
 			PrimaryColor = Color3.fromRGB(235, 235, 235);
 			SecondaryColor = Color3.fromRGB(80, 0, 80);
-			Secondary2Color = Color3.fromRGB(Color3.fromRGB(150, 0, 150));
-			TextColor = Color3.fromRGB(0, 0, 0);
+			Secondary2Color = Color3.fromRGB(150, 0, 150);
 		})
 	end
-end
+end)
 
 game:GetService("UserInputService").InputBegan:Connect(function(i, chat)
 	if i.KeyCode == Enum.KeyCode.V and Buttons.SuperKnife.Value > 0 then
