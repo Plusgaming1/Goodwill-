@@ -1,35 +1,64 @@
-local Lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Goodwill-Lib"))()
+-- Gui to Lua
+-- Version: 3.2
 
-local MainGui = Lib:CreateWindow("Goodwill - Hub", Enum.KeyCode.LeftAlt, Enum.KeyCode.LeftAlt, {
-  Rounding = UDim.new(0, 1);
-})
+-- Instances:
 
-local Pages = {
-  Scripts = MainGui:CreatePage("Scripts");
-  Credits = MainGui:CreatePage("Credits");
-}
+local GoodwillHub = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local UICorner_2 = Instance.new("UICorner")
 
-local Scripts = {
-  MichaelsZombies = Pages.Scripts:CreateButton("Michael's Zombies", "Michael's Zombies", "Execute Script")
-}
+--Properties:
 
-local Credits = {
-  Credits1 = Pages.Credits:CreateLabel("Cred1", "Scripting - 5x9x7x2x7x9#9723");
-  Credits2 = Pages.Credits:CreateLabel("Cred2", "UI Creation - 5x9x7x2x7x9#9723");
-  Credits3 = Pages.Credits:CreateLabel("Cred3", "Original Goodwill - Aidez#9632");
-  Credits4 = Pages.Credits:CreateLabel("Cred4", "Discord Servers");
-  Credits5 = Pages.Credits:CreateLabel("Cred5", "Goodwill+ Official Discord - https://discord.gg/UK2d66nuch");
-  Credits6 = Pages.Credits:CreateLabel("Cred6", "Aidez Official Discord - https://discord.gg/BfyQT46SAa");
-}
+GoodwillHub.Name = "Goodwill-Hub"
+GoodwillHub.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+GoodwillHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+GoodwillHub.DisplayOrder = 9999
+GoodwillHub.ResetOnSpawn = false
 
-Scripts.MichaelsZombies.Clicked:Connect(function()
-  MainGui:Disable(true)
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/docs/Michael's%20Zombies%20(Goodwill-Lib)"))()
+Frame.Parent = GoodwillHub
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Size = UDim2.new(0.300000012, 0, 0.300000012, 0)
+
+TextButton.Parent = Frame
+TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+TextButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+TextButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+TextButton.Size = UDim2.new(0.899999976, 0, 0.800000012, 0)
+TextButton.Font = Enum.Font.GothamBlack
+TextButton.Text = "Game Not Supported"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextScaled = true
+TextButton.TextSize = 14.000
+TextButton.TextWrapped = true
+
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = TextButton
+
+UICorner_2.CornerRadius = UDim.new(0, 10)
+UICorner_2.Parent = Frame
+
+if game.GameId == 3104101863 then
+	TextButton.Text = "Michael's Zombies"
+end
+
+local e = false
+
+TextButton.MouseButton1Click:Connect(function()
+	if not e then
+		if game.GameId == 3104101863 then
+			e = true
+			local i = 0
+			repeat
+				local inc = wait()
+				i += inc
+				Frame.Size = Frame.Size:Lerp(UDim2.new(0, 0, 0, 0), i)
+			until i >= 1
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/Plusgaming1/Goodwill-/main/Michael's%20Zombies%20(Goodwill-Lib)", true))()
+			GoodwillHub:Destroy()
+		end
+	end
 end)
-
-local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.Name = "Goodwill-Hub"
-ScreenGui.DisplayOrder = 1000
-ScreenGui.ResetOnSpawn = false
-
-MainGui.Frame.Parent = ScreenGui
