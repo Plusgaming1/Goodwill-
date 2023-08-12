@@ -106,7 +106,7 @@ function m:CreateWindow(Colored)
 	local plr = game.Players.LocalPlayer
 	local mouse = plr:GetMouse()
 	
-	local ScreenGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+	local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 	
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	
@@ -990,7 +990,8 @@ function m:CreateWindow(Colored)
 
 			local event = Instance.new("BindableEvent", GetFolder())
 			event.Name = "Toggled"
-
+			
+			c.Value = Toggled
 			c.Toggled = event.Event
 			c.Instance = Toggle
 			
@@ -1035,6 +1036,7 @@ function m:CreateWindow(Colored)
 					end
 				end)
 				
+				c.Value = Toggled
 				event:Fire(Toggled)
 
 				local circ = Instance.new("Frame", TextButton_4)
@@ -1059,6 +1061,7 @@ function m:CreateWindow(Colored)
 
 				circ:Destroy()
 			end)
+			
 
 			return c
 		end
