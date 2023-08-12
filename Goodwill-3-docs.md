@@ -142,3 +142,36 @@ Instance variable to brrr
 ```lua
 Slider.Instance:Destroy()
 ```
+
+### Toggle
+```lua
+local Toggle = Page:CreateToggle("Anchored")
+```
+
+You can also set the starting state of the toggle
+
+```lua
+local Toggle = Page:CreateToggle("UnAnchored", true)
+```
+
+It includes an event, and a value
+
+A value for the state of the toggle
+
+```lua
+local Value = Toggle.Value
+```
+
+And also an event for whenever its toggled
+
+```lua
+Toggle.Toggled:Connect(function(NewValue)
+	game.Players.LocalPlayer.Character.PrimaryPart.Anchored = NewValue
+end)
+```
+
+Instance
+
+```lua
+Toggle.Instance
+```
