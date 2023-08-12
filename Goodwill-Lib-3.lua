@@ -106,7 +106,7 @@ function m:CreateWindow(Colored)
 	local plr = game.Players.LocalPlayer
 	local mouse = plr:GetMouse()
 	
-	local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+	local ScreenGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
 	
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	
@@ -140,24 +140,6 @@ function m:CreateWindow(Colored)
 	
 	local a = {}
 	a.Instance = ScreenGui
-	
-	spawn(function()
-		repeat
-			local dt = wait(0.1)
-			for i, v in pairs(FramePositioning:GetChildren()) do
-				local maxY = 0
-				local offY = v.ScrollingFrame.AbsolutePosition.Y
-				for i2, v2 in pairs(v.ScrollingFrame:GetChildren()) do
-					if v2:IsA("Frame") then
-						if v2.AbsolutePosition.Y + v2.AbsoluteSize.Y + v.ScrollingFrame.CanvasPosition.Y > maxY then
-							maxY = v2.AbsolutePosition.Y + v2.AbsoluteSize.Y + v.ScrollingFrame.CanvasPosition.Y
-						end
-					end
-				end
-				v.ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, maxY)
-			end
-		until not ScreenGui
-	end)
 	
 	local colorChange = Instance.new("BindableEvent", GetFolder())
 	
@@ -274,6 +256,7 @@ function m:CreateWindow(Colored)
 		ScrollingFrame.Size = UDim2.new(1, 0, 1, -4)
 		ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 		ScrollingFrame.ScrollBarThickness = 4
+		ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 		UIListLayout_2.Parent = ScrollingFrame
 		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
