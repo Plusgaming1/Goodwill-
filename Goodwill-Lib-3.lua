@@ -106,7 +106,7 @@ function m:CreateWindow(Colored)
 	local plr = game.Players.LocalPlayer
 	local mouse = plr:GetMouse()
 	
-	local ScreenGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+	local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 	
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	
@@ -242,7 +242,7 @@ function m:CreateWindow(Colored)
 		
 		if #FramePositioning:GetChildren() <= 0 then
 			Page.Visible = true
-			PageButton.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+			PageButton.BackgroundColor3 = PageButton.BackgroundColor3:Lerp(Color3.fromRGB(0, 0, 0), 0.1)
 		else
 			Page.Visible = false
 		end
