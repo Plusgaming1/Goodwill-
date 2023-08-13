@@ -175,3 +175,111 @@ Instance
 ```lua
 Toggle.Instance
 ```
+
+### Textbox
+```lua
+local Textbox = Page:CreateTextbox("Username")
+```
+A textbox is a box with text that can be edited by the user
+
+Theres 2 variables it can take: The text, and the starting textbox text
+
+```lua
+local Textbox = Page:CreateTextbox("Username", "Robloxian1234")
+```
+
+It has an event, and 2 variables
+
+An event for when its changed (the user types a letter/deletes a letter, etc.)
+
+```lua
+Textbox.Changed:Connect(function()
+	print(Textbox.Value)
+end)
+```
+
+A variable for the current text of the textbox
+
+```lua
+print(Textbox.Value)
+```
+
+and of course, the Instance itself
+
+```lua
+Textbox.Instance
+```
+
+### Bind
+```lua
+local Bind = Page:CreateBind("Interact")
+```
+A bind is just a keybind the user can change
+
+It can take 2 variables, The text, and the start bind
+```lua
+local Bind = Page:CreateBind("Interact", Enum.Keycode.E)
+```
+
+The bind can either be Enum.KeyCode or Enum.UserInputType (KeyCode for Keyboard, UserInputType for stuff like the mouse)
+
+It has an Event, A Variable, And the Instance itself
+
+The event is for whenever the keybind changes
+```lua
+Bind.Changed:Connect(function(NewBind)
+	print(NewBind)
+end)
+```
+
+The variable is the current binded key
+```lua
+print(Bind.Value)
+```
+
+and of course, the Instance itself 😔
+```lua
+Bind.Instance
+```
+
+## Extra stuff
+
+Heres some extra stuff
+
+### Extra Window Functions
+```lua
+Window:ChangeColor()
+```
+The change color function intakes the same Color table as when creating the window (Back at Setting up the window)
+```lua
+Window:ChangeColor({
+	Background = Color3.fromRGB(255, 255, 255);
+	TextColor = Color3.fromRGB(0, 0, 0);
+	Secondary = Color3.fromRGB(0, 0, 0);
+	ToggleColor = Color3.fromRGB(0, 255, 255);
+	Rounding = UDim.new(0, 10);
+	Transparency = 0.4;
+})
+```
+
+### Instance variables
+The instance variables are of no use without knowing what you can find in them
+So heres a list! (Unfinished)
+```
+Window.Instace 			(ScreenGui)
+	.Frame 			(Inside are all the page buttons)
+		.UIListLayout	(The thing that positions all the buttons)
+	.FramePositioning	(The thing that positions all the pages)
+
+Page.Instances					(Table)
+	.Page					(The page itself)
+		.UICorner			(The thing that makes the corners smooth)
+		.UIGradient			(The thing that adds the faint gradient)
+		.ScrollingFrame			(The thing that makes it so you can scroll when the contents are too big for the page)
+			.UIListLayout		(The thing that positions all the elements)
+	.Button					(The button)
+		.UICorner			(The thing that makes the corners smooth)
+		.UIGradient			(The thing that adds the faint gradient)
+		.Text				(For when you input text as the page name)
+		.Image				(For when you input a rbxassetid as the page name)
+```
